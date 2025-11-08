@@ -45,7 +45,7 @@ const Research = () => {
 
                         <div className="p-6">
                             <p className="text-body mb-2">
-                                <span className="font-semibold text-heading">Not:</span> Tüm bildiri metni ve sunum slaytları tarafımca hazırlanmıştır.
+                                <span className="font-semibold text-heading">Not:</span> Bildiri metni ve sunum slaytları tarafımca hazırlanmıştır.
                             </p>
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-6">
