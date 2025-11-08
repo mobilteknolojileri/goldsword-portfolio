@@ -2,13 +2,14 @@ import { MetadataRoute } from 'next'
 import { PROJECTS } from '@/lib/constants'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mehmetaltinkilic.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const now = new Date()
 
     const projectUrls = PROJECTS
         .filter(project => project.slug)
         .map(project => ({
             url: `${baseUrl}/portfolio/${project.slug}`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'monthly' as const,
             priority: 0.8,
         }))
@@ -16,13 +17,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
             url: baseUrl,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
+            lastModified: now,
+            changeFrequency: 'daily',
             priority: 1,
         },
         {
             url: `${baseUrl}/portfolio`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.9,
         },
