@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/layout/Navbar'
 import ThemeToggle from '@/components/layout/ThemeToggle'
@@ -8,11 +8,24 @@ import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import HoverCard from '@/components/effects/HoverCard'
 import { PROJECTS } from '@/lib/constants'
+import { getPortfolioSchema } from '@/lib/seo/schema'
 import Image from 'next/image'
 import { FaArrowLeft } from 'react-icons/fa'
 
 export default function PortfolioPage() {
     const [selectedCategory, setSelectedCategory] = useState<string>('All')
+
+    useEffect(() => {
+        const schema = getPortfolioSchema(PROJECTS, 'en')
+        const script = document.createElement('script')
+        script.type = 'application/ld+json'
+        script.text = JSON.stringify(schema)
+        document.head.appendChild(script)
+
+        return () => {
+            document.head.removeChild(script)
+        }
+    }, [])
 
     const categories = ['All', 'Mobile', 'Web', 'Automation', 'Game', 'Desktop', 'Backend', 'SEO']
 
