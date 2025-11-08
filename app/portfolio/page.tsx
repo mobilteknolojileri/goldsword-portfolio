@@ -27,7 +27,7 @@ export default function PortfolioPage() {
         }
     }, [])
 
-    const categories = ['All', 'Mobile', 'Web', 'Automation', 'Game', 'Desktop', 'Backend', 'SEO']
+    const categories = ['All', 'Mobile', 'Web', 'Game', 'Backend', 'SEO']
 
     const filteredProjects = selectedCategory === 'All'
         ? PROJECTS
