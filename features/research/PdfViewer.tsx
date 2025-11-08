@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import PdfOverlayViewer from './PdfOverlayViewer'
 
 interface PdfViewerProps {
     url: string
@@ -15,7 +14,6 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
     const [loadingProgress, setLoadingProgress] = useState(0)
     const [error, setError] = useState<string | null>(null)
     const [isMobile, setIsMobile] = useState(false)
-    const [viewMode, setViewMode] = useState<'iframe' | 'overlay'>('overlay')
 
     useEffect(() => {
         const checkMobile = () => {
@@ -78,16 +76,10 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
     }, [isOpen, url])
 
     const handleViewPdf = () => {
-        if (isMobile) {
-            window.open(url, '_blank')
-        }
+        window.open(url, '_blank')
     }
 
     if (!isOpen) return null
-
-    if (viewMode === 'overlay' && !isLoading && !error) {
-        return <PdfOverlayViewer url={url} isOpen={isOpen} onClose={onClose} title={title} />
-    }
 
     return (
         <div
@@ -100,46 +92,34 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
             >
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-dark-700 flex-shrink-0">
                     <h3 className="text-xl font-bold text-heading truncate">{title || 'PDF Görüntüleyici'}</h3>
-                    <div className="flex items-center gap-2">
-                        {!isMobile && !isLoading && !error && (
-                            <button
-                                onClick={() => setViewMode(viewMode === 'overlay' ? 'iframe' : 'overlay')}
-                                className="px-3 py-2 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
-                                title={viewMode === 'overlay' ? 'Normal Görünüm' : 'Overlay Görünümü'}
-                            >
-                                {viewMode === 'overlay' ? '📄 Normal' : '📖 Overlay'}
-                            </button>
-                        )}
-                        <button
-                            onClick={onClose}
-                            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition"
-                            aria-label="Kapat"
-                        >
-                            <svg className="w-6 h-6 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition"
+                        aria-label="Kapat"
+                    >
+                        <svg className="w-6 h-6 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
 
                 <div className="flex-1 relative">
                     {isLoading && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-dark-900 z-10">
-                            <div className="w-16 h-16 border-4 border-gray-200 dark:border-dark-700 border-t-primary-600 rounded-full animate-spin"></div>
-                            <p className="mt-4 text-lg font-semibold text-heading">PDF Yükleniyor...</p>
+                            <p className="text-lg font-semibold text-heading mb-6">PDF Yükleniyor...</p>
 
-                            <div className="mt-3">
+                            <div className="mb-4">
                                 <span className="text-3xl font-bold text-primary-600">{loadingProgress}%</span>
                             </div>
 
-                            <div className="w-64 h-2 bg-gray-200 dark:bg-dark-700 rounded-full mt-4 overflow-hidden">
+                            <div className="w-64 h-2 bg-gray-200 dark:bg-dark-700 rounded-full overflow-hidden">
                                 <div
                                     className="h-full bg-gradient-to-r from-primary-600 to-accent-600 rounded-full transition-all duration-300 ease-out"
                                     style={{ width: `${loadingProgress}%` }}
                                 ></div>
                             </div>
 
-                            <p className="mt-3 text-sm text-muted">
+                            <p className="mt-4 text-sm text-muted">
                                 {loadingProgress < 100 ? 'İndiriliyor...' : 'Hazırlanıyor...'}
                             </p>
                         </div>
@@ -161,31 +141,21 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
                     )}
 
                     {!isLoading && !error && (
-                        <>
-                            {isMobile ? (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-dark-900 p-6">
-                                    <svg className="w-20 h-20 text-primary-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    <p className="text-lg font-semibold text-heading mb-2 text-center">PDF Hazır</p>
-                                    <p className="text-sm text-muted mb-6 text-center max-w-sm">
-                                        PDF dosyasını görüntülemek için butona tıklayın
-                                    </p>
-                                    <button
-                                        onClick={handleViewPdf}
-                                        className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition font-medium"
-                                    >
-                                        PDF'i Görüntüle
-                                    </button>
-                                </div>
-                            ) : (
-                                <iframe
-                                    src={`${url}#toolbar=1&navpanes=1&view=FitH`}
-                                    className="w-full h-full border-0"
-                                    title={title || 'PDF Document'}
-                                />
-                            )}
-                        </>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-dark-900 p-6">
+                            <svg className="w-20 h-20 text-primary-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p className="text-lg font-semibold text-heading mb-2 text-center">PDF Hazır</p>
+                            <p className="text-sm text-muted mb-6 text-center max-w-sm">
+                                PDF dosyasını görüntülemek için butona tıklayın
+                            </p>
+                            <button
+                                onClick={handleViewPdf}
+                                className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition font-medium"
+                            >
+                                PDF'i Görüntüle
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
