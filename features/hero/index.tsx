@@ -10,9 +10,9 @@ import Link from 'next/link'
 
 const Hero = () => {
     return (
-        <section id="hero" className="min-h-screen flex items-center justify-center pt-20 gradient-bg">
-            <div className="section-container section-padding">
-                <div className="text-center">
+        <section id="hero" className="min-h-screen flex items-center justify-center pt-20 gradient-bg overflow-hidden">
+            <div className="section-container section-padding w-full">
+                <div className="text-center w-full">
                     <div className="mb-6 flex justify-center">
                         <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-primary-500 shadow-xl">
                             <Image
@@ -46,11 +46,11 @@ const Hero = () => {
                         <Link href="/portfolio" className="w-full max-w-md">
                             <button className="group relative w-full px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-lg font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                                 <span className="flex items-center justify-center gap-3">
-                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-6 h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                     </svg>
                                     Portfolyoma Göz At
-                                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                     </svg>
                                 </span>
