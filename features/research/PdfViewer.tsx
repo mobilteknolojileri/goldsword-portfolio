@@ -13,6 +13,14 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
     const [isLoading, setIsLoading] = useState(true)
     const [loadingProgress, setLoadingProgress] = useState(0)
     const [error, setError] = useState<string | null>(null)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+        }
+        checkMobile()
+    }, [])
 
     useEffect(() => {
         if (isOpen && url) {
@@ -50,14 +58,28 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
 
             xhr.send()
 
+            const scrollY = window.scrollY
+            document.body.style.position = 'fixed'
+            document.body.style.top = `-${scrollY}px`
+            document.body.style.width = '100%'
             document.body.style.overflow = 'hidden'
 
             return () => {
                 xhr.abort()
-                document.body.style.overflow = 'unset'
+                document.body.style.position = ''
+                document.body.style.top = ''
+                document.body.style.width = ''
+                document.body.style.overflow = ''
+                window.scrollTo(0, scrollY)
             }
         }
     }, [isOpen, url])
+
+    const handleViewPdf = () => {
+        if (isMobile) {
+            window.open(url, '_blank')
+        }
+    }
 
     if (!isOpen) return null
 
@@ -122,11 +144,31 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
                     )}
 
                     {!isLoading && !error && (
-                        <iframe
-                            src={`${url}#toolbar=1&navpanes=1&view=FitH`}
-                            className="w-full h-full border-0"
-                            title={title || 'PDF Document'}
-                        />
+                        <>
+                            {isMobile ? (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-dark-900 p-6">
+                                    <svg className="w-20 h-20 text-primary-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <p className="text-lg font-semibold text-heading mb-2 text-center">PDF Hazır</p>
+                                    <p className="text-sm text-muted mb-6 text-center max-w-sm">
+                                        PDF dosyasını görüntülemek için butona tıklayın
+                                    </p>
+                                    <button
+                                        onClick={handleViewPdf}
+                                        className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition font-medium"
+                                    >
+                                        PDF'i Görüntüle
+                                    </button>
+                                </div>
+                            ) : (
+                                <iframe
+                                    src={`${url}#toolbar=1&navpanes=1&view=FitH`}
+                                    className="w-full h-full border-0"
+                                    title={title || 'PDF Document'}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
             </div>
