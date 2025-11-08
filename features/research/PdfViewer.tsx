@@ -12,74 +12,49 @@ interface PdfViewerProps {
 const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
     const [isLoading, setIsLoading] = useState(true)
     const [loadingProgress, setLoadingProgress] = useState(0)
-    const [pdfBlob, setPdfBlob] = useState<string>('')
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && url) {
             setIsLoading(true)
             setLoadingProgress(0)
-            setPdfBlob('')
+            setError(null)
 
-            // PDF'i fetch ile indir ve ilerlemeyi takip et
-            const loadPdf = async () => {
-                try {
-                    const response = await fetch(url)
-                    const reader = response.body?.getReader()
-                    const contentLength = +(response.headers.get('Content-Length') ?? 0)
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', url, true)
+            xhr.responseType = 'blob'
 
-                    if (!reader) {
-                        throw new Error('Stream reader not available')
-                    }
+            xhr.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.round((event.loaded / event.total) * 100)
+                    setLoadingProgress(percentComplete)
+                }
+            }
 
-                    let receivedLength = 0
-                    const chunks: Uint8Array[] = []
-
-                    while (true) {
-                        const { done, value } = await reader.read()
-
-                        if (done) break
-
-                        chunks.push(value)
-                        receivedLength += value.length
-
-                        // İlerlemeyi hesapla ve güncelle
-                        if (contentLength) {
-                            const progress = Math.round((receivedLength / contentLength) * 100)
-                            setLoadingProgress(progress)
-                        }
-                    }
-
-                    // Tüm chunk'ları birleştir
-                    const chunksAll = new Uint8Array(receivedLength)
-                    let position = 0
-                    for (const chunk of chunks) {
-                        chunksAll.set(chunk, position)
-                        position += chunk.length
-                    }
-
-                    // Blob oluştur ve URL'e çevir
-                    const blob = new Blob([chunksAll], { type: 'application/pdf' })
-                    const blobUrl = URL.createObjectURL(blob)
-                    setPdfBlob(blobUrl)
+            xhr.onload = () => {
+                if (xhr.status === 200) {
                     setLoadingProgress(100)
-                    setIsLoading(false)
-                } catch (error) {
-                    console.error('PDF yükleme hatası:', error)
+                    setTimeout(() => {
+                        setIsLoading(false)
+                    }, 300)
+                } else {
+                    setError('PDF yüklenemedi')
                     setIsLoading(false)
                 }
             }
 
-            loadPdf()
+            xhr.onerror = () => {
+                setError('Bağlantı hatası')
+                setIsLoading(false)
+            }
 
-            // Body scroll'unu engelle
+            xhr.send()
+
             document.body.style.overflow = 'hidden'
-        }
 
-        // Cleanup: Modal kapandığında scroll'u geri aç ve blob URL'i temizle
-        return () => {
-            document.body.style.overflow = 'unset'
-            if (pdfBlob) {
-                URL.revokeObjectURL(pdfBlob)
+            return () => {
+                xhr.abort()
+                document.body.style.overflow = 'unset'
             }
         }
     }, [isOpen, url])
@@ -87,12 +62,14 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80" onClick={onClose}>
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
+            onClick={onClose}
+        >
             <div
                 className="relative w-full h-full max-w-6xl max-h-[90vh] bg-white dark:bg-dark-800 rounded-xl shadow-2xl flex flex-col"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-dark-700 flex-shrink-0">
                     <h3 className="text-xl font-bold text-heading truncate">{title || 'PDF Görüntüleyici'}</h3>
                     <button
@@ -106,20 +83,16 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
                     </button>
                 </div>
 
-                {/* PDF Container */}
                 <div className="flex-1 relative">
-                    {/* Loading */}
                     {isLoading && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-dark-900 z-10">
                             <div className="w-16 h-16 border-4 border-gray-200 dark:border-dark-700 border-t-primary-600 rounded-full animate-spin"></div>
                             <p className="mt-4 text-lg font-semibold text-heading">PDF Yükleniyor...</p>
 
-                            {/* Yüzde Göstergesi */}
                             <div className="mt-3">
                                 <span className="text-3xl font-bold text-primary-600">{loadingProgress}%</span>
                             </div>
 
-                            {/* Progress Bar */}
                             <div className="w-64 h-2 bg-gray-200 dark:bg-dark-700 rounded-full mt-4 overflow-hidden">
                                 <div
                                     className="h-full bg-gradient-to-r from-primary-600 to-accent-600 rounded-full transition-all duration-300 ease-out"
@@ -127,17 +100,30 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
                                 ></div>
                             </div>
 
-                            {/* Dosya Boyutu Bilgisi (Opsiyonel) */}
                             <p className="mt-3 text-sm text-muted">
                                 {loadingProgress < 100 ? 'İndiriliyor...' : 'Hazırlanıyor...'}
                             </p>
                         </div>
                     )}
 
-                    {/* PDF Iframe */}
-                    {pdfBlob && (
+                    {error && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-dark-900">
+                            <svg className="w-16 h-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <p className="text-lg font-semibold text-heading mb-2">{error}</p>
+                            <button
+                                onClick={onClose}
+                                className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
+                            >
+                                Kapat
+                            </button>
+                        </div>
+                    )}
+
+                    {!isLoading && !error && (
                         <iframe
-                            src={`${pdfBlob}#toolbar=0`}
+                            src={`${url}#toolbar=1&navpanes=1&view=FitH`}
                             className="w-full h-full border-0"
                             title={title || 'PDF Document'}
                         />
