@@ -77,7 +77,7 @@ export default function Home() {
                 <footer className="py-8 border-t border-gray-200 dark:border-dark-800 bg-white dark:bg-dark-900">
                     <div className="section-container section-padding">
                         <p className="text-center text-body">
-                            © 2025 goldsword. All rights reserved.
+                            © 2025 goldsword. Tüm hakları saklıdır.
                         </p>
                     </div>
                 </footer>
