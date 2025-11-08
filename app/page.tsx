@@ -11,6 +11,7 @@ import SmoothScroll from '@/components/effects/SmoothScroll'
 import ScrollReveal from '@/components/effects/ScrollReveal'
 import ProgressBar from '@/components/effects/ProgressBar'
 import ThemeToggle from '@/components/layout/ThemeToggle'
+import { getServiceSchema } from '@/lib/seo/schema'
 
 export default function Home() {
     useEffect(() => {
@@ -30,6 +31,18 @@ export default function Home() {
 
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+    useEffect(() => {
+        const schema = getServiceSchema('en')
+        const script = document.createElement('script')
+        script.type = 'application/ld+json'
+        script.text = JSON.stringify(schema)
+        document.head.appendChild(script)
+
+        return () => {
+            document.head.removeChild(script)
+        }
     }, [])
 
     return (
@@ -64,7 +77,7 @@ export default function Home() {
                 <footer className="py-8 border-t border-gray-200 dark:border-dark-800 bg-white dark:bg-dark-900">
                     <div className="section-container section-padding">
                         <p className="text-center text-body">
-                            © 2025 goldsword. Tüm hakları saklıdır.
+                            © 2025 goldsword. All rights reserved.
                         </p>
                     </div>
                 </footer>
