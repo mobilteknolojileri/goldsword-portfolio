@@ -5,6 +5,8 @@ import Navbar from '@/components/layout/Navbar'
 import ThemeToggle from '@/components/layout/ThemeToggle'
 import Badge from '@/components/ui/Badge'
 import { PROJECTS } from '@/lib/constants'
+import { generateMetadata as genMetadata } from '@/lib/seo/metadata'
+import { getBreadcrumbSchema } from '@/lib/seo/schema'
 import { FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa'
 
 interface PageProps {
@@ -19,22 +21,19 @@ export async function generateMetadata({ params }: PageProps) {
 
     if (!project) {
         return {
-            title: 'Proje Bulunamadı - goldsword',
-            description: 'Aradığınız proje bulunamadı.'
+            title: 'Project Not Found - goldsword',
+            description: 'The requested project could not be found.'
         }
     }
 
-    return {
-        title: `${project.title} - goldsword Portfolio`,
+    return genMetadata({
+        title: project.title,
         description: project.description,
-        keywords: [...project.technologies, project.category].join(', '),
-        openGraph: {
-            title: project.title,
-            description: project.description,
-            images: project.image ? [project.image] : [],
-            type: 'article'
-        }
-    }
+        path: `/portfolio/${slug}`,
+        image: project.image || '/logo.png',
+        type: 'article',
+        keywords: project.technologies
+    })
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
@@ -45,10 +44,24 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         notFound()
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const breadcrumbSchema = getBreadcrumbSchema([
+        { name: 'Home', url: baseUrl },
+        { name: 'Portfolio', url: `${baseUrl}/portfolio` },
+        { name: project.title, url: `${baseUrl}/portfolio/${slug}` }
+    ])
+
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-dark-900">
             <Navbar />
             <ThemeToggle />
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(breadcrumbSchema)
+                }}
+            />
 
             <main className="pt-24 pb-16">
                 <div className="section-container section-padding">
