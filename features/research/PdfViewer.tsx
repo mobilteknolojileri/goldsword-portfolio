@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import PdfOverlayViewer from './PdfOverlayViewer'
 
 interface PdfViewerProps {
     url: string
@@ -14,6 +15,7 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
     const [loadingProgress, setLoadingProgress] = useState(0)
     const [error, setError] = useState<string | null>(null)
     const [isMobile, setIsMobile] = useState(false)
+    const [viewMode, setViewMode] = useState<'iframe' | 'overlay'>('overlay')
 
     useEffect(() => {
         const checkMobile = () => {
@@ -83,6 +85,10 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
 
     if (!isOpen) return null
 
+    if (viewMode === 'overlay' && !isLoading && !error) {
+        return <PdfOverlayViewer url={url} isOpen={isOpen} onClose={onClose} title={title} />
+    }
+
     return (
         <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
@@ -94,15 +100,26 @@ const PdfViewer = ({ url, isOpen, onClose, title }: PdfViewerProps) => {
             >
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-dark-700 flex-shrink-0">
                     <h3 className="text-xl font-bold text-heading truncate">{title || 'PDF Görüntüleyici'}</h3>
-                    <button
-                        onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition"
-                        aria-label="Kapat"
-                    >
-                        <svg className="w-6 h-6 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                    <div className="flex items-center gap-2">
+                        {!isMobile && !isLoading && !error && (
+                            <button
+                                onClick={() => setViewMode(viewMode === 'overlay' ? 'iframe' : 'overlay')}
+                                className="px-3 py-2 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
+                                title={viewMode === 'overlay' ? 'Normal Görünüm' : 'Overlay Görünümü'}
+                            >
+                                {viewMode === 'overlay' ? '📄 Normal' : '📖 Overlay'}
+                            </button>
+                        )}
+                        <button
+                            onClick={onClose}
+                            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 transition"
+                            aria-label="Kapat"
+                        >
+                            <svg className="w-6 h-6 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="flex-1 relative">
