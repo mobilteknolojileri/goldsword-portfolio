@@ -68,21 +68,17 @@ npm start
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint errors
-- `npm run type-check` - Check TypeScript types
-- `npm run format` - Format code with Prettier
 
 ## Project Structure
 
 ```
 goldsword-portfolio/
-├── app/                    # Next.js app directory
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Home page
-│   ├── globals.css        # Global styles
-│   └── portfolio/         # Portfolio pages
-├── components/            # Reusable components
+├── app/                  # Next.js app directory
+│   ├── layout.tsx        # Root layout
+│   ├── page.tsx          # Home page
+│   ├── globals.css       # Global styles
+│   └── portfolio/        # Portfolio pages
+├── components/           # Reusable components
 │   ├── effects/          # Animation components
 │   ├── layout/           # Layout components
 │   ├── providers/        # Context providers
