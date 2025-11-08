@@ -3,7 +3,7 @@ export interface Project {
     title: string
     description: string
     longDescription?: string
-    category: 'mobile' | 'web' | 'ai' | 'game' | 'automation' | 'embedded'
+    category: 'mobile' | 'web' | 'ai' | 'game' | 'embedded'
     technologies: string[]
     features?: string[]
     thumbnail: string
