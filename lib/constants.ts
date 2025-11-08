@@ -106,7 +106,7 @@ export const PROJECTS = [
         slug: 'yanitla-kazan',
         title: 'Yanıtla Kazan - Chat & Arkadaşlık Sistemi',
         description: 'Sıfırdan backend API, Socket.io real-time chat, Hetzner VPS deployment, Docker',
-        category: 'Mobile',
+        category: 'Backend',
         technologies: ['Flutter', 'Node.js', 'Socket.io', 'PostgreSQL', 'Redis', 'Firebase', 'Docker'],
         color: 'from-violet-500 to-purple-500',
         image: '/assets/projects/yanitla-kazan/hero.png',
