@@ -43,7 +43,7 @@ const Research = () => {
                             <p className="text-white/90 mt-2">Mayıs 2025 - Tiran, Arnavutluk</p>
                         </div>
 
-                        <div className="p-6">
+                        {/* <div className="p-6">
                             <p className="text-body mb-2">
                                 <span className="font-semibold text-heading">Not:</span> Bildiri metni ve sunum slaytları tarafımca hazırlanmıştır.
                             </p>
@@ -73,7 +73,7 @@ const Research = () => {
                                     <p className="text-sm text-muted">Katılım Belgesi</p>
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
