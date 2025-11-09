@@ -8,35 +8,17 @@ const Testimonials = () => {
 
     const testimonials = [
         {
-            name: 'okankaf',
-            profileLink: 'https://bionluk.com/okankaf',
-            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
+            name: 'erenardic',
+            profileLink: 'https://bionluk.com/erenardic',
+            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/c63830f3-beea-4ad7-a193-e7147e1da8bf.jpeg',
             rating: 5,
-            date: '20 saat önce',
-            content: 'cok iyi'
-        },
-        {
-            name: 'okankaf',
-            profileLink: 'https://bionluk.com/okankaf',
-            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
-            rating: 5,
-            date: '8 gün önce',
-            content: 'super'
-        },
-        {
-            name: 'yakup02',
-            profileLink: 'https://bionluk.com/yakup02',
-            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/57cfd12b-272c-4976-b8ac-f6df588e27a2.jpg',
-            rating: 5,
-            date: '17 gün önce',
-            content: 'bu üçüncü çalışmamız ve hiç şaşırtmayan bir mükemmellik anlayışı gerçekten çok güzel olmuş her şey  için teşekkür eder anlayışın için ayrıca teşekkür ederim daha fazla iş yapmak dileğiyle...'
+            content: 'İşini hakkıyla yapan nadir yazılımcılardan. Gerçekten çok memnun kaldım. Diğer yazılımcıların yapamadığı, 2 ay bekllettiği, yarım yamalak bıraktığı işi sıfırdan yeniden 1 hafta da yaparak çok güzel bir iş çıkardı. Emeğinize sağlık. Kesinlikle temiz ve profesyonel bir iş istiyorsanız tavsiye ederim'
         },
         {
             name: 'bicakli',
             profileLink: 'https://bionluk.com/bicakli',
             profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
             rating: 5,
-            date: '21 gün önce',
             content: 'Şuana kadar karşılaştığım en ilgili, işini iyi bilen ve yapanlar arasında, isim düşerse kesinlikle tekrar geleceğim kişi. Tekraren çok teşekkür ederim, hızlı ve etkili bir şekilde halloldu. İşin dışında verdiğiniz tavsiyeler için de ayrıca teşekkür ederim.'
         },
         {
@@ -44,15 +26,6 @@ const Testimonials = () => {
             profileLink: 'https://bionluk.com/okankaf',
             profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
             rating: 5,
-            date: '2 ay önce',
-            content: 'basarili bir sonuc daha. 4ncu projeyi verdik'
-        },
-        {
-            name: 'okankaf',
-            profileLink: 'https://bionluk.com/okankaf',
-            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
-            rating: 5,
-            date: '2 ay önce',
             content: 'kafasi calisiyor. sizden tonla detay istemiyor. projeyi iyi kavriyor ve teknik mukemmellik haricinde fikir duzeyinde katki yapiyor. ikinci proje de cok basarili oldu ucuncuyu verdik'
         },
         {
@@ -60,7 +33,48 @@ const Testimonials = () => {
             profileLink: 'https://bionluk.com/yakup02',
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/57cfd12b-272c-4976-b8ac-f6df588e27a2.jpg',
             rating: 5,
-            date: '2 ay önce',
+            content: 'bu üçüncü çalışmamız ve hiç şaşırtmayan bir mükemmellik anlayışı gerçekten çok güzel olmuş her şey  için teşekkür eder anlayışın için ayrıca teşekkür ederim daha fazla iş yapmak dileğiyle...'
+        },
+        {
+            name: 'ocbslim',
+            profileLink: 'https://bionluk.com/ocbslim',
+            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
+            rating: 5,
+            content: 'Gercekten bilgili ve istenileni cok hizli sekilde sonuclandiran bir yazilimci. Kesinlikle islerinizi teslim edebilirsiniz. Bundan sonra hep beraber olacagiz. Tesekkür ederim.'
+        },
+        {
+            name: 'ardaras',
+            profileLink: 'https://bionluk.com/ardaras',
+            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/34297234-4e98-433c-8fa9-977d9acf1543.jpeg',
+            rating: 5,
+            content: 'Hızlı dönüş, kaliteli iş. İstediklerimi gayet iyi anlayıp direkt yardımcı oldu. Anlaştığımız süreden de kısa sürede teslim etti. Çok saygılı biri. Yolun açık olsun.'
+        },
+        {
+            name: 'siete7',
+            profileLink: 'https://bionluk.com/siete7',
+            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
+            rating: 5,
+            content: 'İletişim oldukça iyi. Tüm soruları cevap veriyor. Ekstra işler de olsa yardımcı olmaya çalışıyor. Kesinlikle tavsiye ederim.'
+        },
+        {
+            name: 'gokaymemis',
+            profileLink: 'https://bionluk.com/gokaymemis',
+            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/384cc53d-68f5-4eae-af68-7140c17a41f2.jpg',
+            rating: 5,
+            content: 'İşinde çok profesyonel ama bir o kadar mütevazi. Ellerine sağlık abi çok iyi iş çıkardın.'
+        },
+        {
+            name: 'okankaf',
+            profileLink: 'https://bionluk.com/okankaf',
+            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
+            rating: 5,
+            content: 'basarili bir sonuc daha. 4ncu projeyi verdik'
+        },
+        {
+            name: 'yakup02',
+            profileLink: 'https://bionluk.com/yakup02',
+            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/57cfd12b-272c-4976-b8ac-f6df588e27a2.jpg',
+            rating: 5,
             content: 'istediğimden erken bitti soru cevap ilğili tüm sorunları ve diğer sorunlara odak tanıması güzeldi yine çalışmak isterim'
         },
         {
@@ -68,23 +82,13 @@ const Testimonials = () => {
             profileLink: 'https://bionluk.com/siete7',
             profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
             rating: 5,
-            date: '2 ay önce',
             content: 'Sorunsuz bir alışveriş oldu. İstediklerim olduğu gibi yerine getirildi. Gönül rahatlığıyla iş yapabilirsiniz.'
-        },
-        {
-            name: 'siete7',
-            profileLink: 'https://bionluk.com/siete7',
-            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
-            rating: 5,
-            date: '2 ay önce',
-            content: 'İletişim oldukça iyi. Tüm soruları cevap veriyor. Ekstra işler de olsa yardımcı olmaya çalışıyor. Kesinlikle tavsiye ederim.'
         },
         {
             name: 'okankaf',
             profileLink: 'https://bionluk.com/okankaf',
             profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
             rating: 5,
-            date: '2 ay önce',
             content: 'basarili ve profesyonel freelancer. . projeyi anlastigimiz sekilde ve zamanda  tamamladi'
         },
         {
@@ -92,23 +96,13 @@ const Testimonials = () => {
             profileLink: 'https://bionluk.com/erenardic',
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/c63830f3-beea-4ad7-a193-e7147e1da8bf.jpeg',
             rating: 5,
-            date: '3 ay önce',
             content: '2. İşimiz de de mükemmel bir iş çıkardı. Süpersiniz 🙏🏻'
-        },
-        {
-            name: 'erenardic',
-            profileLink: 'https://bionluk.com/erenardic',
-            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/c63830f3-beea-4ad7-a193-e7147e1da8bf.jpeg',
-            rating: 5,
-            date: '3 ay önce',
-            content: 'İşini hakkıyla yapan nadir yazılımcılardan. Gerçekten çok memnun kaldım. Diğer yazılımcıların yapamadığı, 2 ay bekllettiği, yarım yamalak bıraktığı işi sıfırdan yeniden 1 hafta da yaparak çok güzel bir iş çıkardı. Emeğinize sağlık. Kesinlikle temiz ve profesyonel bir iş istiyorsanız tavsiye ederim'
         },
         {
             name: 'ugurcancaglar',
             profileLink: 'https://bionluk.com/ugurcancaglar',
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/a2c5408d-8ab6-4b41-99cb-22b7f8d0f5a2.jpg',
             rating: 5,
-            date: '3 ay önce',
             content: 'Siparişi zamanında tamamladı. Projeyle kendi projesiymiş gibi ilgilendi. Çok teşekkür ederim 🙏'
         },
         {
@@ -116,40 +110,35 @@ const Testimonials = () => {
             profileLink: 'https://bionluk.com/ardaras',
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/34297234-4e98-433c-8fa9-977d9acf1543.jpeg',
             rating: 5,
-            date: '3 ay önce',
             content: 'Sürekli çalıştığım biri, her seferinde anlayışıyla ve desteğiyle beni kurtarıyor. Çok teşekkürler.'
-        },
-        {
-            name: 'ardaras',
-            profileLink: 'https://bionluk.com/ardaras',
-            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/34297234-4e98-433c-8fa9-977d9acf1543.jpeg',
-            rating: 5,
-            date: '3 ay önce',
-            content: 'Hızlı dönüş, kaliteli iş. İstediklerimi gayet iyi anlayıp direkt yardımcı oldu. Anlaştığımız süreden de kısa sürede teslim etti. Çok saygılı biri. Yolun açık olsun.'
         },
         {
             name: 'visionsoftware',
             profileLink: 'https://bionluk.com/visionsoftware',
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/b641888b-027a-4239-bf22-f9f48a1d97d8.png',
             rating: 5,
-            date: '3 ay önce',
             content: 'Gayet iyi ve hızlı'
-        },
-        {
-            name: 'ocbslim',
-            profileLink: 'https://bionluk.com/ocbslim',
-            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
-            rating: 5,
-            date: '3 ay önce',
-            content: 'Gercekten bilgili ve istenileni cok hizli sekilde sonuclandiran bir yazilimci. Kesinlikle islerinizi teslim edebilirsiniz. Bundan sonra hep beraber olacagiz. Tesekkür ederim.'
         },
         {
             name: 'furkancelik530',
             profileLink: 'https://bionluk.com/furkancelik530',
             profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
             rating: 5,
-            date: '4 ay önce',
             content: 'uygulama tasarımı işi verildi güzel bir iş çıkardı iletişimi iyiydi eline sağlık'
+        },
+        {
+            name: 'okankaf',
+            profileLink: 'https://bionluk.com/okankaf',
+            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
+            rating: 5,
+            content: 'cok iyi'
+        },
+        {
+            name: 'okankaf',
+            profileLink: 'https://bionluk.com/okankaf',
+            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
+            rating: 5,
+            content: 'super'
         }
     ]
 
@@ -168,7 +157,6 @@ const Testimonials = () => {
                             profileLink={testimonial.profileLink}
                             profilePhoto={testimonial.profilePhoto}
                             rating={testimonial.rating}
-                            date={testimonial.date}
                             content={testimonial.content}
                         />
                     ))}

@@ -5,11 +5,10 @@ interface TestimonialCardProps {
     profileLink?: string
     profilePhoto?: string
     rating: number
-    date: string
     content: string
 }
 
-const TestimonialCard = ({ name, profileLink, profilePhoto, rating, date, content }: TestimonialCardProps) => {
+const TestimonialCard = ({ name, profileLink, profilePhoto, rating, content }: TestimonialCardProps) => {
     const CardContent = () => (
         <div className="bg-white dark:bg-dark-900 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-dark-700 hover:shadow-md transition-shadow h-full flex flex-col">
             <div className="flex items-center gap-3 mb-4">
@@ -32,7 +31,6 @@ const TestimonialCard = ({ name, profileLink, profilePhoto, rating, date, conten
                         <div className="text-yellow-500 text-sm flex">
                             {'⭐'.repeat(rating)}
                         </div>
-                        <span className="text-muted text-xs">{date}</span>
                     </div>
                 </div>
             </div>
