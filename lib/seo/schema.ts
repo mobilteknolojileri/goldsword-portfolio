@@ -1,6 +1,6 @@
 export function getPersonSchema(locale: string = 'en') {
     const name = 'goldsword'
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword.dev'
 
     return {
         '@context': 'https://schema.org',
@@ -42,7 +42,7 @@ export function getPersonSchema(locale: string = 'en') {
 }
 
 export function getOrganizationSchema(locale: string = 'en') {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword.dev'
 
     return {
         '@context': 'https://schema.org',
@@ -63,7 +63,7 @@ export function getOrganizationSchema(locale: string = 'en') {
 }
 
 export function getPortfolioSchema(projects: any[], locale: string = 'en') {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword.dev'
 
     return {
         '@context': 'https://schema.org',
@@ -101,7 +101,7 @@ export function getBreadcrumbSchema(items: { name: string; url: string }[]) {
 }
 
 export function getServiceSchema(locale: string = 'en') {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword.dev'
 
     const services = locale === 'tr' ? [
         {

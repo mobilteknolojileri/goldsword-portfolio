@@ -20,7 +20,7 @@ export function generateMetadata({
     type = 'website',
     keywords = []
 }: GenerateMetadataProps): Metadata {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword.dev'
     const url = `${baseUrl}${path}`
     const fullTitle = `${title} | goldsword`
 

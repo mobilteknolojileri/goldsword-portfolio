@@ -44,7 +44,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         notFound()
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword.dev'
     const breadcrumbSchema = getBreadcrumbSchema([
         { name: 'Home', url: baseUrl },
         { name: 'Portfolio', url: `${baseUrl}/portfolio` },

@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { PROJECTS } from '@/lib/constants'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword-portfolio.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://goldsword.dev'
     const now = new Date()
 
     const projectUrls = PROJECTS
