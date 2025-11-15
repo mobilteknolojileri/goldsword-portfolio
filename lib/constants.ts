@@ -17,7 +17,6 @@ export const NAV_ITEMS = [
     { label: 'Referanslar', href: '#testimonials' },
     { label: 'İletişim', href: '#contact' }
 ]
-
 export const PROJECTS = [
     {
         slug: 'getyo-mobile',
@@ -490,6 +489,69 @@ export const PROJECTS = [
             '/assets/projects/gmb-optimizasyonu/screenshot-5.png',
             '/assets/projects/gmb-optimizasyonu/screenshot-6.png',
             '/assets/projects/gmb-optimizasyonu/screenshot-7.png'
+        ]
+    }
+    ,
+    {
+        slug: 'graphic-design',
+        title: 'Grafik Tasarım Projeleri',
+        description: 'Logo, branding, sosyal medya ve reklam tasarımları',
+        category: 'Design',
+        technologies: ['Canva', 'Brand Identity', 'Social Media Design', 'Visual Design'],
+        color: 'from-purple-500 to-pink-500',
+        image: '/assets/projects/graphic-design/hero.png',
+        detailedDescription: 'Farklı markalar için hazırlanmış logo, branding, Instagram story/post ve reklam tasarımları. Her proje müşterinin marka kimliğine uygun, modern ve çekici görseller içeriyor.',
+        features: [
+            'Emirhan Kuyumcu - Logo ve Instagram story tasarımı',
+            'Get Yo - Mobil uygulama reklam görseli',
+            'Mobilyacı İkra - Logo ve Instagram post tasarımları',
+            'Profesyonel marka kimliği oluşturma',
+            'Sosyal medya için optimize edilmiş görseller',
+            'Modern ve minimal tasarım dili',
+            'Canva ile hızlı ve etkili çözümler'
+        ],
+        links: [],
+        screenshots: [
+            '/assets/projects/graphic-design/emirhan-kuyumcu-ikon.png',
+            '/assets/projects/graphic-design/emirhan-kuyumcu-story.jpg',
+            '/assets/projects/graphic-design/getyo-mobile-reklam-tasarimi.png',
+            '/assets/projects/graphic-design/mobilyaci-ikra-logo.png',
+            '/assets/projects/graphic-design/mobilyaci-ikra-instagram-post.jpg'
+        ]
+    },
+    {
+        slug: 'tracker-web',
+        title: 'Payment & Task Tracker',
+        description: 'Ödeme takibi, görev yönetimi - Drag & Drop, otomatik gecikme tespiti',
+        category: 'Web',
+        technologies: ['Next.js 15', 'TypeScript', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'Framer Motion', 'Drag & Drop'],
+        color: 'from-blue-500 to-purple-500',
+        image: '/assets/projects/tracker-web/hero.png',
+        detailedDescription: 'Kişisel finansal yönetim ve görev takibi için geliştirilmiş full-stack web uygulaması. Supabase backend ile kullanıcı başına özel veri, otomatik durum hesaplamaları ve drag & drop ile sıralama sistemi.',
+        features: [
+            'Ödeme yönetimi - tutar, son ödeme tarihi, durum takibi',
+            'Otomatik gecikme tespiti - tarihe göre durum güncelleme',
+            'Görev yönetimi - checkbox ile tamamlama, açıklama, tarih',
+            'Drag & Drop sıralama - manuel ve otomatik sıralama',
+            'Filtreleme sistemi - tümü, ödenmedi, ödendi, gecikti',
+            'Toplam tutar özeti - ödenmemiş toplam hesaplama',
+            'Dinamik göstergeler - kalan gün sayısı, renkli badge\'ler',
+            'Supabase Auth - email/şifre, şifre sıfırlama',
+            'Row Level Security - kullanıcı bazlı veri güvenliği',
+            'Dark theme - modern, göz yormayan arayüz',
+            'Responsive design - mobil, tablet, desktop uyumlu',
+            'Toast notifications - başarı/hata bildirimleri',
+            'Smooth animations - Framer Motion geçişleri',
+            'Vercel deployment - production-ready'
+        ],
+        challenges: 'Drag & Drop implementasyonu, otomatik durum hesaplamaları, Row Level Security, modal yönetimi, Türkçe tarih lokalizasyonu, real-time senkronizasyon',
+        links: [],
+        screenshots: [
+            '/assets/projects/tracker-web/Ekran görüntüsü 2025-11-15 183903.png',
+            '/assets/projects/tracker-web/Ekran görüntüsü 2025-11-15 183939.png',
+            '/assets/projects/tracker-web/Ekran görüntüsü 2025-11-15 183950.png',
+            '/assets/projects/tracker-web/Ekran görüntüsü 2025-11-15 184003.png',
+            '/assets/projects/tracker-web/Ekran görüntüsü 2025-11-15 184032.png'
         ]
     }
 ]
