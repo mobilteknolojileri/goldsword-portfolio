@@ -61,7 +61,7 @@ const Hero = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-4xl mx-auto px-4 pb-8 md:pb-12">
                         <div className="bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-dark-700 hover:shadow-xl transition-shadow">
                             <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-500">
-                                <NumberCounter end={20} suffix="+" />
+                                <NumberCounter end={30} suffix="+" />
                             </h3>
                             <p className="text-xs sm:text-sm md:text-base text-body mt-2">Proje</p>
                         </div>
@@ -73,7 +73,7 @@ const Hero = () => {
                         </div>
                         <div className="bg-white/80 dark:bg-dark-800/80 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200 dark:border-dark-700 hover:shadow-xl transition-shadow">
                             <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-500">
-                                <NumberCounter end={15} suffix="+" />
+                                <NumberCounter end={20} suffix="+" />
                             </h3>
                             <p className="text-xs sm:text-sm md:text-base text-body mt-2">Müşteri</p>
                         </div>
