@@ -102,11 +102,11 @@ const Experience = () => {
                                     <p className="text-white/80 text-sm sm:text-base">Puan</p>
                                 </div>
                                 <div className="text-center">
-                                    <p className="text-3xl font-bold">17</p>
+                                    <p className="text-3xl font-bold">21</p>
                                     <p className="text-white/80 text-sm sm:text-base">Değerlendirme</p>
                                 </div>
                                 <div className="text-center">
-                                    <p className="text-3xl font-bold">20+</p>
+                                    <p className="text-3xl font-bold">30+</p>
                                     <p className="text-white/80 text-sm sm:text-base">Proje</p>
                                 </div>
                             </div>
