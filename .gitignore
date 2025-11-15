@@ -39,5 +39,6 @@ next-env.d.ts
 .vscode/
 .idea/
 
+#others
 null
 nul
