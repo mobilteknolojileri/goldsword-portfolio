@@ -36,6 +36,14 @@ const Testimonials = () => {
             content: 'bu üçüncü çalışmamız ve hiç şaşırtmayan bir mükemmellik anlayışı gerçekten çok güzel olmuş her şey  için teşekkür eder anlayışın için ayrıca teşekkür ederim daha fazla iş yapmak dileğiyle...'
         },
         {
+            name: 'celaldemir2376',
+            profileLink: 'https://bionluk.com/celaldemir2376',
+            profilePhoto:
+                'https://bgcp.bionluk.com/images/avatar/200x200/97137667-cc72-4ed9-a5cd-932d722d6260.jpg',
+            rating: 5,
+            content: 'Ellerine sağlık hızlı ve çok güzel bir site oldu tam istediğim gibi oldu'
+        },
+        {
             name: 'ocbslim',
             profileLink: 'https://bionluk.com/ocbslim',
             profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
@@ -62,6 +70,13 @@ const Testimonials = () => {
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/384cc53d-68f5-4eae-af68-7140c17a41f2.jpg',
             rating: 5,
             content: 'İşinde çok profesyonel ama bir o kadar mütevazi. Ellerine sağlık abi çok iyi iş çıkardın.'
+        },
+        {
+            name: 'celaldemir2376',
+            profileLink: 'https://bionluk.com/celaldemir2376',
+            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/97137667-cc72-4ed9-a5cd-932d722d6260.jpg',
+            rating: 5,
+            content: 'Yakın süreçte 2 tane proje yaptırdım 2 projeyide sorunsuz ve kısa sürede bitirdi çok teşekkürler'
         },
         {
             name: 'okankaf',
