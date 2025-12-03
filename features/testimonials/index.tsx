@@ -22,13 +22,6 @@ const Testimonials = () => {
             content: 'Şuana kadar karşılaştığım en ilgili, işini iyi bilen ve yapanlar arasında, isim düşerse kesinlikle tekrar geleceğim kişi. Tekraren çok teşekkür ederim, hızlı ve etkili bir şekilde halloldu. İşin dışında verdiğiniz tavsiyeler için de ayrıca teşekkür ederim.'
         },
         {
-            name: 'okankaf',
-            profileLink: 'https://bionluk.com/okankaf',
-            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
-            rating: 5,
-            content: 'kafasi calisiyor. sizden tonla detay istemiyor. projeyi iyi kavriyor ve teknik mukemmellik haricinde fikir duzeyinde katki yapiyor. ikinci proje de cok basarili oldu ucuncuyu verdik'
-        },
-        {
             name: 'yakup02',
             profileLink: 'https://bionluk.com/yakup02',
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/57cfd12b-272c-4976-b8ac-f6df588e27a2.jpg',
@@ -65,6 +58,13 @@ const Testimonials = () => {
             content: 'İletişim oldukça iyi. Tüm soruları cevap veriyor. Ekstra işler de olsa yardımcı olmaya çalışıyor. Kesinlikle tavsiye ederim.'
         },
         {
+            name: 'yakup02',
+            profileLink: 'https://bionluk.com/yakup02',
+            profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/57cfd12b-272c-4976-b8ac-f6df588e27a2.jpg',
+            rating: 5,
+            content: 'elinize emeğinize sağlık daha iyi ve büyük projelerde tekrar tekrar arayacağım isimsiniz kolay gelsin'
+        },
+        {
             name: 'gokaymemis',
             profileLink: 'https://bionluk.com/gokaymemis',
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/384cc53d-68f5-4eae-af68-7140c17a41f2.jpg',
@@ -77,6 +77,13 @@ const Testimonials = () => {
             profilePhoto: 'https://bgcp.bionluk.com/images/avatar/200x200/97137667-cc72-4ed9-a5cd-932d722d6260.jpg',
             rating: 5,
             content: 'Yakın süreçte 2 tane proje yaptırdım 2 projeyide sorunsuz ve kısa sürede bitirdi çok teşekkürler'
+        },
+        {
+            name: 'okankaf',
+            profileLink: 'https://bionluk.com/okankaf',
+            profilePhoto: 'https://gcdn.bionluk.com/uploads/general/No_Avatar.png',
+            rating: 5,
+            content: 'kafasi calisiyor. sizden tonla detay istemiyor. projeyi iyi kavriyor ve teknik mukemmellik haricinde fikir duzeyinde katki yapiyor. ikinci proje de cok basarili oldu ucuncuyu verdik'
         },
         {
             name: 'okankaf',
