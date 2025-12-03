@@ -512,8 +512,6 @@ export const PROJECTS = [
         ],
         links: [],
         screenshots: [
-            '/assets/projects/graphic-design/emirhan-kuyumcu-ikon.png',
-            '/assets/projects/graphic-design/emirhan-kuyumcu-story.jpg',
             '/assets/projects/graphic-design/getyo-mobile-reklam-tasarimi.png',
             '/assets/projects/graphic-design/mobilyaci-ikra-logo.png',
             '/assets/projects/graphic-design/mobilyaci-ikra-instagram-post.jpg'
