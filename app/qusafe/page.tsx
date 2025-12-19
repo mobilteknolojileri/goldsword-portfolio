@@ -35,20 +35,34 @@ export default function QuSafePage() {
 
       {/* Download Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        {/* App Store (Coming Soon) */}
         <a
           href="#"
-          className="inline-flex items-center justify-center gap-3 bg-white text-slate-900 px-6 py-3.5 rounded-xl font-medium hover:bg-slate-100 transition-all hover:scale-105 shadow-lg"
+          aria-disabled="true"
+          onClick={(e) => e.preventDefault()}
+          className="inline-flex items-center justify-center gap-3 bg-white/90 text-slate-900 px-6 py-3.5 rounded-xl font-medium shadow-lg
+                     opacity-60 cursor-not-allowed select-none"
         >
           <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
           </svg>
+
           <div className="text-left">
             <div className="text-xs opacity-70">Download on the</div>
-            <div className="text-base font-semibold -mt-0.5">App Store</div>
+            <div className="flex items-center gap-2 text-base font-semibold -mt-0.5">
+              <span>App Store</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-900/10 border border-slate-900/10">
+                Yakında
+              </span>
+            </div>
           </div>
         </a>
+
+        {/* Google Play */}
         <a
-          href="#"
+          href="https://play.google.com/store/apps/details?id=com.schwerttr.qusafe"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center justify-center gap-3 bg-white text-slate-900 px-6 py-3.5 rounded-xl font-medium hover:bg-slate-100 transition-all hover:scale-105 shadow-lg"
         >
           <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
@@ -85,6 +99,7 @@ export default function QuSafePage() {
           <h3 className="text-white font-medium mb-1">Privacy Policy</h3>
           <p className="text-slate-500 text-sm">Gizlilik Politikası</p>
         </Link>
+
         <Link
           href="/qusafe/terms-of-service"
           className="group p-6 bg-slate-800/50 border border-slate-700/50 rounded-2xl hover:bg-slate-800 hover:border-indigo-500/30 transition-all"
@@ -107,6 +122,7 @@ export default function QuSafePage() {
           <h3 className="text-white font-medium mb-1">Terms of Service</h3>
           <p className="text-slate-500 text-sm">Kullanım Şartları</p>
         </Link>
+
         <Link
           href="/qusafe/delete-account"
           className="group p-6 bg-slate-800/50 border border-slate-700/50 rounded-2xl hover:bg-slate-800 hover:border-indigo-500/30 transition-all"
