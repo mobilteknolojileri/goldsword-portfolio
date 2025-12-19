@@ -75,6 +75,7 @@ export function generateMetadata({
         verification: {
             google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
         },
+        metadataBase: new URL(baseUrl),
     }
 }
 
