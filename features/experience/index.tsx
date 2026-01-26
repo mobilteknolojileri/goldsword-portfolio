@@ -44,7 +44,7 @@ const Experience = () => {
                         >
                             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 text-heading">Mobil Teknolojileri</h3>
                             <p className="text-primary-600 font-semibold mb-2 text-base sm:text-lg">Trakya Üniversitesi</p>
-                            <p className="text-muted mb-4 sm:mb-6 text-sm sm:text-base">2023 - 2025</p>
+                            <p className="text-muted mb-4 sm:mb-6 text-sm sm:text-base">2023 - 2026</p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 p-5 rounded-lg border border-amber-200 dark:border-amber-800">
                                     <div className="flex flex-col items-center justify-center space-y-1.5">
@@ -81,7 +81,7 @@ const Experience = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </a>
-                            <p className="text-muted mb-4">Bahar 2025 (16 Hafta)</p>
+                            <p className="text-muted mb-4">Bahar 2026 (16 Hafta)</p>
                             <ul className="space-y-1 text-body mb-4">
                                 <li>• Docker mikro-servis mimarileri (DevOps)</li>
                                 <li>• Node.js API geliştirme</li>

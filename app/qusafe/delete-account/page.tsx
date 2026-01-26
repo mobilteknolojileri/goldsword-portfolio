@@ -52,7 +52,7 @@ export default function DeleteAccountPage() {
         <h1 className="text-3xl font-bold text-white mb-2">Delete Account</h1>
         <p className="text-slate-400">Hesap ve Veri Silme</p>
         <p className="text-sm text-slate-600 mt-4">
-          Last updated: December 2025
+          Last updated: December 2026
         </p>
       </div>
 
