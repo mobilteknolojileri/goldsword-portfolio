@@ -63,8 +63,8 @@ export default function PortfolioPage() {
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
                                 className={`px-4 py-2.5 rounded-full font-semibold transition-all text-sm sm:text-base ${selectedCategory === category
-                                        ? 'bg-primary-600 text-white shadow-lg'
-                                        : 'bg-gray-200 dark:bg-dark-800 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-dark-700'
+                                    ? 'bg-primary-600 text-white shadow-lg'
+                                    : 'bg-gray-200 dark:bg-dark-800 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-dark-700'
                                     }`}
                             >
                                 {category}
@@ -120,7 +120,7 @@ export default function PortfolioPage() {
 
                                         {project.slug ? (
                                             <Link
-                                                href={`/portfolio/${project.slug}`}
+                                                href={(project as any).customLink || `/portfolio/${project.slug}`}
                                                 className="block w-full py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-all text-center shadow-sm hover:shadow-md"
                                             >
                                                 Detayları Gör

@@ -551,5 +551,30 @@ export const PROJECTS = [
             '/assets/projects/tracker-web/Ekran görüntüsü 2025-11-15 184003.png',
             '/assets/projects/tracker-web/Ekran görüntüsü 2025-11-15 184032.png'
         ]
+    },
+    {
+        slug: 'qusafe-mobile',
+        title: 'QuSafe - Şifreli Kasa',
+        description: 'AES-256 E2E şifreleme, fotoğraf gizleme ve güvenli kasa',
+        category: 'Mobile',
+        technologies: ['React Native', 'Expo SDK 54', 'Supabase', 'AES-256-GCM', 'Argon2id', 'Zustand', 'NativeWind', 'Quick Crypto'],
+        color: 'from-indigo-600 to-blue-500',
+        image: '/assets/projects/qusafe-mobile/icon.png',
+        detailedDescription: 'Hassas şifrelerinizi, notlarınızı ve medya dosyalarınızı koruyan zero-knowledge mimarili, yüksek güvenlikli şifreli kasa uygulaması.',
+        features: [
+            'AES-256-GCM donanımsal şifreleme',
+            'Argon2id ana şifre türetme',
+            'Zero-Knowledge veri güvenliği',
+            'Biyometrik kilit (Face ID/Parmak İzi)',
+            'Fotoğraf, video ve dosya gizleme',
+            'Bulut senkronizasyonu',
+            '2FA (TOTP) desteği'
+        ],
+        links: [
+            { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.schwerttr.qusafe' },
+            { label: 'Website', url: '/qusafe' }
+        ],
+        customLink: '/qusafe',
+        screenshots: []
     }
 ]
