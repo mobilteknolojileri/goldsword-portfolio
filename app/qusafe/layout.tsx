@@ -1,11 +1,9 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { qusafeMetadata } from "@/lib/seo/metadata";
+import { getOrganizationSchema } from "@/lib/seo/schema";
 
-export const metadata: Metadata = {
-  title: "QuSafe - Secure Password Manager",
-  description: "QuSafe is a secure password manager app for iOS and Android.",
-};
+export const metadata = qusafeMetadata;
 
 export default function QuSafeLayout({
   children,
@@ -19,7 +17,7 @@ export default function QuSafeLayout({
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/qusafe" className="flex items-center gap-3">
             <Image
-              src="/qusafe-icon.png"
+              src="/assets/projects/qusafe-mobile/icon.png"
               alt="QuSafe"
               width={36}
               height={36}
@@ -53,7 +51,7 @@ export default function QuSafeLayout({
       <footer className="border-t border-white/10">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
-            <p>© 2025 QuSafe. All rights reserved.</p>
+            <p>© 2026 QuSafe. All rights reserved.</p>
             <a
               href="mailto:schwerttr@gmail.com"
               className="hover:text-indigo-400 transition-colors"
