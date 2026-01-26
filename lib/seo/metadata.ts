@@ -80,7 +80,16 @@ export function generateMetadata({
 }
 
 export const defaultMetadata: Metadata = generateMetadata({
-    title: 'Full Stack Developer | Mobile & Web Development',
-    description: 'Professional freelance developer specializing in mobile apps, web development, AI integration, and game development. 20+ successful projects. Expert in Flutter, React Native, Next.js, Unity.',
-    locale: 'en'
+    title: 'Full Stack Developer | Mobil & Web Geliştirme',
+    description: 'Mobil uygulama, web geliştirme, yapay zeka ve oyun geliştirme konularında uzman freelance yazılımcı. QuSafe gibi güvenli çözümler dahil 20+ başarılı proje.',
+    locale: 'tr'
+})
+
+export const qusafeMetadata: Metadata = generateMetadata({
+    title: 'QuSafe - Şifreli Kasa | Güvenli Parola ve Dosya Yöneticisi',
+    description: 'Fotoğraf gizleme, gizli şifre ve not günlüğü. AES-256-GCM şifreleme, parmak izi/Face ID ve bulut senkronizasyonu ile tam güvenlik.',
+    path: '/qusafe',
+    image: '/qusafe-icon.png',
+    locale: 'tr',
+    keywords: ['şifreli kasa', 'parola yöneticisi', 'dosya gizleme', 'güvenli notlar', 'AES-256', 'zero knowledge']
 })

@@ -8,7 +8,9 @@ export const SEO_KEYWORDS = {
             'flutter developer',
             'next.js developer',
             'AI developer',
-            'machine learning engineer'
+            'machine learning engineer',
+            'cybersecurity developer',
+            'encrypted vault developer'
         ],
         secondary: [
             'web application development',
@@ -45,7 +47,10 @@ export const SEO_KEYWORDS = {
             'mobil uygulama yapımı',
             'yapay zeka uygulamaları',
             'özel yazılım geliştirme',
-            'uygulama modernizasyonu'
+            'uygulama modernizasyonu',
+            'şifreli kasa uygulaması',
+            'güvenli not defteri',
+            'parola yöneticisi geliştirme'
         ],
         local: [
             'gaziantep yazılımcı',
@@ -70,7 +75,9 @@ export const SEO_KEYWORDS = {
         'full stack developer portfolio',
         'mobil uygulama yapımı fiyatları',
         'freelance yazılımcı bulmak',
-        'özel yazılım projeleri'
+        'özel yazılım projeleri',
+        'AES-256 encrypted password manager',
+        'zero knowledge cloud sync vault'
     ]
 }
 

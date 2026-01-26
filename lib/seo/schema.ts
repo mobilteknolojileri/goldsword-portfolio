@@ -24,6 +24,7 @@ export function getPersonSchema(locale: string = 'en') {
             'Next.js',
             'Full Stack Development',
             'Mobile App Development',
+            'Cybersecurity & Encryption',
             'AI/ML Integration',
             'Unity Game Development',
             'Python',
@@ -132,6 +133,10 @@ export function getServiceSchema(locale: string = 'en') {
         {
             name: 'AI Integration',
             description: 'AI/ML models and intelligent application development'
+        },
+        {
+            name: 'Cybersecurity & Secure Systems',
+            description: 'Encrypted vaults and secure data management systems with AES-256'
         },
         {
             name: 'Game Development',
