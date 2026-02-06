@@ -300,7 +300,11 @@ export const PROJECTS = [
             'Android optimizasyonu'
         ],
         challenges: '2D platformer mekanik dengeleme, seviye tasarımı, boss AI, touch/gamepad optimizasyon, Play Store policy',
-        links: [],
+        links: [
+            { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.schwerttr.aestera' },
+            { label: 'Website', url: '/legends-of-aestera' }
+        ],
+        customLink: '/legends-of-aestera',
         screenshots: [
             '/assets/projects/legends-of-aestera/screenshot-1.png',
             '/assets/projects/legends-of-aestera/screenshot-2.png',
