@@ -93,3 +93,12 @@ export const qusafeMetadata: Metadata = generateMetadata({
     locale: 'tr',
     keywords: ['şifreli kasa', 'parola yöneticisi', 'dosya gizleme', 'güvenli notlar', 'AES-256', 'zero knowledge']
 })
+
+export const aesteraMetadata: Metadata = generateMetadata({
+    title: 'Legends of Aestera | 2D Platform Aksiyon Oyunu',
+    description: 'Red ve Robinhood ile destansı bir maceraya atılın. 6+ el yapımı bölüm, dinamik düşmanlar ve patron savaşları içeren pikselli platform oyunu.',
+    path: '/legends-of-aestera',
+    image: '/assets/projects/legends-of-aestera/hero.png',
+    locale: 'tr',
+    keywords: ['2d platform', 'aksiyon oyunu', 'piksel art', 'bağımsız oyun', 'legends of aestera', 'unity game']
+})
