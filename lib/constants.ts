@@ -1,7 +1,7 @@
 export const SITE_CONFIG = {
     name: 'goldsword',
-    title: 'Full Stack Developer',
-    description: 'AI-Powered Full Stack Developer | Mobile, Web, Game Development',
+    title: 'Full Stack Developer | Product Engineer',
+    description: 'Product Engineer & Full Stack Developer',
     email: 'mobilteknolojileri@gmail.com',
     social: {
         github: 'https://github.com/mobilteknolojileri',

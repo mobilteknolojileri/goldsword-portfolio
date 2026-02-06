@@ -6,18 +6,10 @@ const TypeWriter = () => {
     return (
         <TypeAnimation
             sequence={[
-                'Flutter Developer',
-                2000,
-                'Unity Game Developer',
-                2000,
-                'Python Developer',
-                2000,
                 'Full Stack Developer',
-                2000,
-                'Mobile Developer',
-                2000,
-                'Backend Developer',
-                2000,
+                3000,
+                'Product Engineer',
+                3000,
             ]}
             wrapper="span"
             speed={50}

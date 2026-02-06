@@ -100,7 +100,7 @@ goldsword-portfolio/
 
 ## License
 
-© 2025 goldsword. All rights reserved.
+© 2026 goldsword. All rights reserved.
 
 ## Contact
 
