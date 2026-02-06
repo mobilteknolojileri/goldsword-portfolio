@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Hero from '@/features/hero'
 import Experience from '@/features/experience'
+import FeaturedApps from '@/features/featured-apps'
 import Research from '@/features/research'
 import Testimonials from '@/features/testimonials'
 import Contact from '@/features/contact'
@@ -59,6 +60,10 @@ export default function Home() {
 
                     <ScrollReveal>
                         <Experience />
+                    </ScrollReveal>
+
+                    <ScrollReveal>
+                        <FeaturedApps />
                     </ScrollReveal>
 
                     <ScrollReveal>
