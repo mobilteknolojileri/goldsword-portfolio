@@ -12,9 +12,12 @@ const FeaturedApps = () => {
     threshold: 0.3,
   });
 
-  // QuSafe and Legends of Aestera are our featured apps
+  // Featured apps
   const featuredProjects = PROJECTS.filter(
-    (p) => p.slug === "qusafe-mobile" || p.slug === "legends-of-aestera",
+    (p) =>
+      p.slug === "qusafe-mobile" ||
+      p.slug === "legends-of-aestera" ||
+      p.slug === "kafadar-mobile",
   );
 
   return (
@@ -27,8 +30,8 @@ const FeaturedApps = () => {
           <h2
             ref={titleRef}
             className={`text-4xl md:text-5xl lg:text-6xl font-bold text-heading tracking-tight transition-all duration-700 ${titleVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
               }`}
           >
             Kendi Projelerim
@@ -41,7 +44,7 @@ const FeaturedApps = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {featuredProjects.map((project) => (
             <Card
               key={project.slug}

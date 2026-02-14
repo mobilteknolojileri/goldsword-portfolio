@@ -19,6 +19,39 @@ export const NAV_ITEMS = [
 ];
 export const PROJECTS = [
   {
+    slug: "kafadar-mobile",
+    title: "Kafadar - Arkadaşlık Testi",
+    description: "Quiz oluştur, paylaş, skorları karşılaştır. Gen Z odaklı social app.",
+    category: "Mobile",
+    technologies: [
+      "React Native",
+      "Expo SDK 54",
+      "Supabase",
+      "Framer Motion",
+      "NativeWind",
+      "Zustand",
+    ],
+    color: "from-rose-500 to-pink-400",
+    image: "/assets/projects/kafadar-mobile/icon.png",
+    detailedDescription:
+      "Arkadaşlarınızın sizi ne kadar iyi tanıdığını test eden, eğlenceli ve paylaşılabilir bir mobil uygulama. Özelleştirilebilir temalar, emoji avatarlar ve dinamik leaderboard özellikleri içerir.",
+    features: [
+      "Dinamik Quiz Oluşturma - 10+ soru tipi",
+      "Özelleştirilebilir Temalar - 5 farklı renk paleti",
+      "Emoji Avatar Sistemi - 24 farklı karakter",
+      "Leaderboard - En gerçek dostu gör",
+      "Deep Linking - kafadar.app/q/slug desteği",
+      "Konfeti Animasyonları",
+      "Supabase Real-time Veritabanı",
+    ],
+    challenges: "Deep linking yapılandırması, dinamik tema yönetimi, real-time leaderboard senkronizasyonu",
+    links: [
+      { label: "Website", url: "/kafadar" },
+    ],
+    customLink: "/kafadar",
+    screenshots: [],
+  },
+  {
     slug: "getyo-mobile",
     title: "Get Yo - Mobil Uygulama",
     description: "OAuth, push notification, QR sadakat programı",
