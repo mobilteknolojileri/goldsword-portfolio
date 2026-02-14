@@ -116,3 +116,21 @@ export const aesteraMetadata: Metadata = generateMetadata({
     "unity game",
   ],
 });
+
+export const kafadarMetadata: Metadata = generateMetadata({
+  title: "Kafadar - Arkadaşlık Testi | Arkadaşların Seni Ne Kadar Tanıyor?",
+  description:
+    "Quiz oluştur, link ile arkadaşlarınla paylaş, skorlarını karşılaştır. Gen Z odaklı eğlenceli arkadaşlık testi uygulaması.",
+  path: "/kafadar",
+  image: "/assets/projects/kafadar-mobile/icon.png",
+  locale: "tr",
+  keywords: [
+    "arkadaşlık testi",
+    "quiz uygulaması",
+    "kafadar",
+    "arkadaş quiz",
+    "seni ne kadar tanıyorum",
+    "best friend quiz",
+    "friendship test",
+  ],
+});

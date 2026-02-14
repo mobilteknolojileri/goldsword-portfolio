@@ -26,18 +26,16 @@ const FeaturedApps = () => {
         <div className="text-center mb-16">
           <h2
             ref={titleRef}
-            className={`text-4xl md:text-5xl lg:text-6xl font-bold text-heading tracking-tight transition-all duration-700 ${
-              titleVisible
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold text-heading tracking-tight transition-all duration-700 ${titleVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-10"
-            }`}
+              }`}
           >
             Kendi Projelerim
           </h2>
           <p
-            className={`mt-4 text-lg text-body transition-all duration-700 delay-100 ${
-              titleVisible ? "opacity-100" : "opacity-0"
-            }`}
+            className={`mt-4 text-lg text-body transition-all duration-700 delay-100 ${titleVisible ? "opacity-100" : "opacity-0"
+              }`}
           >
             Sıfırdan geliştirdiğim ve mağazalarda yayınladığım uygulamalar.
           </p>
