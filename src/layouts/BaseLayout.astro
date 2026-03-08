@@ -3,6 +3,7 @@ import { defaultMetadata } from "@/lib/seo/metadata";
 import { getPersonSchema, getOrganizationSchema } from "@/lib/seo/schema";
 import "@/styles/globals.css";
 import { ClientRouter } from "astro:transitions";
+import Analytics from "@vercel/analytics/astro";
 
 import type { Metadata } from "@/lib/seo/metadata";
 
@@ -43,6 +44,7 @@ const orgSchema = getOrganizationSchema("tr");
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter />
+    <Analytics />
 
     <!-- SEO Meta Tags -->
     <title>{displayTitle}</title>
