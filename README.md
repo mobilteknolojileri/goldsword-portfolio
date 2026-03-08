@@ -1,109 +1,113 @@
-# goldsword Portfolio
+# goldsword-portfolio
 
-Professional portfolio website showcasing full-stack development projects.
+Personal portfolio and content site built to present selected software work, product pages, and blog content in a maintainable static setup.
 
-## Tech Stack
+This repository is primarily focused on:
 
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Email**: EmailJS
-- **Deployment**: Vercel
+- portfolio presentation
+- landing pages for selected projects
+- blog content with structured metadata
+- a small contact flow
 
-## Features
+## Stack
 
-- Responsive design (mobile, tablet, desktop)
-- Dark/Light mode
-- SEO optimized
-- Performance optimized (Lighthouse 90+)
-- Accessible (WCAG 2.1)
-- Type-safe with TypeScript
-- Schema.org structured data
-- OpenGraph & Twitter Cards
-- Sitemap & robots.txt
+- Astro 5
+- React 19
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Astro Content Collections
+- EmailJS
 
-## Getting Started
+## Why This Setup
 
-### Prerequisites
+The project uses Astro for a mostly static output with selective React hydration where interaction is actually needed. The goal is to keep the site straightforward to maintain while still allowing richer UI in areas such as navigation, filtering, and contact.
+
+## Project Structure
+
+```text
+src/
+  components/   reusable UI and shared visual building blocks
+  config/       site and SEO configuration
+  content/      blog content and collection schema
+  features/     page-level sections and feature modules
+  layouts/      shared page layout
+  lib/          constants, helpers, and SEO utilities
+  pages/        Astro routes
+  styles/       global styles
+
+public/         static assets
+docs/           small internal documentation
+```
+
+## Local Development
+
+Requirements:
 
 - Node.js 18+
 - npm 9+
 
-### Installation
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Environment Variables
-
-Create a `.env.local` file:
-
-```bash
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
-NEXT_PUBLIC_SITE_URL=https://yourdomain.com
-NEXT_PUBLIC_GOOGLE_VERIFICATION=your_verification_code
-```
-
-### Development
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Default local URL:
 
-### Build
+```text
+http://localhost:4321
+```
+
+## Environment Variables
+
+Create a local `.env` file if you want the contact form and site metadata to behave as expected:
 
 ```bash
+PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+PUBLIC_SITE_URL=https://goldsword.dev
+PUBLIC_GOOGLE_VERIFICATION=your_verification_code
+```
+
+## Scripts
+
+```bash
+npm run dev
 npm run build
-npm start
+npm run preview
+npm run validate
+npm run fix
 ```
 
-### Scripts
+Short description:
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
+- `dev`: starts the Astro development server
+- `build`: creates the production build
+- `preview`: serves the built output locally
+- `validate`: runs Astro checks, ESLint, and Prettier checks
+- `fix`: runs ESLint fixes, Prettier write, and Astro checks
 
-## Project Structure
+## Notes
 
-```
-goldsword-portfolio/
-├── app/                  # Next.js app directory
-│   ├── layout.tsx        # Root layout
-│   ├── page.tsx          # Home page
-│   ├── globals.css       # Global styles
-│   └── portfolio/        # Portfolio pages
-├── components/           # Reusable components
-│   ├── effects/          # Animation components
-│   ├── layout/           # Layout components
-│   ├── providers/        # Context providers
-│   └── ui/               # UI components
-├── features/             # Feature modules
-│   ├── hero/
-│   ├── experience/
-│   ├── research/
-│   ├── testimonials/
-│   └── contact/
-├── lib/                  # Utilities
-│   ├── constants.ts      # App constants
-│   ├── utils.ts          # Helper functions
-│   └── seo/              # SEO utilities
-├── hooks/                # Custom React hooks
-├── public/               # Static assets
-└── types/                # TypeScript types
-```
+- `nextjs-backup/` is kept only as migration reference material.
+- `public/` contains static files such as images, icons, `app-ads.txt`, and verification assets.
+- Project-specific pages such as `kafadar`, `qusafe`, and `legends-of-aestera` are part of this repository's route structure.
 
-## License
+## Deployment
 
-© 2026 goldsword. All rights reserved.
+The site is intended to be deployed as a static Astro build. Vercel is the current target, but any host that can serve the generated output is suitable.
 
 ## Contact
 
+- Website: https://goldsword.dev
 - Email: mobilteknolojileri@gmail.com
-- GitHub: [@mobilteknolojileri](https://github.com/mobilteknolojileri)
-- Bionluk: [@goldsword](https://bionluk.com/goldsword)
+- GitHub: https://github.com/mobilteknolojileri
+- Bionluk: https://bionluk.com/goldsword

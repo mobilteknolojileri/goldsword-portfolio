@@ -1,0 +1,137 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+
+const COMPANY_NAME = "Kafadar";
+const CONTACT_EMAIL = "mobilteknolojileri@gmail.com";
+const JURISDICTION = "Türkiye / Gaziantep";
+
+const subject = encodeURIComponent(
+  `${COMPANY_NAME} - Account Deletion Request / Hesap Silme Talebi`,
+);
+const body = encodeURIComponent(
+  [
+    "TR: Merhaba,",
+    `${COMPANY_NAME} hesabımın ve ilişkili verilerimin silinmesini talep ediyorum.`,
+    "",
+    "Hesap bilgisi:",
+    "- E-posta:",
+    "- Kullanıcı adı:",
+    "",
+    "EN: Hello,",
+    `I request deletion of my ${COMPANY_NAME} account and associated data.`,
+    "",
+    "Account info:",
+    "- Email:",
+    "- Username:",
+  ].join("\n"),
+);
+---
+
+<BaseLayout
+  title={`Delete Account - ${COMPANY_NAME} | goldsword`}
+  description={`Request deletion of your ${COMPANY_NAME} account and data.`}
+>
+  <Navbar client:load />
+
+  <div class="mx-auto max-w-3xl px-4 pb-20 pt-32">
+    <article>
+      <div class="mb-8">
+        <h1 class="text-heading mb-2 text-3xl font-bold">Delete Account</h1>
+        <p class="text-body/60">Hesap ve Veri Silme</p>
+        <p class="text-body/40 mt-4 text-sm">Last updated: February 2026</p>
+      </div>
+
+      <!-- Warning Box -->
+      <div class="mb-8 rounded-xl border border-red-500/20 bg-red-500/10 p-6">
+        <div class="flex items-start gap-4">
+          <div
+            class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-red-500/20"
+          >
+            <svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01M10.29 3.86l-7.4 12.8A2 2 0 004.62 20h14.76a2 2 0 001.73-3.04l-7.4-12.8a2 2 0 00-3.46 0z"
+              ></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-heading mb-1 text-lg font-semibold">Önemli / Important</h2>
+            <p class="text-body leading-relaxed">
+              TR: Hesap silme işlemi geri alınamaz. Hesabınızla ilişkili tüm quizler, yanıtlar ve
+              profil bilgileri kalıcı olarak silinir.<br />
+              EN: Account deletion is irreversible. All quizzes, responses, and profile data associated
+              with your account will be permanently deleted.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-body space-y-8">
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">1. Email Request</h2>
+          <p class="leading-relaxed">TR: Hesap silme talebinizi e-posta ile gönderebilirsiniz.</p>
+          <p class="mt-2 leading-relaxed">EN: You can request account deletion by email.</p>
+
+          <div
+            class="mt-4 rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-dark-700 dark:bg-dark-800"
+          >
+            <p class="mb-4 leading-relaxed">
+              <span class="text-heading">TR/EN:</span> Silme talebi göndermek için:
+            </p>
+            <a
+              href={`mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`}
+              class="inline-flex items-center gap-2 rounded-lg border border-primary-600/30 bg-primary-600/20 px-4 py-2 text-primary-600 transition-colors hover:bg-primary-600/30"
+            >
+              <span>Email: {CONTACT_EMAIL}</span>
+              <span aria-hidden>↗</span>
+            </a>
+            <p class="text-body/60 mt-4 text-sm">
+              TR: E-posta adresinizi ve kullanıcı adınızı eklemeyi unutmayın.<br />
+              EN: Include your email and username to help us verify the request.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">2. What Will Be Deleted?</h2>
+          <ul class="ml-4 list-inside list-disc space-y-2">
+            <li>
+              TR: Hesap kaydı ve profil bilgileri (kullanıcı adı, avatar).<br /> EN: Account record and
+              profile data (username, avatar).
+            </li>
+            <li>
+              TR: Oluşturduğunuz tüm quizler ve sorular.<br /> EN: All quizzes and questions you created.
+            </li>
+            <li>
+              TR: Quizlerinize gelen tüm yanıtlar ve skorlar.<br /> EN: All responses and scores for your
+              quizzes.
+            </li>
+            <li>
+              TR: Deep link ve paylaşım verileri.<br /> EN: Deep link and sharing data.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">3. Processing Time</h2>
+          <p class="leading-relaxed">
+            TR: Silme taleplerini genellikle <span class="text-heading">30 gün</span> içinde tamamlamayı
+            hedefleriz. Kimlik doğrulaması isteyebiliriz.
+          </p>
+          <p class="mt-2 leading-relaxed">
+            EN: We generally aim to complete deletion requests within <span class="text-heading"
+              >30 days</span
+            >. We may require identity verification.
+          </p>
+          <p class="text-body/60 mt-4 text-sm">
+            TR: Zorunlu tüketici hakları saklıdır. ({JURISDICTION})<br />
+            EN: Mandatory consumer protections remain reserved. ({JURISDICTION})
+          </p>
+        </section>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

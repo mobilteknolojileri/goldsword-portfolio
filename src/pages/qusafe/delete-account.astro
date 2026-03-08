@@ -1,0 +1,206 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+
+const COMPANY_NAME = "QuSafe";
+const CONTACT_EMAIL = "mobilteknolojileri@gmail.com";
+
+const subject = encodeURIComponent(
+  `${COMPANY_NAME} - Account Deletion Request / Hesap Silme Talebi`,
+);
+const body = encodeURIComponent(
+  [
+    "TR: Merhaba,",
+    `${COMPANY_NAME} hesabımın ve ilişkili verilerimin silinmesini talep ediyorum.`,
+    "",
+    "Hesap bilgisi (varsa):",
+    "- E-posta:",
+    "- Kullanıcı adı (varsa):",
+    "",
+    "Ek not:",
+    "- (Varsa) cihaz/telefon modeli, platform (iOS/Android), yaklaşık kayıt tarihi",
+    "",
+    "EN: Hello,",
+    `I request deletion of my ${COMPANY_NAME} account and associated data.`,
+    "",
+    "Account info (if applicable):",
+    "- Email:",
+    "- Username (if any):",
+    "",
+    "Additional notes:",
+    "- (Optional) device model, platform (iOS/Android), approximate signup date",
+  ].join("\n"),
+);
+---
+
+<BaseLayout
+  title={`Delete Account - ${COMPANY_NAME} | goldsword`}
+  description={`Request deletion of your ${COMPANY_NAME} account and data.`}
+>
+  <Navbar client:load />
+
+  <div class="mx-auto max-w-3xl px-4 pb-20 pt-32">
+    <article>
+      <div class="mb-8">
+        <h1 class="text-heading mb-2 text-3xl font-bold">Delete Account</h1>
+        <p class="text-body/60">Hesap ve Veri Silme</p>
+        <p class="text-body/40 mt-4 text-sm">Last updated: December 2026</p>
+      </div>
+
+      <!-- Warning Box -->
+      <div class="mb-8 rounded-xl border border-red-500/20 bg-red-500/10 p-6">
+        <div class="flex items-start gap-4">
+          <div
+            class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-red-500/20"
+          >
+            <svg class="h-5 w-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01M10.29 3.86l-7.4 12.8A2 2 0 004.62 20h14.76a2 2 0 001.73-3.04l-7.4-12.8a2 2 0 00-3.46 0z"
+              ></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-heading mb-1 text-lg font-semibold">Önemli / Important</h2>
+            <p class="leading-relaxed">
+              TR: Hesap silme işlemi geri alınamaz. Bulut senkronizasyonu (varsa) ve hesapla
+              ilişkili veriler silinebilir. Cihazınızda yalnızca yerel kasa kullanıyorsanız,
+              uygulama içinden "kasa temizleme/çıkış" adımları ile yerel veriyi de kaldırmanız
+              gerekebilir.<br />
+              EN: Account deletion is irreversible. Cloud sync (if enabled) and account-associated data
+              may be removed. If you only use a local vault, you may also need to clear local data in-app.
+            </p>
+            <p class="mt-4 leading-relaxed">
+              TR: Aboneliğiniz varsa, hesap silme işlemi aboneliği otomatik iptal etmeyebilir.
+              Aboneliği App Store / Google Play ayarlarından yönetip iptal edin.<br />
+              EN: If you have an active subscription, account deletion may not automatically cancel it.
+              Manage/cancel via App Store / Google Play settings.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-body space-y-8">
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">1. In-App Deletion</h2>
+          <p class="leading-relaxed">
+            TR: Uygulama içinde aşağıdaki yolu izleyin: <span class="text-heading"
+              >Settings → (alt kısım) Delete Account</span
+            >. Uygulama sizden doğrulama isteyebilir.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            EN: In the app, follow: <span class="text-heading"
+              >Settings → (bottom) Delete Account</span
+            >. You may be asked to verify your identity.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">2. Email Request (Alternative)</h2>
+          <p class="leading-relaxed">
+            TR: Uygulama içinden silme seçeneklerine erişemiyorsanız, e-posta ile talep
+            oluşturabilirsiniz.
+          </p>
+          <p class="mt-2 leading-relaxed">
+            EN: If you cannot access in-app deletion, you can request deletion by email.
+          </p>
+
+          <div
+            class="mt-4 rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-dark-700 dark:bg-dark-800"
+          >
+            <p class="mb-4 leading-relaxed">
+              <span class="text-heading">TR/EN:</span> Silme talebi göndermek için:
+            </p>
+            <a
+              href={`mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`}
+              class="inline-flex items-center gap-2 rounded-lg border border-primary-600/30 bg-primary-600/20 px-4 py-2 text-primary-600 transition-colors hover:bg-primary-600/30"
+            >
+              <span>Email: {CONTACT_EMAIL}</span>
+              <span aria-hidden>↗</span>
+            </a>
+            <p class="text-body/60 mt-4 text-sm">
+              TR: E-posta adresinizi ve mümkünse hesapla ilişkili bilgileri ekleyin.<br />
+              EN: Include your email and any account-related details to help us verify the request.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">3. What Will Be Deleted?</h2>
+          <ul class="ml-4 list-inside list-disc space-y-2">
+            <li>
+              TR: Hesap kaydı ve kimlik doğrulama ile ilişkili veriler.<br /> EN: Account record and authentication-related
+              data.
+            </li>
+            <li>
+              TR: Bulut senkronizasyon kayıtları (varsa).<br /> EN: Cloud sync records (if enabled).
+            </li>
+            <li>
+              TR: Destek talepleri ve iletişim kayıtları.<br /> EN: Support communications (if any).
+            </li>
+            <li>
+              TR: Abonelik/premium doğrulama meta verileri.<br /> EN: Limited metadata used for subscription/premium
+              verification.
+            </li>
+            <li>
+              TR: Crash/diagnostics kayıtları (varsa).<br /> EN: Crash/diagnostics (if any).
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">4. What May Be Retained?</h2>
+          <p class="leading-relaxed">
+            TR: Yasal yükümlülükler, güvenlik veya finansal kayıtlar gibi gerekçelerle bazı sınırlı
+            verileri, gerekli olduğu ölçüde saklamamız gerekebilir.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            EN: We may retain limited data where required for legal obligations, security, or
+            financial records, only as necessary and for a limited time.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">5. Processing Time & Verification</h2>
+          <p class="leading-relaxed">
+            TR: Silme taleplerini genellikle <span class="text-heading">30 gün</span> içinde tamamlamayı
+            hedefleriz. Kimlik doğrulaması isteyebiliriz.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            EN: We generally aim to complete deletion requests within <span class="text-heading"
+              >30 days</span
+            >. We may require verification.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">6. Local Device Data</h2>
+          <p class="leading-relaxed">
+            TR: Hesap silme, cihazınızdaki yerel verileri otomatik olarak kaldırmayabilir.
+            Uygulamayı kaldırın veya kasa temizleme/çıkış adımlarını uygulayın.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            EN: Account deletion may not automatically remove local device data. Use in-app
+            clear/sign-out options and, if needed, uninstall the app.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">7. Subscriptions (Important)</h2>
+          <p class="leading-relaxed">
+            TR: Aboneliğiniz App Store / Google Play üzerinden yönetilir. Hesabınızı silseniz bile,
+            mağaza tarafında abonelik aktif kalabilir. Lütfen iptal/yenileme ayarlarınızı mağaza
+            hesabınızdan yönetin.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            EN: Subscriptions are managed by App Store / Google Play. Even if you delete your
+            account, the store subscription may remain active. Please manage cancellation/renewal
+            from your store account settings.
+          </p>
+        </section>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

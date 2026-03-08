@@ -1,0 +1,239 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+import { getCollection } from "astro:content";
+import ThemeToggle from "@/components/layout/ThemeToggle";
+import { generateMetadata } from "@/lib/seo/metadata";
+import { getBlogFAQSchema, getBlogPostingSchema } from "@/lib/seo/schema";
+import { getLocalizedCategory, formatDate, calculateReadingTime, buildToc } from "@/lib/blog";
+import { SITE_CONFIG } from "@/config/site";
+import { COPY_TOKENS } from "@/config/seo";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog");
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const allPosts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const relatedPosts = allPosts
+  .filter((post) => post.slug !== entry.slug)
+  .filter((post) => post.data.tags.some((tag) => entry.data.tags.includes(tag)))
+  .slice(0, 3);
+
+const readingTime = calculateReadingTime(entry.body);
+const toc = buildToc(headings);
+
+const metadata = generateMetadata({
+  title: entry.data.title,
+  description: entry.data.description,
+  path: `/blog/${entry.slug}`,
+  locale: "tr",
+  type: "article",
+  keywords: entry.data.tags,
+  image: entry.data.heroImage,
+});
+
+const blogSchema = getBlogPostingSchema({
+  title: entry.data.title,
+  description: entry.data.description,
+  date: entry.data.date,
+  url: `${SITE_CONFIG.url}/blog/${entry.slug}`,
+  image: entry.data.heroImage,
+  intent: entry.data.intent,
+  deviceBrand: entry.data.deviceBrand,
+  deviceModel: entry.data.deviceModel,
+});
+
+const faqSchema = entry.data.faq?.length ? getBlogFAQSchema(entry.data.faq) : undefined;
+const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
+---
+
+<BaseLayout {...metadata} extraSchemas={extraSchemas}>
+  <Navbar client:load />
+  <ThemeToggle client:load />
+
+  <main class="pb-20 pt-32">
+    <article class="section-container mx-auto max-w-4xl px-6">
+      <header class="mb-12">
+        <div class="mb-6 flex flex-wrap items-center gap-4">
+          <span
+            class="rounded-full bg-primary-600 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-white"
+          >
+            {getLocalizedCategory(entry.data.category)}
+          </span>
+          <time class="text-body/60 text-sm font-bold">
+            {formatDate(entry.data.date)}
+          </time>
+          <span class="text-body/40 text-sm">•</span>
+          <span class="text-body/60 text-sm font-medium">
+            {readingTime} dk okuma
+          </span>
+        </div>
+
+        <h1
+          class="text-heading mb-8 text-4xl font-black leading-tight tracking-tight sm:text-5xl md:text-6xl"
+        >
+          {entry.data.title}
+        </h1>
+
+        <p class="text-body mb-8 text-xl leading-relaxed">
+          {entry.data.description}
+        </p>
+
+        {
+          toc.length > 0 && (
+            <div class="mb-12 rounded-3xl border border-gray-100 bg-gray-50 p-8 dark:border-dark-700 dark:bg-dark-800">
+              <h2 class="mb-6 text-sm font-black uppercase tracking-widest text-primary-600">
+                İçindekiler
+              </h2>
+              <nav>
+                <ul class="space-y-3">
+                  {toc.map((item) => (
+                    <li style={`padding-left: ${(item.depth - 2) * 1.25}rem`}>
+                      <a
+                        href={`#${item.id}`}
+                        class="text-body group flex items-center gap-2 font-medium transition-colors duration-300 hover:text-primary-600"
+                      >
+                        <span class="h-1.5 w-1.5 rounded-full bg-primary-600/30 transition-colors group-hover:bg-primary-600" />
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
+          )
+        }
+
+        {
+          entry.data.heroImage && (
+            <div class="mb-12 overflow-hidden rounded-3xl border border-gray-100 shadow-2xl dark:border-dark-700">
+              <Image
+                src={entry.data.heroImage}
+                alt={entry.data.title}
+                class="h-auto w-full object-cover"
+                width={1200}
+                height={675}
+                loading="eager"
+              />
+            </div>
+          )
+        }
+      </header>
+
+      <div
+        class="prose prose-lg prose-indigo max-w-none dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-h2:border-l-4 prose-h2:border-primary-600 prose-h2:pl-4 prose-h2:text-3xl prose-h3:mb-4 prose-h3:mt-10 prose-h3:text-2xl prose-p:leading-loose prose-p:text-gray-800 prose-a:font-bold prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-blockquote:rounded-r-2xl prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:bg-primary-50/50 prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:not-italic prose-blockquote:text-gray-700 prose-strong:font-black prose-strong:text-gray-900 prose-code:rounded-md prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-medium prose-li:my-2 prose-li:text-gray-800 prose-img:my-12 prose-img:rounded-[2.5rem] prose-img:shadow-2xl dark:prose-p:text-gray-200 dark:prose-blockquote:bg-primary-900/10 dark:prose-blockquote:text-gray-300 dark:prose-strong:text-white dark:prose-code:bg-dark-700 dark:prose-li:text-gray-200"
+      >
+        <Content />
+      </div>
+
+      {
+        relatedPosts.length > 0 && (
+          <section class="mt-16 border-t border-gray-100 pt-10 dark:border-dark-800">
+            <h2 class="text-heading mb-6 text-2xl font-black">İlgili Yazılar</h2>
+            <div class="grid gap-4 md:grid-cols-3">
+              {relatedPosts.map((post) => (
+                <a
+                  href={`/blog/${post.slug}`}
+                  class="rounded-2xl border border-gray-100 p-5 transition-colors hover:border-primary-300 dark:border-dark-700 dark:hover:border-primary-700"
+                >
+                  <p class="mb-2 text-xs font-bold uppercase tracking-wider text-primary-600">
+                    {getLocalizedCategory(post.data.category)}
+                  </p>
+                  <h3 class="text-heading text-base font-bold leading-tight">{post.data.title}</h3>
+                </a>
+              ))}
+            </div>
+            <div class="mt-8 flex justify-center">
+              <a
+                href="/blog"
+                class="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-bold text-gray-900 shadow-sm transition-all hover:border-primary-500 hover:text-primary-600 dark:border-dark-700 dark:bg-dark-800 dark:text-white dark:hover:border-primary-500 dark:hover:text-primary-400"
+              >
+                Tüm Blog Yazılarını Gör
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </section>
+        )
+      }
+
+      <footer class="mt-20 border-t border-gray-100 pt-10 dark:border-dark-800">
+        <div class="mb-10 flex flex-wrap gap-2">
+          {
+            entry.data.tags.map((tag) => (
+              <span class="text-heading rounded-xl bg-gray-100 px-4 py-2 text-xs font-bold dark:bg-dark-800">
+                #{tag}
+              </span>
+            ))
+          }
+        </div>
+
+        <div
+          class="rounded-[3rem] bg-primary-600 p-10 text-center text-white shadow-2xl shadow-primary-600/20"
+        >
+          <h3 class="mb-6 text-3xl font-black">{COPY_TOKENS.blogContactCta}</h3>
+          <p class="mx-auto mb-8 max-w-xl text-lg text-white/80">
+            İhtiyacınıza uygun teknik yol haritasını netleştirelim. Formu doldurun, en kısa sürede
+            dönelim.
+          </p>
+          <div class="flex justify-center gap-4">
+            <a
+              href="/#contact"
+              class="rounded-2xl bg-white px-8 py-4 font-black text-primary-600 transition-all hover:scale-105"
+              >Formu Doldur</a
+            >
+            <a
+              href="mailto:mobilteknolojileri@gmail.com"
+              class="rounded-2xl bg-primary-700 px-8 py-4 font-black text-white transition-all hover:scale-105"
+              >{COPY_TOKENS.blogContactSecondaryCta}</a
+            >
+          </div>
+        </div>
+
+        <div class="mt-16 text-center">
+          <a
+            href="/blog"
+            class="text-body inline-flex items-center gap-2 font-bold transition-colors hover:text-primary-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
+            </svg>
+            Blog listesine dön
+          </a>
+        </div>
+      </footer>
+    </article>
+  </main>
+</BaseLayout>

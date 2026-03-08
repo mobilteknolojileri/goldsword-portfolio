@@ -1,0 +1,75 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/features/hero";
+import Experience from "@/features/experience";
+import FeaturedApps from "@/features/featured-apps";
+import Research from "@/features/research";
+import Testimonials from "@/features/testimonials";
+import Contact from "@/features/contact";
+import ScrollReveal from "@/components/effects/ScrollReveal";
+import ProgressBar from "@/components/effects/ProgressBar";
+import ThemeToggle from "@/components/layout/ThemeToggle";
+import Services from "@/features/services";
+import FAQ, { FAQ_DATA } from "@/features/faq";
+import { getLocalBusinessSchema, getFAQSchema } from "@/lib/seo/schema";
+
+const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
+---
+
+<BaseLayout extraSchemas={extraSchemas}>
+  <ProgressBar client:load />
+  <Navbar client:load />
+  <ThemeToggle client:load />
+
+  <main>
+    <ScrollReveal client:visible>
+      <Hero client:load />
+    </ScrollReveal>
+
+    <ScrollReveal client:visible>
+      <Services client:visible />
+    </ScrollReveal>
+
+    <ScrollReveal client:visible>
+      <Experience client:visible />
+    </ScrollReveal>
+
+    <ScrollReveal client:visible>
+      <FeaturedApps client:visible />
+    </ScrollReveal>
+
+    <ScrollReveal client:visible>
+      <Research client:visible />
+    </ScrollReveal>
+
+    <ScrollReveal client:visible>
+      <Testimonials client:visible />
+    </ScrollReveal>
+
+    <ScrollReveal client:visible>
+      <FAQ client:visible />
+    </ScrollReveal>
+
+    <ScrollReveal client:visible>
+      <Contact client:load />
+    </ScrollReveal>
+  </main>
+
+  <footer class="border-t border-gray-100 bg-white py-10 dark:border-dark-800 dark:bg-dark-900">
+    <div class="section-container section-padding">
+      <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+        <div class="flex flex-col items-center gap-2 md:items-start">
+          <h2 class="text-heading text-2xl font-black">goldsword</h2>
+          <p class="text-body max-w-xs text-center text-sm md:text-left">
+            Freelancer yazılım ve mobil uygulama geliştirme hizmetleri. Hızlı, ölçülebilir ve
+            sürdürülebilir çözümler.
+          </p>
+        </div>
+        <p class="text-body text-center text-sm font-medium">
+          © 2026 goldsword. Tüm hakları saklıdır.
+        </p>
+      </div>
+    </div>
+  </footer>
+</BaseLayout>

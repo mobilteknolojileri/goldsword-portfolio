@@ -1,0 +1,205 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+
+const COMPANY_NAME = "QuSafe";
+const CONTACT_EMAIL = "mobilteknolojileri@gmail.com";
+const WEBSITE_URL = "https://goldsword.dev/qusafe";
+const JURISDICTION = "Türkiye / Gaziantep";
+---
+
+<BaseLayout
+  title={`Privacy Policy - ${COMPANY_NAME} | goldsword`}
+  description={`${COMPANY_NAME} Privacy Policy - Learn how we protect your data.`}
+>
+  <Navbar client:load />
+
+  <div class="mx-auto max-w-3xl px-4 pb-20 pt-32">
+    <article>
+      <div class="mb-8">
+        <h1 class="text-heading mb-2 text-3xl font-bold">Privacy Policy</h1>
+        <p class="text-body/60">Gizlilik Politikası</p>
+        <p class="text-body/40 mt-4 text-sm">Last updated: December 2026</p>
+      </div>
+
+      <div class="text-body space-y-8">
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">1. Introduction</h2>
+          <p class="leading-relaxed">
+            Bu Gizlilik Politikası, <strong class="text-heading">{COMPANY_NAME}</strong> uygulaması ve
+            {WEBSITE_URL} ile ilişkili sayfalarda kişisel verilerin nasıl işlendiğini açıklar. Politika;
+            Türkiye'de KVKK ve ayrıca kullanıcıların bulunduğu ülkeye göre GDPR/UK GDPR, CCPA/CPRA, LGPD
+            gibi çerçevelerle uyum hedefiyle hazırlanmıştır; ancak yerel mevzuat farklılık gösterebilir.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            This Privacy Policy explains how <strong class="text-heading">{COMPANY_NAME}</strong> processes
+            personal data in the app and related pages at
+            {WEBSITE_URL}. It is designed to align with common frameworks (KVKK, GDPR/UK GDPR,
+            CCPA/CPRA, LGPD), but local laws may differ.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">2. Data We Collect</h2>
+          <p class="leading-relaxed">
+            Topladığımız/veri işlediğimiz kategoriler, kullandığınız özelliklere göre değişebilir:
+          </p>
+          <p class="mt-2 leading-relaxed">
+            The categories of data we process may vary depending on features you use:
+          </p>
+          <ul class="ml-4 mt-3 list-inside list-disc space-y-2">
+            <li>
+              <span class="text-heading">Hesap verileri / Account data:</span> Giriş için e-posta gibi
+              bilgiler (varsa), oturum belirteçleri ve temel hesap meta verileri.
+            </li>
+            <li>
+              <span class="text-heading">Kasa (vault) içeriği / Vault content:</span> Parolalar, notlar
+              vb. içerikler cihazda şifreli olarak saklanır. Bulut senkronizasyonu açıksa, şifreli bir
+              yük (payload) sunucuya aktarılabilir.
+            </li>
+            <li>
+              <span class="text-heading">Cihaz ve tanı/diagnostic verileri:</span> Uygulama sürümü, cihaz
+              modeli/OS sürümü, hata raporları ve performans sinyalleri — mümkün olduğunda minimizasyon
+              hedeflenir.
+            </li>
+            <li>
+              <span class="text-heading">Reklam verileri (varsa) / Ads data (if enabled):</span> Reklam
+              gösterimi için reklam tanımlayıcıları veya ölçüm sinyalleri (platform izinleri ve ayarlarınıza
+              bağlı).
+            </li>
+            <li>
+              <span class="text-heading"
+                >Ödeme/abonelik meta verileri / Payment & subscription metadata:</span
+              > Satın alma etkinliği, ürün/plan kimliği, deneme durumu gibi erişim yetkisi doğrulaması
+              için gerekli meta veriler. Tam kart/banka bilgileriniz bize aktarılmaz.
+            </li>
+          </ul>
+          <div
+            class="mt-6 rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-dark-700 dark:bg-dark-800"
+          >
+            <p class="leading-relaxed">
+              <span class="text-heading">Önemli not (TR):</span> Kasa içeriği şifreli olarak tasarlanır;
+              ancak hiçbir sistem "mutlak güvenlik" garanti edemez.
+            </p>
+            <p class="mt-2 leading-relaxed">
+              <span class="text-heading">Important (EN):</span> Vault content is designed to be encrypted,
+              but no system can guarantee absolute security.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">3. How We Use Your Data</h2>
+          <ul class="ml-4 list-inside list-disc space-y-2">
+            <li>
+              TR: Hesap oluşturma/giriş, oturum yönetimi ve isteğe bağlı senkronizasyon.<br /> EN: Account
+              login/session management and optional synchronization.
+            </li>
+            <li>
+              TR: Abonelik doğrulama ve premium erişimi sağlama.<br /> EN: Verifying subscriptions and
+              providing premium access.
+            </li>
+            <li>
+              TR: Hata ayıklama, crash analizi ve güvenlik olaylarını tespit etme.<br /> EN: Debugging,
+              crash analysis, and detecting security incidents.
+            </li>
+            <li>
+              TR: Destek taleplerine yanıt verme ve iletişim kurma.<br /> EN: Responding to support requests
+              and communicating with you.
+            </li>
+            <li>
+              TR: (Varsa) Reklam gösterimi ve ölçümü.<br /> EN: (If enabled) Serving and measuring ads.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">4. Data Security</h2>
+          <p class="leading-relaxed">
+            Güvenlik yaklaşımımız; veri minimizasyonu, yetki sınırlaması, şifreleme, güvenli
+            anahtar/oturum yönetimi ve güvenlik güncellemeleri gibi iyi uygulamaları hedefler. Buna
+            rağmen, hiçbir uygulama veya hizmet %100 güvenlik garantisi veremez.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            Our security approach aims to follow best practices such as data minimization, least
+            privilege, encryption, secure session handling, and security updates. However, no app or
+            service can guarantee 100% security.
+          </p>
+          <div
+            class="mt-6 rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-dark-700 dark:bg-dark-800"
+          >
+            <p class="leading-relaxed">
+              TR: Cihazınızın güvenliği (ekran kilidi, OS güncellemeleri, zararlı yazılımlardan
+              kaçınma) özellikle önemlidir.<br />
+              EN: Your device security (screen lock, OS updates, avoiding malware) is especially important.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">5. Third-Party Services</h2>
+          <p class="leading-relaxed">
+            Uygulama; altyapı, kimlik doğrulama/senkronizasyon, crash/diagnostics, abonelik
+            doğrulama veya reklam gibi amaçlarla üçüncü taraf servisler kullanabilir.
+          </p>
+          <ul class="ml-4 mt-3 list-inside list-disc space-y-2">
+            <li>
+              TR: Altyapı/kimlik doğrulama/senkronizasyon (ör. Supabase).<br /> EN: Infrastructure/auth/sync
+              (e.g., Supabase).
+            </li>
+            <li>
+              TR: Crash/diagnostics (ör. Sentry).<br /> EN: Crash/diagnostics (e.g., Sentry).
+            </li>
+            <li>
+              TR: Abonelik yönetimi/doğrulama (ör. RevenueCat).<br /> EN: Subscription management/verification
+              (e.g., RevenueCat).
+            </li>
+            <li>
+              TR: Reklam (varsa) (ör. Google Mobile Ads/AdMob).<br /> EN: Ads (if enabled) (e.g., Google
+              Mobile Ads/AdMob).
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">6. Your Rights</h2>
+          <p class="leading-relaxed">
+            Bulunduğunuz ülkeye göre; veriye erişim, düzeltme, silme, işleme kısıtlama,
+            taşınabilirlik, itiraz ve belirli durumlarda rızayı geri çekme gibi haklarınız olabilir.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            Depending on your location, you may have rights to access, correct, delete, restrict
+            processing, portability, object, and withdraw consent in certain cases. Contact us to
+            exercise your rights.
+          </p>
+          <div
+            class="mt-6 rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-dark-700 dark:bg-dark-800"
+          >
+            <p class="leading-relaxed">
+              TR: Uyuşmazlık durumunda, {JURISDICTION} ve zorunlu tüketici hakları çerçevesi saklıdır.<br
+              />
+              EN: In case of disputes, {JURISDICTION} law may apply without prejudice to mandatory consumer
+              rights.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-heading mb-4 text-xl font-semibold">7. Contact Us</h2>
+          <p class="leading-relaxed">
+            Bu Gizlilik Politikası ile ilgili sorularınız için bize ulaşın: <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              class="text-primary-600 transition-colors hover:text-primary-700">{CONTACT_EMAIL}</a
+            >
+          </p>
+          <p class="mt-2 leading-relaxed">
+            Questions about this Privacy Policy: <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              class="text-primary-600 transition-colors hover:text-primary-700">{CONTACT_EMAIL}</a
+            >
+          </p>
+        </section>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,91 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+import { kafadarMetadata } from "@/lib/seo/metadata";
+
+const features = [
+  {
+    title: "Dinamik Quiz Oluşturma",
+    description:
+      "10'dan fazla soru tipiyle kendi arkadaşlık testinizi saniyeler içinde hazırlayın.",
+  },
+  {
+    title: "Emoji Avatar Sistemi",
+    description: "24 farklı karakter arasından kendi tarzınızı yansıtan avatarı seçin.",
+  },
+  {
+    title: "Leaderboard",
+    description: "En gerçek dostunuzun kim olduğunu puan tablosunda görün ve paylaşın.",
+  },
+];
+
+const techHighlights = [
+  "React Native & Expo SDK 54",
+  "Supabase Real-time Altyapısı",
+  "Deep Linking (kafadar.app/q/...) desteği",
+  "Framer Motion & NativeWind ile modern UI",
+  "Zustand ile performanslı state yönetimi",
+];
+---
+
+<BaseLayout
+  title={kafadarMetadata.title as string}
+  description={kafadarMetadata.description as string}
+  image="/assets/projects/kafadar-mobile/icon.png"
+>
+  <Navbar client:load />
+
+  <div class="mx-auto max-w-5xl px-4 pb-20 pt-32">
+    <section class="pb-20 text-center">
+      <div class="relative mx-auto mb-10 h-32 w-32">
+        <img
+          src="/assets/projects/kafadar-mobile/icon.png"
+          alt="Kafadar Logo"
+          class="rounded-3xl shadow-2xl"
+        />
+      </div>
+
+      <h1 class="text-heading mb-6 text-5xl font-bold tracking-tight md:text-7xl">
+        Kafadar <span class="text-primary-600">Arkadaşlık Testi</span>
+      </h1>
+      <p class="text-body mx-auto mb-10 max-w-2xl text-xl md:text-2xl">
+        Arkadaşlarınızın sizi ne kadar iyi tanıdığını test eden, eğlenceli ve paylaşılabilir mobil
+        uygulama.
+      </p>
+
+      <div class="flex justify-center gap-4">
+        <a
+          href="https://play.google.com/store/apps/details?id=com.schwerttr.kafadar"
+          class="rounded-2xl bg-primary-600 px-8 py-4 font-bold text-white shadow-lg transition-all hover:bg-primary-700"
+        >
+          Google Play'den İndir
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-32 grid gap-8 md:grid-cols-3">
+      {
+        features.map((feature) => (
+          <div class="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm dark:border-dark-700 dark:bg-dark-800">
+            <h3 class="text-heading mb-3 text-xl font-bold">{feature.title}</h3>
+            <p class="text-body">{feature.description}</p>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="rounded-[2.5rem] bg-primary-50 p-12 text-center dark:bg-primary-900/10">
+      <h2 class="text-heading mb-8 text-3xl font-bold md:text-5xl">Teknik Özellikler</h2>
+      <div class="mx-auto grid max-w-2xl gap-4 md:grid-cols-1">
+        {
+          techHighlights.map((feature) => (
+            <div class="flex items-center gap-4 rounded-xl bg-white p-4 text-left shadow-sm dark:bg-dark-800">
+              <span class="font-bold text-primary-600">✓</span>
+              <span class="text-body font-medium">{feature}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+import ProjectDetail from "@/features/portfolio/ProjectDetail";
+import ThemeToggle from "@/components/layout/ThemeToggle";
+import { PROJECTS } from "@/lib/constants";
+import { generateMetadata } from "@/lib/seo/metadata";
+
+export async function getStaticPaths() {
+  return PROJECTS.filter((project) => project.slug).map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+const metadata = generateMetadata({
+  title: project.title,
+  description: project.description,
+  path: `/portfolio/${project.slug}`,
+  image: project.image || "/logo.png",
+  type: "article",
+  keywords: project.technologies,
+});
+---
+
+<BaseLayout {...metadata}>
+  <Navbar client:load />
+  <ThemeToggle client:load />
+
+  <ProjectDetail project={project} allProjects={PROJECTS} client:load />
+
+  <footer class="border-t border-gray-100 bg-white py-10 dark:border-dark-800 dark:bg-dark-900">
+    <div class="section-container section-padding">
+      <p class="text-body text-center text-sm font-medium">
+        © 2026 goldsword. Tüm hakları saklıdır.
+      </p>
+    </div>
+  </footer>
+</BaseLayout>

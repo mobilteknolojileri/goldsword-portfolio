@@ -7,12 +7,17 @@
 # testing
 /coverage
 
-# next.js
+# astro
+/.astro/
+
+# next.js (legacy)
 /.next/
 /out/
+/nextjs-backup/
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store

@@ -1,0 +1,107 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Navbar from "@/components/layout/Navbar";
+import { getCollection } from "astro:content";
+import ThemeToggle from "@/components/layout/ThemeToggle";
+import { generateMetadata } from "@/lib/seo/metadata";
+import { getLocalizedCategory, formatDate } from "@/lib/blog";
+import { COPY_TOKENS } from "@/config/seo";
+import { Image as AstroImage } from "astro:assets";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const metadata = generateMetadata({
+  title: "Yazılım ve SEO Bloğu",
+  description:
+    "Teknik SEO, performans, mobil ve web geliştirme alanlarında uygulanabilir rehberler.",
+  path: "/blog",
+  locale: "tr",
+  keywords: ["yazılım bloğu", "teknik seo", "performans optimizasyonu", "mobil geliştirme"],
+});
+---
+
+<BaseLayout {...metadata}>
+  <Navbar client:load />
+  <ThemeToggle client:load />
+
+  <main class="pb-20 pt-32">
+    <div class="section-container section-padding">
+      <header class="mb-16 max-w-3xl">
+        <h1 class="text-heading mb-6 text-4xl font-black tracking-tight sm:text-6xl">
+          Stratejik <span class="text-primary-600">Bilgi Merkezi</span>
+        </h1>
+        <p class="text-body text-xl leading-relaxed">
+          Gerçek projelerden çıkan teknik deneyimleri, net adımlara dönüştürüp paylaşıyoruz.
+        </p>
+      </header>
+
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {
+          posts.map((post) => (
+            <a
+              href={`/blog/${post.slug}`}
+              class="group flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white transition-all duration-500 hover:shadow-2xl hover:shadow-primary-600/10 dark:border-dark-700 dark:bg-dark-800"
+            >
+              {post.data.heroImage && (
+                <div class="aspect-video w-full overflow-hidden border-b border-gray-100 dark:border-dark-700">
+                  <AstroImage
+                    src={post.data.heroImage}
+                    alt={post.data.title}
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                    width={800}
+                    height={450}
+                  />
+                </div>
+              )}
+
+              <div class="flex h-full flex-col p-8">
+                <div class="mb-6 flex items-center gap-3">
+                  <span class="rounded-full bg-primary-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
+                    {getLocalizedCategory(post.data.category)}
+                  </span>
+                  <time class="text-body/60 text-xs font-medium">{formatDate(post.data.date)}</time>
+                </div>
+
+                <h2 class="text-heading mb-4 text-2xl font-bold leading-tight transition-colors group-hover:text-primary-600">
+                  {post.data.title}
+                </h2>
+
+                <p class="text-body mb-8 line-clamp-3 flex-grow text-sm">{post.data.description}</p>
+
+                <div class="flex items-center gap-2 text-sm font-bold text-primary-600">
+                  {COPY_TOKENS.blogListCta}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 transition-transform group-hover:translate-x-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-gray-100 bg-white py-10 dark:border-dark-800 dark:bg-dark-900">
+    <div class="section-container section-padding">
+      <p class="text-body text-center text-sm font-medium">
+        © 2026 goldsword. Tüm hakları saklıdır.
+      </p>
+    </div>
+  </footer>
+</BaseLayout>

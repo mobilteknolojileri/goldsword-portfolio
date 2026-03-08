@@ -1,0 +1,124 @@
+---
+import { defaultMetadata } from "@/lib/seo/metadata";
+import { getPersonSchema, getOrganizationSchema } from "@/lib/seo/schema";
+import "@/styles/globals.css";
+import { ClientRouter } from "astro:transitions";
+
+import type { Metadata } from "@/lib/seo/metadata";
+
+interface Props extends Metadata {
+  canonicalURL?: URL | string;
+  extraSchemas?: any[];
+}
+
+const props = Astro.props;
+
+// Fallback to defaultMetadata for any missing fields
+const titleRaw = props.title || defaultMetadata.title;
+const displayTitle = typeof titleRaw === "object" ? titleRaw.default : (titleRaw as string);
+const description = (props.description || defaultMetadata.description) as string;
+const image = props.image || "/logo.png";
+const canonicalURL =
+  props.canonicalURL ||
+  props.alternates?.canonical ||
+  new URL(Astro.url.pathname, Astro.site).toString();
+const extraSchemas = props.extraSchemas || [];
+
+// Use provided SEO data or fallback to defaults
+const keywords = props.keywords || defaultMetadata.keywords;
+const robots = props.robots || defaultMetadata.robots;
+const openGraph = props.openGraph || defaultMetadata.openGraph;
+const twitter = props.twitter || defaultMetadata.twitter;
+const verification = props.verification || defaultMetadata.verification;
+
+const personSchema = getPersonSchema("tr");
+const orgSchema = getOrganizationSchema("tr");
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
+
+    <!-- SEO Meta Tags -->
+    <title>{displayTitle}</title>
+    <meta name="description" content={description} />
+    {keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta
+      name="robots"
+      content={`${robots?.index ? "index" : "noindex"}, ${robots?.follow ? "follow" : "nofollow"}`}
+    />
+    {verification?.google && <meta name="google-site-verification" content={verification.google} />}
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={openGraph?.type || "website"} />
+    <meta property="og:url" content={openGraph?.url || Astro.url} />
+    <meta property="og:title" content={openGraph?.title || displayTitle} />
+    <meta property="og:description" content={openGraph?.description || description} />
+    <meta property="og:image" content={openGraph?.images?.[0]?.url || new URL(image, Astro.url)} />
+    {openGraph?.siteName && <meta property="og:site_name" content={openGraph.siteName} />}
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content={twitter?.card || "summary_large_image"} />
+    <meta property="twitter:url" content={twitter?.url || Astro.url} />
+    <meta property="twitter:title" content={twitter?.title || displayTitle} />
+    <meta property="twitter:description" content={twitter?.description || description} />
+    <meta property="twitter:image" content={twitter?.images?.[0] || new URL(image, Astro.url)} />
+
+    <!-- Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+    {
+      extraSchemas.map((schema) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))
+    }
+
+    <script is:inline>
+      const getThemePreference = () => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      };
+
+      const applyTheme = () => {
+        const theme = getThemePreference();
+        if (theme === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          document.documentElement.classList.add("dark");
+        }
+      };
+
+      // Initial apply
+      applyTheme();
+
+      // Ensure theme is applied after page swaps in View Transitions
+      document.addEventListener("astro:after-swap", applyTheme);
+    </script>
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-white transition-colors duration-300 dark:bg-dark-900">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --primary-rgb: 79, 70, 229;
+  }
+</style>
