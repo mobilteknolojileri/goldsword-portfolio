@@ -19,7 +19,13 @@ export default defineConfig({
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
   },
   markdown: {
-    shikiConfig: { theme: "dracula" },
+    shikiConfig: {
+      themes: {
+        light: "github-light",
+        dark: "dracula",
+      },
+      wrap: true,
+    },
     // Markdown image optimization is enabled by default in Astro v5
     // with the 'assets' flag, but we ensure it's prioritized here.
   },
