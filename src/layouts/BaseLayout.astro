@@ -56,6 +56,8 @@ const orgSchema = getOrganizationSchema("tr");
       name="robots"
       content={`${robots?.index ? "index" : "noindex"}, ${robots?.follow ? "follow" : "nofollow"}`}
     />
+    <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
     {verification?.google && <meta name="google-site-verification" content={verification.google} />}
 
     <!-- Open Graph / Facebook -->
@@ -108,14 +110,28 @@ const orgSchema = getOrganizationSchema("tr");
 
     <!-- Google Fonts (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
+      media="print"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
   </head>
   <body class="bg-white transition-colors duration-300 dark:bg-dark-900">
-    <slot />
+    <main id="main-content">
+      <slot />
+    </main>
   </body>
 </html>
 

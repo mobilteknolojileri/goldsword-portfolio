@@ -65,7 +65,7 @@ const ThemeToggle = () => {
     <button
       onClick={toggleTheme}
       className="fixed bottom-4 right-4 z-50 rounded-full border-2 border-gray-200 bg-white p-3 text-gray-800 shadow-lg transition-all duration-300 hover:scale-110 hover:border-primary-400 hover:shadow-xl dark:border-dark-700 dark:bg-dark-800 dark:text-yellow-300 dark:hover:border-yellow-400 sm:bottom-6 sm:right-6 sm:p-4 md:bottom-8 md:right-8"
-      aria-label="Toggle theme"
+      aria-label="Temayı değiştir"
     >
       {theme === "light" ? (
         <FaMoon size={18} className="sm:h-5 sm:w-5" />

@@ -36,6 +36,8 @@ const Navbar = () => {
                 <img
                   src="/logo.png"
                   alt="goldsword"
+                  width={192}
+                  height={56}
                   style={{ width: "100%", height: "100%", objectFit: "contain" }}
                 />
               </div>
@@ -69,6 +71,8 @@ const Navbar = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-heading rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-dark-800 md:hidden"
+              aria-label={isMenuOpen ? "Menüyü Kapat" : "Menüyü Aç"}
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
@@ -101,6 +105,7 @@ const Navbar = () => {
                 <button
                   onClick={() => setIsMenuOpen(false)}
                   className="text-heading rounded-xl bg-gray-50 p-2.5 transition-all active:scale-90 dark:bg-dark-800"
+                  aria-label="Menüyü Kapat"
                 >
                   <FaTimes size={20} />
                 </button>

@@ -76,6 +76,8 @@ export default function PortfolioPage() {
                         alt={`${project.title} - Proje görseli`}
                         className="h-full w-full object-contain"
                         loading="lazy"
+                        width={600}
+                        height={400}
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-xl font-bold text-white">
@@ -85,9 +87,9 @@ export default function PortfolioPage() {
                   </div>
 
                   <div className="flex flex-1 flex-col p-6">
-                    <h3 className="mb-3 text-2xl font-bold text-gray-900 transition-colors group-hover:text-primary-600 dark:text-white">
+                    <h2 className="mb-3 text-2xl font-bold text-gray-900 transition-colors group-hover:text-primary-600 dark:text-white">
                       {project.title}
-                    </h3>
+                    </h2>
                     <p className="mb-4 line-clamp-2 flex-1 text-gray-700 dark:text-gray-300">
                       {project.description}
                     </p>
@@ -113,7 +115,7 @@ export default function PortfolioPage() {
                     ) : (
                       <button
                         disabled
-                        className="w-full cursor-not-allowed rounded-lg bg-gray-400 py-2.5 font-semibold text-gray-600 opacity-60 dark:bg-gray-700 dark:text-gray-400"
+                        className="w-full cursor-not-allowed rounded-lg bg-gray-300 py-2.5 font-semibold text-gray-800 opacity-60 dark:bg-gray-800 dark:text-gray-300"
                       >
                         Yakında
                       </button>

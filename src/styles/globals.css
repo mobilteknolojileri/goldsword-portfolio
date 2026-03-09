@@ -156,10 +156,12 @@
   }
 
   .gradient-bg {
-    background-image: linear-gradient(to bottom right,
-        rgba(79, 70, 229, 0.05),
-        rgba(37, 99, 235, 0.05),
-        rgba(79, 70, 229, 0.05));
+    background-image: linear-gradient(
+      to bottom right,
+      rgba(79, 70, 229, 0.05),
+      rgba(37, 99, 235, 0.05),
+      rgba(79, 70, 229, 0.05)
+    );
     position: relative;
   }
 
@@ -288,11 +290,13 @@
   }
 
   .text-muted {
-    color: rgb(107 114 128);
+    color: rgb(75 85 99);
+    /* gray-600 */
   }
 
   .dark .text-muted {
-    color: rgb(156, 163, 175);
+    color: rgb(209 213 219);
+    /* gray-300 */
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -306,7 +310,6 @@
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0px);

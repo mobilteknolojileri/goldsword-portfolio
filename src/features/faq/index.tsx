@@ -50,6 +50,8 @@ const FAQ = () => {
               <button
                 onClick={() => setActiveIndex(activeIndex === index ? null : index)}
                 className="flex w-full items-center justify-between p-6 text-left transition-colors hover:bg-gray-50 dark:hover:bg-dark-700/50"
+                aria-expanded={activeIndex === index}
+                aria-controls={`faq-answer-${index}`}
               >
                 <span className="text-heading pr-8 text-xl font-bold">{faq.question}</span>
                 <FaChevronDown
@@ -60,6 +62,7 @@ const FAQ = () => {
               </button>
 
               <div
+                id={`faq-answer-${index}`}
                 className={`transition-all duration-300 ease-in-out ${
                   activeIndex === index ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                 }`}
