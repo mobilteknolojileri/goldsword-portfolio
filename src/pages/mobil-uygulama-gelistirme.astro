@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Navbar from "@/components/layout/Navbar";
-import Contact from "@/features/contact";
 import Services from "@/features/services";
 import FAQ, { FAQ_DATA } from "@/features/faq";
 import ThemeToggle from "@/components/layout/ThemeToggle";
@@ -28,10 +27,10 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
     <section class="bg-white py-20 dark:bg-dark-800">
       <div class="section-container section-padding">
         <div class="max-w-4xl">
-          <h1 class="text-heading mb-8 text-4xl font-black sm:text-6xl">
+          <h1 class="mb-8 text-4xl font-black text-heading sm:text-6xl">
             Fikrinizi <span class="text-primary-600">Çalışan Bir Mobil Ürüne</span> Dönüştürelim
           </h1>
-          <p class="text-body mb-10 text-xl leading-relaxed">
+          <p class="mb-10 text-xl leading-relaxed text-body">
             Sadece uygulama geliştirmiyoruz; hedef kitlenize ulaşan, performanslı ve bakımı kolay
             bir ürün altyapısı kuruyoruz. Flutter ve React Native ile iOS ve Android sürecini
             hızlandırıyoruz.
@@ -43,7 +42,7 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
               >Teklif Al</a
             >
             <a
-              href="/portfolio"
+              href="/portfolio/"
               class="rounded-2xl border-2 border-gray-100 px-8 py-4 font-bold transition-colors hover:bg-gray-50 dark:border-dark-700 dark:hover:bg-dark-900"
               >Örnek Projeler</a
             >
@@ -58,7 +57,7 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
       class="overflow-hidden border-y border-gray-100 bg-gray-50 py-24 dark:border-dark-800 dark:bg-dark-900"
     >
       <div class="section-container section-padding">
-        <h2 class="text-heading mb-16 text-center text-3xl font-black">Üretim Süreci</h2>
+        <h2 class="mb-16 text-center text-3xl font-black text-heading">Üretim Süreci</h2>
         <div class="grid gap-8 md:grid-cols-4">
           {
             [
@@ -87,7 +86,7 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
                 <span class="absolute right-6 top-4 text-6xl font-black text-primary-600/10">
                   {s.step}
                 </span>
-                <h3 class="text-heading mb-3 text-xl font-bold">{s.title}</h3>
+                <h3 class="mb-3 text-xl font-bold text-heading">{s.title}</h3>
                 <p class="text-body">{s.desc}</p>
               </div>
             ))
@@ -97,6 +96,5 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
     </section>
 
     <FAQ client:visible />
-    <Contact client:load />
   </main>
 </BaseLayout>

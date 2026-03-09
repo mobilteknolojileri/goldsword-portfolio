@@ -38,7 +38,9 @@ const Research = () => {
                     <span className="rounded-full bg-primary-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
                       Bildiri
                     </span>
-                    <span className="text-body/60 text-sm font-medium">Mayıs 2026</span>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                      Mayıs 2026
+                    </span>
                   </div>
 
                   <h3 className="text-heading mb-3 text-xl font-bold leading-tight sm:text-2xl">
@@ -54,7 +56,7 @@ const Research = () => {
                     12. Uluslararası Avrupa Temel Bilimlerde İleri Araştırmalar Kongresi →
                   </a>
 
-                  <div className="text-body/60 mt-4 flex items-center gap-2 text-sm">
+                  <div className="mt-4 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"

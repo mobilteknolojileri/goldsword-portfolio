@@ -71,11 +71,11 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
           >
             {getLocalizedCategory(entry.data.category)}
           </span>
-          <time class="text-body/60 text-sm font-bold">
+          <time class="text-sm font-bold text-gray-600 dark:text-gray-300">
             {formatDate(entry.data.date)}
           </time>
-          <span class="text-body/40 text-sm">•</span>
-          <span class="text-body/60 text-sm font-medium">
+          <span class="text-sm text-gray-600 dark:text-gray-300">•</span>
+          <span class="text-sm font-medium text-gray-600 dark:text-gray-300">
             {readingTime} dk okuma
           </span>
         </div>
@@ -132,7 +132,7 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
       </header>
 
       <div
-        class="prose prose-lg prose-indigo max-w-none dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-h2:border-l-4 prose-h2:border-primary-600 prose-h2:pl-4 prose-h2:text-3xl prose-h3:mb-4 prose-h3:mt-10 prose-h3:text-2xl prose-p:leading-loose prose-p:text-gray-800 prose-a:font-bold prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-blockquote:rounded-r-2xl prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:bg-primary-50/50 prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:not-italic prose-blockquote:text-gray-700 prose-strong:font-black prose-strong:text-gray-900 prose-code:rounded-md prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-medium prose-li:my-2 prose-li:text-gray-800 prose-img:my-12 prose-img:rounded-[2.5rem] prose-img:shadow-2xl dark:prose-p:text-gray-200 dark:prose-blockquote:bg-primary-900/10 dark:prose-blockquote:text-gray-300 dark:prose-strong:text-white dark:prose-code:bg-dark-700 dark:prose-li:text-gray-200"
+        class="prose prose-lg prose-indigo max-w-none dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-h2:border-l-4 prose-h2:border-primary-600 prose-h2:pl-4 prose-h2:text-3xl prose-h3:mb-4 prose-h3:mt-10 prose-h3:text-2xl prose-p:leading-loose prose-a:font-bold prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-blockquote:rounded-r-2xl prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:bg-primary-50/50 prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:not-italic prose-strong:font-black prose-code:rounded-md prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-medium prose-li:my-2 prose-img:my-12 prose-img:rounded-[2.5rem] prose-img:shadow-2xl dark:prose-blockquote:bg-primary-900/10 dark:prose-code:bg-dark-700"
       >
         <Content />
       </div>
@@ -156,7 +156,7 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
             </div>
             <div class="mt-8 flex justify-center">
               <a
-                href="/blog"
+                href="/blog/"
                 class="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-bold text-gray-900 shadow-sm transition-all hover:border-primary-500 hover:text-primary-600 dark:border-dark-700 dark:bg-dark-800 dark:text-white dark:hover:border-primary-500 dark:hover:text-primary-400"
               >
                 Tüm Blog Yazılarını Gör
@@ -214,7 +214,7 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
 
         <div class="mt-16 text-center">
           <a
-            href="/blog"
+            href="/blog/"
             class="text-body inline-flex items-center gap-2 font-bold transition-colors hover:text-primary-600"
           >
             <svg
