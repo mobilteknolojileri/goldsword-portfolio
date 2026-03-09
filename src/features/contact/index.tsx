@@ -6,7 +6,6 @@ import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 
-
 import Button from "@/components/ui/Button";
 
 const MIN_SUBMIT_DELAY_MS = 2500;
@@ -34,7 +33,6 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
   }>({ type: null, message: "" });
   const mountedAtRef = useRef(Date.now());
 
-
   useEffect(() => {
     if (emailjsConfig.publicKey) {
       emailjs.init(emailjsConfig.publicKey);
@@ -42,7 +40,6 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
       console.error("EmailJS: Public Key eksik! Lütfen çevre değişkenlerini kontrol edin.");
     }
   }, [emailjsConfig.publicKey]);
-
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,22 +53,22 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
     }
 
     if (Date.now() - mountedAtRef.current < MIN_SUBMIT_DELAY_MS) {
-      toast.error("Lutfen formu doldurup birkac saniye sonra tekrar gonderin.");
+      toast.error("Lütfen formu doldurup birkaç saniye sonra tekrar gönderin.");
       return;
     }
 
     if (trimmedName.length < 2) {
-      toast.error("Lutfen gecerli bir isim girin.");
+      toast.error("Lütfen geçerli bir isim girin.");
       return;
     }
 
     if (trimmedMessage.length < 10) {
-      toast.error("Mesajiniz cok kisa gorunuyor.");
+      toast.error("Mesajınız çok kısa görünüyor.");
       return;
     }
 
     if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
-      toast.error("Mesajiniz cok uzun. Lutfen kisaltin.");
+      toast.error("Mesajınız çok uzun. Lütfen kısaltın.");
       return;
     }
 
@@ -92,7 +89,7 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
           message: trimmedMessage,
           to_email: "mobilteknolojileri@gmail.com",
         },
-        emailjsConfig.publicKey
+        emailjsConfig.publicKey,
       );
 
       setSubmitStatus({
@@ -111,8 +108,6 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
     } finally {
       setIsSubmitting(false);
     }
-
-
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -127,15 +122,16 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
       <Toaster position="top-right" />
       <div className="section-container section-padding">
         <h2 className="text-heading mb-8 text-center text-3xl font-bold tracking-tight sm:mb-12 sm:text-4xl md:mb-16 md:text-5xl lg:text-6xl">
-          Iletisim
+          İletişim
         </h2>
 
         <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
           <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-dark-700 dark:bg-dark-900">
-            <h3 className="text-heading mb-6 text-2xl font-bold">Mesaj Gonder</h3>
+            <h3 className="text-heading mb-6 text-2xl font-bold">Mesaj Gönder</h3>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
-                <label className="text-body mb-2 block text-sm font-medium">Adiniz</label>
+                <label className="text-body mb-2 block text-sm font-medium">Adınız</label>
+
                 <input
                   type="text"
                   name="name"
@@ -144,7 +140,7 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
                   required
                   minLength={2}
                   className="text-heading w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-2.5 transition-colors focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800"
-                  placeholder="Isminizi girin"
+                  placeholder="İsminizi girin"
                 />
               </div>
 
@@ -175,7 +171,7 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
               </div>
 
               <div>
-                <label className="text-body mb-2 block text-sm font-medium">Mesajiniz</label>
+                <label className="text-body mb-2 block text-sm font-medium">Mesajınız</label>
                 <textarea
                   name="message"
                   value={formData.message}
@@ -185,15 +181,16 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
                   minLength={10}
                   maxLength={MAX_MESSAGE_LENGTH}
                   className="text-heading w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-2.5 transition-colors focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800"
-                  placeholder="Mesajinizi yazin..."
+                  placeholder="Mesajınızı yazın..."
                 />
 
                 {submitStatus.type && (
                   <div
-                    className={`mt-4 rounded-lg p-4 text-sm font-medium ${submitStatus.type === "success"
-                      ? "border border-green-200 bg-green-50 text-green-700 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-400"
-                      : "border border-red-200 bg-red-50 text-red-700 dark:border-red-900/30 dark:bg-red-900/20 dark:text-red-400"
-                      }`}
+                    className={`mt-4 rounded-lg p-4 text-sm font-medium ${
+                      submitStatus.type === "success"
+                        ? "border border-green-200 bg-green-50 text-green-700 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-400"
+                        : "border border-red-200 bg-red-50 text-red-700 dark:border-red-900/30 dark:bg-red-900/20 dark:text-red-400"
+                    }`}
                   >
                     <div className="flex items-center gap-2">
                       {submitStatus.type === "success" ? (
@@ -221,17 +218,17 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
                 <p className="text-muted mt-2 text-xs">
                   Ayrıca bana WhatsApp veya diğer portallardan da ulaşabilirsiniz.
                 </p>
-
               </div>
 
               <Button type="submit" className="w-full" isLoading={isSubmitting}>
-                {isSubmitting ? "Gonderiliyor..." : "Gonder"}
+                {isSubmitting ? "Gönderiliyor..." : "Gönder"}
               </Button>
             </form>
           </div>
 
           <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-dark-700 dark:bg-dark-900">
-            <h3 className="text-heading mb-6 text-2xl font-bold">Diger Iletisim</h3>
+            <h3 className="text-heading mb-6 text-2xl font-bold">Diğer İletişim</h3>
+
             <div className="space-y-4">
               <a
                 href="mailto:mobilteknolojileri@gmail.com"
