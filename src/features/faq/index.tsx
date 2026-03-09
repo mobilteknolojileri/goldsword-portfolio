@@ -55,7 +55,7 @@ const FAQ = () => {
               >
                 <span className="text-heading pr-8 text-xl font-bold">{faq.question}</span>
                 <FaChevronDown
-                  className={`flex-shrink-0 text-primary-600 transition-transform duration-300 ${
+                  className={`flex-shrink-0 text-primary-600 transition-transform duration-300 dark:text-primary-400 ${
                     activeIndex === index ? "rotate-180" : ""
                   }`}
                 />

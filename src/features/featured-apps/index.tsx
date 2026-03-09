@@ -60,6 +60,8 @@ const FeaturedApps = () => {
                           height={160}
                           style={{ width: "100%", height: "100%", objectFit: "cover" }}
                           decoding="async"
+                          loading="eager"
+                          fetchPriority="high"
                         />
                       </div>
                     </TiltCard>
