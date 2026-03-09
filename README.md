@@ -110,4 +110,3 @@ The site is intended to be deployed as a static Astro build. Vercel is the curre
 - Website: https://goldsword.dev
 - Email: mobilteknolojileri@gmail.com
 - GitHub: https://github.com/mobilteknolojileri
-- Bionluk: https://bionluk.com/goldsword
