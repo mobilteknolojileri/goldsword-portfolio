@@ -10,7 +10,15 @@ import Button from "@/components/ui/Button";
 const MIN_SUBMIT_DELAY_MS = 2500;
 const MAX_MESSAGE_LENGTH = 2000;
 
-const Contact = () => {
+interface ContactProps {
+  emailjsConfig: {
+    serviceId: string;
+    templateId: string;
+    publicKey: string;
+  };
+}
+
+const Contact = ({ emailjsConfig }: ContactProps) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,15 +63,15 @@ const Contact = () => {
 
     try {
       await emailjs.send(
-        (import.meta as any).env.PUBLIC_EMAILJS_SERVICE_ID!,
-        (import.meta as any).env.PUBLIC_EMAILJS_TEMPLATE_ID!,
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
         {
           from_name: trimmedName,
           from_email: trimmedEmail,
           message: trimmedMessage,
           to_email: "mobilteknolojileri@gmail.com",
         },
-        (import.meta as any).env.PUBLIC_EMAILJS_PUBLIC_KEY!,
+        emailjsConfig.publicKey,
       );
 
       toast.success("Mesajiniz basariyla gonderildi.");
@@ -149,8 +157,8 @@ const Contact = () => {
                   className="text-heading w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-2.5 transition-colors focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800"
                   placeholder="Mesajinizi yazin..."
                 />
-                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                  Lutfen kisa ve net yazin. En fazla {MAX_MESSAGE_LENGTH} karakter.
+                <p className="text-muted mt-2 text-xs">
+                  Ayrıca bana WhatsApp veya diğer portallardan da ulaşabilirsiniz.
                 </p>
               </div>
 
