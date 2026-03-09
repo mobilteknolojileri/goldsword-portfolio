@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { FaEnvelope, FaGithub } from "react-icons/fa";
 import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+
 
 import Button from "@/components/ui/Button";
 
@@ -27,6 +29,15 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const mountedAtRef = useRef(Date.now());
+
+  useEffect(() => {
+    if (emailjsConfig.publicKey) {
+      emailjs.init(emailjsConfig.publicKey);
+    } else {
+      console.error("EmailJS: Public Key eksik! Lütfen çevre değişkenlerini kontrol edin.");
+    }
+  }, [emailjsConfig.publicKey]);
+
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,6 +73,10 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
     setIsSubmitting(true);
 
     try {
+      if (!emailjsConfig.publicKey || !emailjsConfig.serviceId || !emailjsConfig.templateId) {
+        throw new Error("EmailJS yapılandırması eksik. Lütfen Vercel ayarlarını kontrol edin.");
+      }
+
       await emailjs.send(
         emailjsConfig.serviceId,
         emailjsConfig.templateId,
@@ -71,18 +86,20 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
           message: trimmedMessage,
           to_email: "mobilteknolojileri@gmail.com",
         },
-        emailjsConfig.publicKey,
+        emailjsConfig.publicKey
       );
 
       toast.success("Mesajiniz basariyla gonderildi.");
       setFormData({ name: "", email: "", message: "", company: "" });
       mountedAtRef.current = Date.now();
-    } catch (error) {
-      console.error("Email gonderme hatasi:", error);
-      toast.error("Mesaj gonderilemedi. Lutfen tekrar deneyin.");
+    } catch (error: any) {
+      console.error("Email gonderme hatasi detayi:", error);
+      const errorMessage = error?.text || error?.message || "Mesaj gonderilemedi.";
+      toast.error(`Hata: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
