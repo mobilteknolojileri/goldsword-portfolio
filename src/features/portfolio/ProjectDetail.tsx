@@ -34,7 +34,7 @@ export default function ProjectDetail({ project, allProjects }: ProjectDetailPro
             </a>
             <span className="text-muted/30">/</span>
             <a
-              href="/portfolio"
+              href="/portfolio/"
               className="inline-flex items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700"
             >
               <FaArrowLeft />
@@ -100,6 +100,8 @@ export default function ProjectDetail({ project, allProjects }: ProjectDetailPro
                           className="h-full w-full object-contain"
                           loading="lazy"
                           decoding="async"
+                          width={300}
+                          height={533}
                         />
                       </div>
                     ))}
@@ -174,6 +176,8 @@ export default function ProjectDetail({ project, allProjects }: ProjectDetailPro
                         alt={p.title}
                         className="h-full w-full object-contain p-4"
                         loading="lazy"
+                        width={400}
+                        height={300}
                       />
                     )}
                   </div>

@@ -22,6 +22,9 @@ const Hero = () => {
                 alt="goldsword profil fotoğrafı"
                 className="h-full w-full object-cover"
                 loading="eager"
+                fetchPriority="high"
+                width={192}
+                height={192}
               />
             </div>
           </div>
@@ -44,7 +47,7 @@ const Hero = () => {
 
           <div className="mb-8 flex justify-center px-4 md:mb-12">
             <Magnetic strength={0.2}>
-              <a href="/portfolio" className="w-full max-w-sm">
+              <a href="/portfolio/" className="w-full max-w-sm">
                 <Button size="lg" className="w-full rounded-2xl py-6 text-xl shadow-xl">
                   <span className="flex items-center justify-center gap-4">
                     <svg
@@ -69,27 +72,27 @@ const Hero = () => {
 
           <div className="mx-auto grid max-w-4xl grid-cols-2 gap-3 px-4 pb-8 sm:gap-4 md:grid-cols-4 md:gap-6 md:pb-12">
             <div className="rounded-xl border border-gray-200 bg-white/80 p-4 shadow-lg backdrop-blur-sm transition-shadow hover:shadow-xl dark:border-dark-700 dark:bg-dark-800/80 sm:p-6">
-              <h3 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
+              <h2 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
                 <NumberCounter end={30} suffix="+" />
-              </h3>
+              </h2>
               <p className="text-body mt-2 text-xs sm:text-sm md:text-base">Proje</p>
             </div>
             <div className="rounded-xl border border-gray-200 bg-white/80 p-4 shadow-lg backdrop-blur-sm transition-shadow hover:shadow-xl dark:border-dark-700 dark:bg-dark-800/80 sm:p-6">
-              <h3 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
+              <h2 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
                 <NumberCounter end={5} decimals={1} />
-              </h3>
+              </h2>
               <p className="text-body mt-2 text-xs sm:text-sm md:text-base">Puan</p>
             </div>
             <div className="rounded-xl border border-gray-200 bg-white/80 p-4 shadow-lg backdrop-blur-sm transition-shadow hover:shadow-xl dark:border-dark-700 dark:bg-dark-800/80 sm:p-6">
-              <h3 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
+              <h2 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
                 <NumberCounter end={20} suffix="+" />
-              </h3>
+              </h2>
               <p className="text-body mt-2 text-xs sm:text-sm md:text-base">Müşteri</p>
             </div>
             <div className="rounded-xl border border-gray-200 bg-white/80 p-4 shadow-lg backdrop-blur-sm transition-shadow hover:shadow-xl dark:border-dark-700 dark:bg-dark-800/80 sm:p-6">
-              <h3 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
+              <h2 className="text-2xl font-bold text-primary-500 sm:text-3xl md:text-4xl">
                 <NumberCounter end={3} suffix="+" />
-              </h3>
+              </h2>
               <p className="text-body mt-2 text-xs sm:text-sm md:text-base">Yıl</p>
             </div>
           </div>

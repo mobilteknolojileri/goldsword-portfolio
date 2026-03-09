@@ -8,9 +8,18 @@ interface ParallaxImageProps {
   alt: string;
   className?: string;
   speed?: number;
+  width?: number;
+  height?: number;
 }
 
-const ParallaxImage = ({ src, alt, className, speed = 0.5 }: ParallaxImageProps) => {
+const ParallaxImage = ({
+  src,
+  alt,
+  className,
+  speed = 0.5,
+  width = 800,
+  height = 600,
+}: ParallaxImageProps) => {
   const [offsetY, setOffsetY] = useState(0);
 
   useEffect(() => {
@@ -30,7 +39,13 @@ const ParallaxImage = ({ src, alt, className, speed = 0.5 }: ParallaxImageProps)
           transition: "transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
         }}
       >
-        <img src={src} alt={alt} className="h-full w-full object-cover" />
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className="h-full w-full object-cover"
+        />
       </div>
     </div>
   );
