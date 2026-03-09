@@ -28,7 +28,12 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
     company: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
   const mountedAtRef = useRef(Date.now());
+
 
   useEffect(() => {
     if (emailjsConfig.publicKey) {
@@ -70,6 +75,7 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
       return;
     }
 
+    setSubmitStatus({ type: null, message: "" });
     setIsSubmitting(true);
 
     try {
@@ -89,16 +95,23 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
         emailjsConfig.publicKey
       );
 
-      toast.success("Mesajiniz basariyla gonderildi.");
+      setSubmitStatus({
+        type: "success",
+        message: "Mesajınız başarıyla gönderildi. En kısa sürede dönüş yapılacaktır.",
+      });
       setFormData({ name: "", email: "", message: "", company: "" });
       mountedAtRef.current = Date.now();
     } catch (error: any) {
       console.error("Email gonderme hatasi detayi:", error);
       const errorMessage = error?.text || error?.message || "Mesaj gonderilemedi.";
-      toast.error(`Hata: ${errorMessage}`);
+      setSubmitStatus({
+        type: "error",
+        message: `Hata: ${errorMessage}`,
+      });
     } finally {
       setIsSubmitting(false);
     }
+
 
   };
 
@@ -174,9 +187,41 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
                   className="text-heading w-full rounded-lg border-2 border-gray-200 bg-white px-4 py-2.5 transition-colors focus:border-primary-500 focus:outline-none dark:border-dark-700 dark:bg-dark-800"
                   placeholder="Mesajinizi yazin..."
                 />
+
+                {submitStatus.type && (
+                  <div
+                    className={`mt-4 rounded-lg p-4 text-sm font-medium ${submitStatus.type === "success"
+                      ? "border border-green-200 bg-green-50 text-green-700 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-400"
+                      : "border border-red-200 bg-red-50 text-red-700 dark:border-red-900/30 dark:bg-red-900/20 dark:text-red-400"
+                      }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {submitStatus.type === "success" ? (
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      ) : (
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                      {submitStatus.message}
+                    </div>
+                  </div>
+                )}
+
                 <p className="text-muted mt-2 text-xs">
                   Ayrıca bana WhatsApp veya diğer portallardan da ulaşabilirsiniz.
                 </p>
+
               </div>
 
               <Button type="submit" className="w-full" isLoading={isSubmitting}>
