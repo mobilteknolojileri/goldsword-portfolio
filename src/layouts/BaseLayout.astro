@@ -44,7 +44,6 @@ const orgSchema = getOrganizationSchema("tr");
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter />
-    <Analytics />
 
     <!-- SEO Meta Tags -->
     <title>{displayTitle}</title>
@@ -132,6 +131,8 @@ const orgSchema = getOrganizationSchema("tr");
     <main id="main-content">
       <slot />
     </main>
+
+    {import.meta.env.PROD && <Analytics />}
   </body>
 </html>
 
