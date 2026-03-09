@@ -75,12 +75,13 @@ export default function PortfolioPage() {
                         src={project.image}
                         alt={`${project.title} - Proje görseli`}
                         className="h-full w-full object-contain"
-                        loading="lazy"
+                        loading={index < 3 ? "eager" : "lazy"}
+                        fetchPriority={index < 3 ? "high" : "auto"}
                         width={600}
                         height={400}
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 text-xl font-bold text-white">
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-xl font-bold text-white">
                         {categoryLabels[project.category] || project.category}
                       </div>
                     )}
