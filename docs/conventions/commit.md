@@ -2,6 +2,9 @@
 
 Conventional Commits format.
 
+> [!IMPORTANT]
+> To maintain backwards traceability of the project history, commits must be as **atomic** (one discrete change per commit) and **clear** as possible. Use plain English to explicitly describe the action performed.
+
 ## Format
 
 ```
@@ -78,6 +81,9 @@ fix(legal): resolve missing privacy page (#42)
 ```
 
 ## AI Instructions
+
+> [!CAUTION]
+> **DO NOT** execute git commands directly in the terminal. ALWAYS provide a bulk, copy-pasteable code block containing the commands for the user to run manually.
 
 When suggesting commits:
 
