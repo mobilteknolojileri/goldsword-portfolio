@@ -148,6 +148,23 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
+  /* Contrast Overrides for Light Mode */
+  .text-body {
+    color: #374151;
+    /* Gray-700 for better contrast on white */
+  }
+
+  .text-muted {
+    color: #4b5563;
+    /* Gray-600 instead of 500 */
+  }
+
+  /* Portfolio Overlay Contrast */
+  .project-card-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    /* Increased from 0.2 for text contrast */
+  }
+
   .gradient-text {
     background-image: linear-gradient(to right, rgb(79, 70, 229), rgb(37, 99, 235));
     background-clip: text;
@@ -270,15 +287,17 @@
   }
 
   .dark .text-heading {
-    color: rgb(243 244 246);
+    color: rgb(249 250 251);
+    /* gray-50 */
   }
 
   .text-subheading {
-    color: rgb(31 41 55);
+    color: rgb(75 85 99);
   }
 
   .dark .text-subheading {
-    color: rgb(229 231 235);
+    color: rgb(243 244 246);
+    /* gray-100 */
   }
 
   .text-body {
@@ -286,17 +305,17 @@
   }
 
   .dark .text-body {
-    color: rgb(209 213 219);
+    color: rgb(229 231 235);
+    /* gray-200 */
   }
 
   .text-muted {
     color: rgb(75 85 99);
-    /* gray-600 */
   }
 
   .dark .text-muted {
     color: rgb(209 213 219);
-    /* gray-300 */
+    /* gray-300 for even better contrast */
   }
 
   .no-scrollbar::-webkit-scrollbar {
