@@ -55,7 +55,7 @@ export const PROJECTS = [
       "Zustand",
     ],
     color: "from-orange-500 to-red-500",
-    image: "/assets/projects/getyo-mobile/hero.png",
+    image: "/assets/projects/getyo-mobile/hero.webp",
     detailedDescription:
       "Frozen Yogurt Cafe için sıfırdan geliştirilmiş kapsamlı mobil uygulama. RewardUp API entegrasyonu ile sadakat programı, push notification sistemi, Google ve Apple ile giriş, tat oylama ve yorum sistemi. App Store ve Google Play'de yayında.",
     features: [
@@ -85,13 +85,13 @@ export const PROJECTS = [
       },
     ],
     screenshots: [
-      "/assets/projects/getyo-mobile/screenshot-1.png",
-      "/assets/projects/getyo-mobile/screenshot-2.png",
-      "/assets/projects/getyo-mobile/screenshot-3.png",
-      "/assets/projects/getyo-mobile/screenshot-4.png",
-      "/assets/projects/getyo-mobile/screenshot-5.png",
-      "/assets/projects/getyo-mobile/screenshot-6.png",
-      "/assets/projects/getyo-mobile/screenshot-7.png",
+      "/assets/projects/getyo-mobile/screenshot-1.webp",
+      "/assets/projects/getyo-mobile/screenshot-2.webp",
+      "/assets/projects/getyo-mobile/screenshot-3.webp",
+      "/assets/projects/getyo-mobile/screenshot-4.webp",
+      "/assets/projects/getyo-mobile/screenshot-5.webp",
+      "/assets/projects/getyo-mobile/screenshot-6.webp",
+      "/assets/projects/getyo-mobile/screenshot-7.webp",
     ],
   },
   {
@@ -277,7 +277,7 @@ export const PROJECTS = [
     category: "AI",
     technologies: ["YOLOv8", "TensorFlow Lite", "FastAPI", "Flutter", "Python", "Computer Vision"],
     color: "from-green-500 to-teal-500",
-    image: "/assets/projects/fabric-detection/hero.png",
+    image: "/assets/projects/fabric-detection/hero.webp",
     detailedDescription:
       "Tekstil sektörü için sıfırdan geliştirilen yapay zeka destekli kumaş kalite kontrol sistemi. Kumaş görsellerini etiketleyerek YOLOv8 modelini sıfırdan eğittim. Mobil uygulama ile fotoğraf çekildiğinde, backend'teki özel eğitilmiş model kumaştaki delikleri otomatik tespit eder.",
     features: [
@@ -300,11 +300,11 @@ export const PROJECTS = [
       "YOLOv8 özel eğitimi, TFLite optimizasyon, mobil-backend entegrasyon, tespit doğruluğu",
     links: [],
     screenshots: [
-      "/assets/projects/fabric-detection/screenshot-1.png",
-      "/assets/projects/fabric-detection/screenshot-2.png",
-      "/assets/projects/fabric-detection/screenshot-3.png",
-      "/assets/projects/fabric-detection/screenshot-4.png",
-      "/assets/projects/fabric-detection/screenshot-5.png",
+      "/assets/projects/fabric-detection/screenshot-1.webp",
+      "/assets/projects/fabric-detection/screenshot-2.webp",
+      "/assets/projects/fabric-detection/screenshot-3.webp",
+      "/assets/projects/fabric-detection/screenshot-4.webp",
+      "/assets/projects/fabric-detection/screenshot-5.webp",
     ],
   },
   {
