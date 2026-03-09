@@ -48,7 +48,7 @@ const Hero = () => {
           <div className="mb-8 flex justify-center px-4 md:mb-12">
             <Magnetic strength={0.2}>
               <a href="/portfolio/" className="w-full max-w-sm">
-                <Button size="lg" className="w-full rounded-2xl py-6 text-xl shadow-xl">
+                <Button size="lg" className="w-full rounded-2xl py-6 text-xl font-black shadow-xl">
                   <span className="flex items-center justify-center gap-4">
                     <svg
                       className="animate-bounce-horizontal h-7 w-7 flex-shrink-0"

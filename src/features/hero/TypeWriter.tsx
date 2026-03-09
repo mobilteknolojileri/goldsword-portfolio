@@ -8,14 +8,7 @@ const TypeWriter = () => {
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
 
-  const words = [
-    "Full Stack Developer",
-    "Product Engineer",
-    "Freelancer Yazılım Geliştirici",
-    "Mobil Uygulama Geliştirici",
-    "AI Entegrasyon Uzmanı",
-    "QuSafe Geliştiricisi",
-  ];
+  const words = ["Full Stack Developer", "Product Engineer"];
 
   useEffect(() => {
     const handleTyping = () => {
