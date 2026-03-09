@@ -24,9 +24,9 @@ const emailjsConfig = {
 ---
 
 <BaseLayout extraSchemas={extraSchemas}>
-  <ProgressBar client:load />
-  <Navbar client:load />
-  <ThemeToggle client:load />
+  <ProgressBar client:idle />
+  <Navbar client:idle />
+  <ThemeToggle client:idle />
 
   <main>
     <ScrollReveal client:visible>
@@ -58,7 +58,7 @@ const emailjsConfig = {
     </ScrollReveal>
 
     <ScrollReveal client:visible>
-      <Contact client:load emailjsConfig={emailjsConfig} />
+      <Contact client:visible emailjsConfig={emailjsConfig} />
     </ScrollReveal>
   </main>
 

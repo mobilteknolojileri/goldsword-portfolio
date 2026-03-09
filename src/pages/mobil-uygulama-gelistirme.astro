@@ -20,8 +20,8 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
 ---
 
 <BaseLayout {...metadata} extraSchemas={extraSchemas}>
-  <Navbar client:load />
-  <ThemeToggle client:load />
+  <Navbar client:idle />
+  <ThemeToggle client:idle />
 
   <main class="pt-24">
     <section class="bg-white py-20 dark:bg-dark-800">

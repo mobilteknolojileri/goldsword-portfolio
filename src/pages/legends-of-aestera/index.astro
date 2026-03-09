@@ -32,7 +32,7 @@ const techHighlights = [
   description={aesteraMetadata.description as string}
   image="/assets/projects/legends-of-aestera/hero.png"
 >
-  <Navbar client:load />
+  <Navbar client:idle />
 
   <div class="mx-auto max-w-5xl px-4 pb-20 pt-32">
     <section class="pb-20 text-center">
@@ -40,11 +40,13 @@ const techHighlights = [
         class="relative mx-auto mb-10 w-full max-w-2xl overflow-hidden rounded-3xl border-4 border-primary-100 shadow-2xl"
       >
         <img
-          src="/assets/projects/legends-of-aestera/hero.png"
+          src="/assets/projects/legends-of-aestera/hero.webp"
           alt="Legends of Aestera"
           class="h-auto w-full"
           width={800}
           height={450}
+          loading="eager"
+          fetchpriority="high"
         />
       </div>
 
@@ -83,7 +85,7 @@ const techHighlights = [
         {
           techHighlights.map((feature) => (
             <div class="flex items-center gap-4 rounded-xl bg-white p-4 text-left shadow-sm dark:bg-dark-800">
-              <span class="font-bold text-primary-600">✓</span>
+              <span class="font-bold text-primary-600 dark:text-primary-400">✓</span>
               <span class="text-body font-medium">{feature}</span>
             </div>
           ))

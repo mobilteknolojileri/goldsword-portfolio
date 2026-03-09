@@ -25,8 +25,8 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
 ---
 
 <BaseLayout {...metadata} extraSchemas={extraSchemas}>
-  <Navbar client:load />
-  <ThemeToggle client:load />
+  <Navbar client:idle />
+  <ThemeToggle client:idle />
 
   <main class="pt-24">
     <section class="bg-white py-20 dark:bg-dark-800">
@@ -66,8 +66,8 @@ const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
             <h2 class="text-heading mb-6 text-3xl font-black">Neden Freelancer Modeli?</h2>
             <ul class="text-body space-y-4 text-lg">
               <li class="flex items-start gap-3">
-                <span class="font-bold text-primary-600">></span> Doğrudan karar alıcı geliştirici ile
-                iletişim.
+                <span class="font-bold text-primary-600 dark:text-primary-400">></span> Doğrudan karar
+                alıcı geliştirici ile iletişim.
               </li>
               <li class="flex items-start gap-3">
                 <span class="font-bold text-primary-600">></span> Kapsama göre esnek, şeffaf ve kontrol
