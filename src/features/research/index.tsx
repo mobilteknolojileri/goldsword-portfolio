@@ -39,7 +39,7 @@ const Research = () => {
                       Bildiri
                     </span>
                     <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                      Mayıs 2026
+                      Mayıs 2025
                     </span>
                   </div>
 
