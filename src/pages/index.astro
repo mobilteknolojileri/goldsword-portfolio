@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/features/hero";
@@ -17,18 +17,9 @@ import { getLocalBusinessSchema, getFAQSchema } from "@/lib/seo/schema";
 const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
 
 const emailjsConfig = {
-  serviceId:
-    import.meta.env.PUBLIC_EMAILJS_SERVICE_ID ||
-    import.meta.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ||
-    "",
-  templateId:
-    import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID ||
-    import.meta.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ||
-    "",
-  publicKey:
-    import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY ||
-    import.meta.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ||
-    "",
+  serviceId: import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || "",
+  templateId: import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || "",
+  publicKey: import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || "",
 };
 ---
 
