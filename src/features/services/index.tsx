@@ -1,7 +1,14 @@
 "use client";
 
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { FaLaptopCode, FaMobileAlt, FaSearchDollar, FaPenNib } from "react-icons/fa";
+import {
+  FaLaptopCode,
+  FaMobileAlt,
+  FaSearchDollar,
+  FaPenNib,
+  FaGamepad,
+  FaRobot,
+} from "react-icons/fa";
 
 const services = [
   {
@@ -32,6 +39,20 @@ const services = [
       "İş süreçlerinizi hızlandıracak özel yapay zeka çözümleri. LLM entegrasyonu, otomasyon sistemleri ve akıllı chatbotlar.",
     color: "from-orange-500 to-amber-500",
   },
+  {
+    icon: <FaGamepad size={32} />,
+    title: "Oyun Geliştirme",
+    description:
+      "Unity veya Godot ile 2D/3D oyun projeleri. Mekanik tasarım, asset entegrasyonu ve platform optimizasyonu.",
+    color: "from-red-500 to-rose-500",
+  },
+  {
+    icon: <FaRobot size={32} />,
+    title: "Otomasyon & Scripting",
+    description:
+      "Python tabanlı web scraping ve özel otomasyon araçları. İş yükünüzü azaltacak saniye bazlı hızlı çözümler.",
+    color: "from-slate-600 to-gray-800",
+  },
 ];
 
 const Services = () => {
@@ -50,7 +71,7 @@ const Services = () => {
           </p>
         </div>
 
-        <div ref={ref} className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div ref={ref} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <div
               key={index}
