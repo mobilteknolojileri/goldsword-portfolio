@@ -7,11 +7,11 @@ category: "case-study"
 draft: false
 ---
 
-# EmailJS ve Vercel Üzerinde Environment Variable Sorunları
+> 💡 **TL;DR:** Vercel üzerinde EmailJS ayarlarınızı yaparken değişken (ENV) adlarınızın başındaki `PUBLIC_` ve `NEXT_PUBLIC_` karmaşasına dikkat edin.
 
-Geçtiğimiz günlerde bir portfolyo sitesini Vercel üzerinde devreye alırken EmailJS ile ilgili ilginç bir sorunla karşılaştık. Yerelde (localhost) sorunsuz çalışan sistem, prod ortamında "The public key is required" hatası veriyordu.
+Geçtiğimiz günlerde Goldsword portfolyo sitesini Vercel üzerinde devreye alırken EmailJS ile ilgili beni saatlerce ekrana kitleyen ilginç bir sorunla karşılaştım. Yerelde (localhost) tıkır tıkır çalışan iletişim formu, prod ortamında aniden "The public key is required" hatası fırlatmaya başladı.
 
-## Sorunun Tespiti
+## Sorunun Tespiti ve Orijini
 
 Vercel Dashboard üzerinde çevre değişkenleri (environment variables) doğru şekilde tanımlanmış olmasına rağmen, Astro projesi bu değişkenleri okuyamıyordu. Yapılan incelemede sorunun iki ana nedeni olduğu anlaşıldı:
 

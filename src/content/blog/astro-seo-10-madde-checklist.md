@@ -13,9 +13,11 @@ faq:
     answer: "Önce taranabilirlik ve canonical kontrollerini yapın, sonra schema ve performans maddelerine geçin. En son Search Console ile doğrulama yapın."
 ---
 
-Astro tabanlı sitelerde taranabilirlik, hız ve zengin sonuç performansını artırmak için pratik bir teknik SEO kontrol listesi hazırladık.
+> 💡 **TL;DR:** Sitenizin indekslenmesi ve hızlı açılması için sadece temiz kod yazmak yetmez. Astro projelerinde sitemap, image optimization, robots.txt ve meta etiketlerinin kusursuz bir uyum içinde olması gerekir.
 
-> **Neden Astro?** Astro, "Zero JS by default" yaklaşımıyla en hızlı yüklenen web sayfalarını sunarak Google'ın Core Web Vitals metriklerinde doğrudan avantaj sağlar.
+Yeni bir Astro projesi ayağa kaldırdığımızda hız testlerinden 100/100 almak harika hissettiriyor ama SEO altyapısını kurmayı atlarsak o hızın hiçbir anlamı kalmıyor. Kendi projelerimde "canlıya almadan önce" her defasında baştan araştırma yapmamak için oluşturduğum pratik bir teknik SEO kontrol listem var. Hazır elimde varken, bu listeyi derleyip toparlamak istedim.
+
+> 💡 **Peki Neden Özellikle Astro?** Astro, "Zero JS by default" (varsayılan olarak sıfır JS) yaklaşımıyla en hızlı yüklenen web sayfalarını sunarak Google'ın Core Web Vitals metriklerinde bizi otomatik olarak 1-0 öne geçiriyor.
 
 İşte sitenizi yayına almadan önce kontrol etmeniz gereken **10 kritik madde**:
 

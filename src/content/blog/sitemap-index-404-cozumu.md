@@ -10,9 +10,9 @@ draft: false
 intent: "troubleshooting"
 ---
 
-Astro projelerinde `sitemap-index.xml` dosyasının production ortamında 404 hatası vermesi sık rastlanan ama çözümü net bir problemdir. Bu yazıda, bu hatanın **gerçek nedenini** ve kalıcı çözüm adımlarını inceliyoruz.
+> 💡 **TL;DR:** Localhost'ta çalışan sitemap dosyanız Vercel/Netlify üzerinde 404 veriyorsa; sorun muhtemelen Astro'daki 'trailingSlash' kararsızlığından veya Vercel'in Clean URLs özelliğinden kaynaklanıyordur.
 
-> **Sorun Özeti:** Yerel ortamda (dev mode) çalışan sitemap, Vercel veya Netlify gibi platformlara yüklendiğinde "Not Found" hatasına düşebiliyor.
+Astro projelerinde `sitemap-index.xml` dosyasının production ortamında 404 hatası vermesi ilk günden beri forumlarda çok sık rastlanan ama çözümü etrafta pek net anlatılmayan bir krizdir. Geçenlerde kendi projemi yayına alırken tam da bu duvara tosladım. Bu yazıda, bu hatanın **gerçekte neden kaynaklandığını** ve tekrar etmemesi için uyguladığım kesin çözümü anlatıyorum.
 
 ## Hatanın Kaynağı: Static vs Hybrid Mode
 
