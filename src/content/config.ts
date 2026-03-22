@@ -9,7 +9,7 @@ const blog = defineCollection({
     date: z.date(),
     updated: z.date().optional(),
     tags: z.array(z.string().min(2).max(40)).min(2).max(8),
-    category: z.enum(["seo", "web", "mobile", "research", "case-study"]),
+    category: z.enum(["seo", "web", "mobile", "research", "case-study", "yazılım"]),
     heroImage: z.string().url().optional(),
     draft: z.boolean().default(false),
     faq: z
