@@ -1,3 +1,8 @@
+/**
+ * 🖼️ Legacy Image Optimization Script
+ * Used for compressing images inside specific older project directories.
+ * Note: Use optimize-all-images.js for full repository compression.
+ */
 import fs from 'fs/promises';
 import path from 'path';
 import sharp from 'sharp';
@@ -18,7 +23,6 @@ async function optimizeImages() {
             continue;
         }
 
-        // Create a backup directory (_originals) if it doesn't exist
         const backupDir = path.join(dir, '_originals');
         try {
             await fs.access(backupDir);
@@ -28,7 +32,6 @@ async function optimizeImages() {
         }
 
         for (const file of files) {
-            // Don't process files already in the backup folder or other extensions
             const filePath = path.join(dir, file);
             const stat = await fs.stat(filePath);
             if (stat.isDirectory()) continue;
@@ -40,12 +43,10 @@ async function optimizeImages() {
 
                 console.log(`Optimizing: ${file}`);
 
-                // 1. Convert to WebP
                 await sharp(filePath)
                     .webp({ quality: 80, effort: 6 })
                     .toFile(webpPath);
 
-                // 2. Move original to backup folder instead of deleting
                 await fs.rename(filePath, backupPath);
 
                 console.log(` -> WebP created & Original safely backed up to ${backupPath}`);

@@ -1,3 +1,8 @@
+/**
+ * 🛠️ Lighthouse Debug Tool
+ * Reads `.unlighthouse/reports` JSON files to extract specific console errors and color-contrast issues.
+ * Run: node scripts/debug-failures.js
+ */
 import fs from 'fs/promises';
 import path from 'path';
 

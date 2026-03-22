@@ -1,3 +1,8 @@
+/**
+ * 📊 Lighthouse Audit Extractor
+ * Reads all `.unlighthouse/reports` JSON files and groups the failing audits.
+ * Run: node scripts/extract-audits.js
+ */
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -34,9 +39,7 @@ async function extractAudits() {
             if (!data.audits) continue;
 
             for (const [id, audit] of Object.entries(data.audits)) {
-                // We only care about failed audits that actually have a score weight
                 if (audit.score !== null && audit.score < 1 && audit.scoreDisplayMode !== 'manual' && audit.scoreDisplayMode !== 'informative' && audit.scoreDisplayMode !== 'notApplicable') {
-
                     if (!issues[id]) {
                         issues[id] = {
                             title: audit.title,
@@ -54,7 +57,6 @@ async function extractAudits() {
             }
         }
 
-        // Print Results
         console.log("=== FAILING LIGHTHOUSE AUDITS ===\n");
         let hasIssues = false;
         for (const [id, details] of Object.entries(issues)) {
@@ -62,7 +64,6 @@ async function extractAudits() {
                 hasIssues = true;
                 console.log(`[ ] ${details.title} (${id})`);
                 console.log(`    Found on ${details.pages.length} pages.`);
-                // Show first 3 examples
                 details.pages.slice(0, 3).forEach(p => {
                     console.log(`    - ${p.url} (Score: ${p.score}) ${p.displayValue}`);
                 });
