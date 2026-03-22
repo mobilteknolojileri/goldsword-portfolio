@@ -58,6 +58,8 @@ const orgSchema = getOrganizationSchema("tr");
     <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
     {verification?.google && <meta name="google-site-verification" content={verification.google} />}
+    {verification?.yandex && <meta name="yandex-verification" content={verification.yandex} />}
+    {verification?.bing && <meta name="msvalidate.01" content={verification.bing} />}
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={openGraph?.type || "website"} />

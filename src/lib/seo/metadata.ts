@@ -82,6 +82,8 @@ export function generateMetadata({
     },
     verification: {
       google: (import.meta as any).env.PUBLIC_GOOGLE_VERIFICATION,
+      yandex: (import.meta as any).env.PUBLIC_YANDEX_VERIFICATION,
+      bing: (import.meta as any).env.PUBLIC_BING_VERIFICATION,
     },
     themeColor: "#4f46e5",
     alternates: {
