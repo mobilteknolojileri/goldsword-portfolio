@@ -34,7 +34,7 @@ const Navbar = () => {
             <a href="/" className="group flex items-center">
               <div className="relative h-12 w-40 transition-transform duration-300 group-hover:scale-105 sm:h-14 sm:w-48">
                 <img
-                  src="/logo.png"
+                  src="/logo.webp"
                   alt="goldsword"
                   width={192}
                   height={56}
