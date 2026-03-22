@@ -27,14 +27,14 @@ const FeaturedApps = () => {
               titleVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
             }`}
           >
-            Kendi Projelerim
+            Yayındaki Projelerim
           </h2>
           <p
             className={`text-body mt-4 text-lg transition-all delay-100 duration-700 ${
               titleVisible ? "opacity-100" : "opacity-0"
             }`}
           >
-            Sıfırdan geliştirdiğim ve mağazalarda yayınladığım uygulamalar.
+            Sıfırdan geliştirdiğim ve yayınladığım bana ait uygulamalar.
           </p>
         </div>
 

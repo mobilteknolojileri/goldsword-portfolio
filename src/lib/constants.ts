@@ -569,7 +569,7 @@ export const PROJECTS = [
     slug: "gmb-optimizasyonu",
     title: "Google My Business Optimizasyonu",
     description:
-      "Yerel SEO görünürlüğünü artıran profil, içerik ve görsel optimizasyon çalışması (çok lokasyonlu yapı).",
+      "Uzaktan hizmetlerle işletmenizin yerel SEO görünürlüğünü artıracak profesyonel Google My Business optimizasyonu. Profil tamamlama, AI görsel iyileştirme ve stratejik yönetim.",
     category: "SEO",
     technologies: ["Google My Business", "SEO", "AI Görsel İyileştirme", "Yerel SEO"],
     color: "from-red-500 to-orange-500",
