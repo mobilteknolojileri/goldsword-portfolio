@@ -360,7 +360,7 @@ export const PROJECTS = [
     color: "from-blue-700 to-indigo-700",
     image: "/assets/projects/legends-of-aestera/hero.webp",
     detailedDescription:
-      "Unity ile assetler kullanarak geliştirilen 2D platformer macera oyunu. İki farklı karakter ile oynayabilen, 20+ seviye, boss savaşları ve çeşitli mekanikler içeren kapsamlı bir oyun projesi. Google Play Store'da kapalı test aşamasında.",
+      "Unity ile assetler kullanarak geliştirilen 2D platformer macera oyunu. İki farklı karakter ile oynayabilen, 20+ seviye, boss savaşları ve çeşitli mekanikler içeren kapsamlı bir oyun projesi. Google Play Store'da yayında.",
     features: [
       "İki karakter: Red (kılıç kombo), Robinhood (okçuluk)",
       "20+ el yapımı seviye - tuzak, gizli geçit, bulmaca",
