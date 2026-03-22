@@ -18,7 +18,7 @@ const Hero = () => {
           <div className="mb-6 flex justify-center">
             <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-primary-500 shadow-xl sm:h-40 sm:w-40 md:h-48 md:w-48">
               <img
-                src="/assets/images/profile.png"
+                src="/assets/images/profile.webp"
                 alt="goldsword profil fotoğrafı"
                 className="h-full w-full object-cover"
                 loading="eager"
@@ -47,7 +47,7 @@ const Hero = () => {
 
           <div className="mb-8 flex justify-center px-4 md:mb-12">
             <Magnetic strength={0.2}>
-              <a href="/portfolio/" className="w-full max-w-sm">
+              <a href="/portfolio" className="w-full max-w-sm">
                 <Button size="lg" className="w-full rounded-2xl py-6 text-xl font-black shadow-xl">
                   <span className="flex items-center justify-center gap-4">
                     <svg

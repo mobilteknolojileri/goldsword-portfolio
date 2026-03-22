@@ -92,7 +92,7 @@ const FeaturedApps = () => {
 
         <div className="mt-16 px-4 text-center">
           <Magnetic strength={0.2}>
-            <a href="/portfolio/" className="inline-block w-full sm:w-auto">
+            <a href="/portfolio" className="inline-block w-full sm:w-auto">
               <button className="text-heading flex w-full items-center justify-center gap-3 rounded-2xl border-2 border-gray-100 bg-white px-10 py-4 font-bold shadow-[0_5px_15px_rgba(0,0,0,0.05)] transition-all hover:-translate-y-1 hover:border-primary-500 hover:shadow-2xl dark:border-dark-700 dark:bg-dark-800 dark:hover:border-primary-500 sm:w-auto">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

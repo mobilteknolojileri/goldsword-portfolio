@@ -34,7 +34,7 @@ export default function ProjectDetail({ project, allProjects }: ProjectDetailPro
             </a>
             <span className="text-muted/30">/</span>
             <a
-              href="/portfolio/"
+              href="/portfolio"
               className="inline-flex items-center gap-2 font-semibold text-primary-600 transition-colors hover:text-primary-700"
             >
               <FaArrowLeft />

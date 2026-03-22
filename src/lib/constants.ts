@@ -1,4 +1,4 @@
-﻿export const NAV_ITEMS = [
+export const NAV_ITEMS = [
   { label: "Ana Sayfa", href: "/" },
   { label: "Portfolyo", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
@@ -20,7 +20,7 @@ export const PROJECTS = [
       "Zustand",
     ],
     color: "from-indigo-500 to-blue-400",
-    image: "/assets/projects/kafadar-mobile/icon.png",
+    image: "/assets/projects/kafadar-mobile/icon.webp",
     detailedDescription:
       "Arkadaşlarınızın sizi ne kadar iyi tanıdığını test eden, eğlenceli ve paylaşılabilir bir mobil uygulama. Özelleştirilebilir temalar, emoji avatarlar ve dinamik leaderboard özellikleri içerir.",
     features: [
@@ -111,7 +111,7 @@ export const PROJECTS = [
       "Gmail SMTP",
     ],
     color: "from-teal-500 to-green-500",
-    image: "/assets/projects/ingilizceciyiz/hero.png",
+    image: "/assets/projects/ingilizceciyiz/hero.webp",
     detailedDescription:
       "Mevcut İngilizceciyiz eğitim uygulamasının tamamen modernize edilmesi. 16.000+ aktif kullanıcıya hizmet veren uygulamanın hem mobil hem backend tarafı yeniden yapılandırıldı. Admin panel ile merkezi içerik yönetimi, akıllı evrak sistemi ve premium üyelik entegre edildi.",
     features: [
@@ -163,7 +163,7 @@ export const PROJECTS = [
     category: "Backend",
     technologies: ["Flutter", "Node.js", "Socket.io", "PostgreSQL", "Redis", "Firebase", "Docker"],
     color: "from-blue-600 to-indigo-600",
-    image: "/assets/projects/yanitla-kazan/hero.png",
+    image: "/assets/projects/yanitla-kazan/hero.webp",
     detailedDescription:
       "Müşterinin mevcut uygulamasına sıfırdan backend API yazılıp Hetzner sunucusunda yayına alındı. Chat sistemi ve arkadaşlık modülünün hem backend API hem frontend ekranları geliştirildi. Medya paylaşımı, sesli mesaj ve emoji desteği eklendi.",
     features: [
@@ -229,7 +229,7 @@ export const PROJECTS = [
     category: "Mobile",
     technologies: ["Flutter", "GetX", "Firebase", "AdMob", "In-App Purchase"],
     color: "from-cyan-600 to-blue-600",
-    image: "/assets/projects/digital-detox/hero.png",
+    image: "/assets/projects/digital-detox/hero.webp",
     detailedDescription:
       "Kullanıcıların dijital bağımlılıklarını yönetmelerine yardımcı olan kapsamlı bir mobil uygulama. Clean Architecture prensiplerine uygun şekilde sıfırdan geliştirildi.",
     features: [
@@ -358,7 +358,7 @@ export const PROJECTS = [
     category: "Game",
     technologies: ["Unity", "C#", "Game Design", "Android"],
     color: "from-blue-700 to-indigo-700",
-    image: "/assets/projects/legends-of-aestera/hero.png",
+    image: "/assets/projects/legends-of-aestera/hero.webp",
     detailedDescription:
       "Unity ile assetler kullanarak geliştirilen 2D platformer macera oyunu. İki farklı karakter ile oynayabilen, 20+ seviye, boss savaşları ve çeşitli mekanikler içeren kapsamlı bir oyun projesi. Google Play Store'da kapalı test aşamasında.",
     features: [
@@ -401,7 +401,7 @@ export const PROJECTS = [
     category: "Mobile",
     technologies: ["Android", "Java/Kotlin", "XML", "i18n"],
     color: "from-blue-500 to-cyan-500",
-    image: "/assets/projects/safeknot-app/hero.png",
+    image: "/assets/projects/safeknot-app/hero.webp",
     detailedDescription:
       "Ebeveynlerin çocuklarının dijital aktivitelerini takip edebilmeleri için geliştirilen mobil uygulama. Mevcut geleneksel XML tabanlı arayüz modernize edilerek kullanıcı deneyimi iyileştirildi.",
     features: [
@@ -437,7 +437,7 @@ export const PROJECTS = [
     category: "Game",
     technologies: ["HTML5", "Capacitor", "Android", "AdMob", "Canvas API"],
     color: "from-yellow-500 to-orange-500",
-    image: "/assets/projects/numeric-wheel/hero.png",
+    image: "/assets/projects/numeric-wheel/hero.webp",
     detailedDescription:
       "Müşterinin çalışmayan HTML5 puzzle oyununun Android'e portlanması ve Play Store için optimize edilmesi. Üç aşamalı geliştirme sürecinde oyun tamamen yeniden yapılandırıldı.",
     features: [
@@ -478,7 +478,7 @@ export const PROJECTS = [
     category: "Mobile",
     technologies: ["Flutter", "Firebase", "UI/UX", "Material Design"],
     color: "from-teal-500 to-blue-500",
-    image: "/assets/projects/mood-tracker/hero.png",
+    image: "/assets/projects/mood-tracker/hero.webp",
     detailedDescription:
       "Flutter ruh hali takip uygulamasının modern kütüphaneler ve tasarım prensipleriyle tamamen yenilenmesi. Mevcut kod tabanı korunarak modernize edildi.",
     features: [
@@ -543,7 +543,7 @@ export const PROJECTS = [
       "Push Notifications",
     ],
     color: "from-indigo-500 to-blue-600",
-    image: "/assets/projects/getyo-admin/hero.png",
+    image: "/assets/projects/getyo-admin/hero.webp",
     detailedDescription:
       "Frozen Yogurt Cafe işletmesinin tüm operasyonlarını tek yerden yönetmek için sıfırdan geliştirilmiş admin paneli. Flavor yönetimi, oylama sistemi, topping kontrolü, push notification gönderimi, müşteri yorumları ve geri bildirimler.",
     features: [
@@ -573,7 +573,7 @@ export const PROJECTS = [
     category: "SEO",
     technologies: ["Google My Business", "SEO", "AI Görsel İyileştirme", "Yerel SEO"],
     color: "from-red-500 to-orange-500",
-    image: "/assets/projects/gmb-optimizasyonu/hero.png",
+    image: "/assets/projects/gmb-optimizasyonu/hero.webp",
     detailedDescription:
       "Frozen Yogurt Cafe işletmesinin Google My Business profilinin tamamen optimize edilmesi. Görsel iyileştirme, SEO stratejisi ve profil yönetimi yapıldı.",
     features: [
@@ -610,7 +610,7 @@ export const PROJECTS = [
     category: "Design",
     technologies: ["Canva", "Brand Identity", "Social Media Design", "Visual Design"],
     color: "from-blue-400 to-indigo-400",
-    image: "/assets/projects/graphic-design/hero.png",
+    image: "/assets/projects/graphic-design/hero.webp",
     detailedDescription:
       "Farklı markalar için hazırlanmış logo, branding, Instagram story/post ve reklam tasarımları. Her proje müşterinin marka kimliğine uygun, modern ve çekici görseller içeriyor.",
     features: [
@@ -645,7 +645,7 @@ export const PROJECTS = [
       "Drag & Drop",
     ],
     color: "from-blue-600 to-cyan-600",
-    image: "/assets/projects/tracker-web/hero.png",
+    image: "/assets/projects/tracker-web/hero.webp",
     detailedDescription:
       "Kişisel finansal yönetim ve görev takibi için geliştirilmiş full-stack web uygulaması. Supabase backend ile kullanıcı başına özel veri, otomatik durum hesaplamaları ve drag & drop ile sıralama sistemi.",
     features: [
@@ -692,7 +692,7 @@ export const PROJECTS = [
       "Quick Crypto",
     ],
     color: "from-indigo-600 to-blue-500",
-    image: "/assets/projects/qusafe-mobile/icon.png",
+    image: "/assets/projects/qusafe-mobile/icon.webp",
     detailedDescription:
       "Hassas şifrelerinizi, notlarınızı ve medya dosyalarınızı koruyan zero-knowledge mimarili, yüksek güvenlikli şifreli kasa uygulaması.",
     features: [
