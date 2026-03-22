@@ -4,10 +4,16 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
 
+# GPTBot - OpenAI
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
+# Google-Extended - Gemini/SGE
+User-agent: Google-Extended
+Allow: /
+
+# CCBot - Common Crawl
 User-agent: CCBot
-Disallow: /
+Allow: /
 
 Sitemap: https://goldsword.dev/sitemap-index.xml
