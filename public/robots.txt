@@ -3,6 +3,8 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
+Disallow: /opengraph-image
+Disallow: /_next/
 
 # GPTBot - OpenAI
 User-agent: GPTBot
