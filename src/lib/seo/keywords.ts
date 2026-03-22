@@ -41,6 +41,8 @@ export const SEO_KEYWORDS = {
       "yazılım geliştirici",
       "flutter geliştirici",
       "react native geliştirici",
+      "oyun geliştirici",
+      "otomasyon geliştirici",
     ],
     secondary: [
       "web tasarım",
@@ -51,6 +53,9 @@ export const SEO_KEYWORDS = {
       "şifreli kasa uygulaması",
       "güvenli not defteri",
       "parola yöneticisi geliştirme",
+      "finans takip uygulaması",
+      "görev yönetim sistemi",
+      "artes otomasyon yazılımı",
     ],
     local: [
       "gaziantep yazılımcı",
@@ -58,6 +63,8 @@ export const SEO_KEYWORDS = {
       "gaziantep mobil uygulama",
       "gaziantep freelancer",
       "gaziantep web tasarım",
+      "gaziantep seo",
+      "nizip web tasarım",
     ],
   },
   technologies: [
@@ -69,6 +76,7 @@ export const SEO_KEYWORDS = {
     "Python",
     "TypeScript",
     "Unity",
+    "Godot 4",
     "TensorFlow",
     "MongoDB",
     "PostgreSQL",
