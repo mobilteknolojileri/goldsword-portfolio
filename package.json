@@ -10,7 +10,8 @@
     "fix": "eslint \"src/**/*.{ts,tsx}\" --fix && prettier --write \"**/*.{astro,tsx,ts,md,json,css,mjs}\" && astro check",
     "lighthouse": "unlighthouse --site http://localhost:4321",
     "lighthouse:ci": "unlighthouse-ci --site http://localhost:4321",
-    "lighthouse:live": "unlighthouse --site https://goldsword.dev"
+    "lighthouse:live": "unlighthouse --site https://goldsword.dev",
+    "validate": "npm run check"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.2",

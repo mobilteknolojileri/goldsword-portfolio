@@ -8,21 +8,35 @@ on:
 
 jobs:
   quality:
-    name: Code Quality & Build
+    name: Lint, Type Check & Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate
-        run: npm run validate
+      - name: Lint & Format
+        run: npm run check
+
+      - name: Type Check
+        run: npx astro check
 
       - name: Build
         run: npm run build
+
+      - name: Verify sitemap
+        run: |
+          test -f dist/sitemap-index.xml && echo "✅ Sitemap index exists" || exit 1
+          test -f dist/sitemap-0.xml && echo "✅ Sitemap-0 exists" || exit 1
+
+      - name: Verify page count
+        run: |
+          PAGE_COUNT=$(find dist -name "index.html" | wc -l)
+          echo "✅ $PAGE_COUNT pages generated"
+          [ "$PAGE_COUNT" -ge 35 ] || (echo "❌ Expected at least 35 pages" && exit 1)
