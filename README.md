@@ -1,112 +1,99 @@
-# goldsword-portfolio
+# goldsword | Portfolio & Engineering Hub
 
-Personal portfolio and content site built to present selected software work, product pages, and blog content in a maintainable static setup.
+[![Astro](https://img.shields.io/badge/Astro-BC52EE?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-This repository is primarily focused on:
+A performance-focused portfolio and developer content platform built with Astro 5 and AI-assisted engineering workflows. This project serves as a production-grade showcase for software architecture, product-centric landing pages, and technical case studies.
 
-- portfolio presentation
-- landing pages for selected projects
-- blog content with structured metadata
-- a small contact flow
+## Vision
 
-## Stack
+This repository is more than a code collection; it is a manifestation of the shift from Tutorial-based learning to Product-centric engineering. It reflects a commitment to building, shipping, and validating real-world ideas rather than consuming endless tutorials. It bridges the gap between clean code and measurable business value.
 
-- Astro 5
-- React 19
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Astro Content Collections
-- EmailJS
+## Why This Project Matters
 
-## Why This Setup
+- Demonstrates real-world Island Architecture beyond basic tutorials.
+- Focuses on performance-first engineering and technical SEO.
+- Showcases product-centric thinking, emphasizing business impact over simple UI development.
 
-The project uses Astro for a mostly static output with selective React hydration where interaction is actually needed. The goal is to keep the site straightforward to maintain while still allowing richer UI in areas such as navigation, filtering, and contact.
+## Key Features
 
-## Project Structure
+- **Island Architecture:** Leverages Astro's partial hydration to deliver near-perfect Performance and Core Web Vitals.
+- **Product Presentation:** Data-driven project showcases for SaaS, mobile applications, and custom automation tools.
+- **Strategic Content:** A blog engine powered by MDX and Zod-validated content collections.
+- **AI-Assisted Workflows:** Built with AI-assisted methodologies (prompt-driven content drafting, code scaffolding, and SEO structuring).
+- **Technical SEO:** Enterprise-standard indexing (Canonical tags, trailing slash management, and JSON-LD schema).
+
+## The Stack
+
+- **Framework:** Astro 5 (Static Site Generation / Island Architecture)
+- **UI:** React 19, Tailwind CSS, Framer Motion
+- **Tooling:** TypeScript, ESLint, Prettier (Automated code validation)
+- **Email:** Serverless contact flow via EmailJS.
+
+## Project Organization
 
 ```text
 src/
-  components/   reusable UI and shared visual building blocks
-  config/       site and SEO configuration
-  content/      blog content and collection schema
-  features/     page-level sections and feature modules
-  layouts/      shared page layout
-  lib/          constants, helpers, and SEO utilities
-  pages/        Astro routes
-  styles/       global styles
+  components/   Shared visual atoms and interactive building blocks
+  config/       Global configuration & SEO token management
+  content/      Blog data with strict type-validation (Zod)
+  features/     Module-based page sections (Hero, Portfolio, Services)
+  layouts/      Core Page templates
+  lib/          SEO utilities, constant data, and helper functions
+  pages/        Astro routing (Blog, Projects, Services)
+  styles/       Global CSS and Design Tokens (Tailwind)
 
-public/         static assets
-docs/           small internal documentation
+public/         Static assets (Verification, Sitemap, Images)
+docs/           Internal developer conventions & style guides
 ```
 
-## Local Development
+## Getting Started
 
-Requirements:
+### Prerequisites
 
-- Node.js 18+
+- Node.js 18.x or higher
 - npm 9+
 
-Install dependencies:
+### Setup
 
 ```bash
+# Clone and install
 npm install
-```
 
-Start the development server:
-
-```bash
+# Run Dev Server
 npm run dev
 ```
 
-Default local URL:
+The site will be available at `http://localhost:4321`.
 
-```text
-http://localhost:4321
-```
+## Environment Configuration
 
-## Environment Variables
-
-Create a local `.env` file if you want the contact form and site metadata to behave as expected:
+Create a local `.env` file to enable contact & metadata features:
 
 ```bash
-PUBLIC_EMAILJS_SERVICE_ID=your_service_id
-PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
-PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+PUBLIC_EMAILJS_SERVICE_ID=your_id
+PUBLIC_EMAILJS_TEMPLATE_ID=your_id
+PUBLIC_EMAILJS_PUBLIC_KEY=your_key
 PUBLIC_SITE_URL=https://goldsword.dev
-PUBLIC_GOOGLE_VERIFICATION=your_verification_code
+PUBLIC_GOOGLE_VERIFICATION=your_code
 ```
 
-## Scripts
+## Developer Experience
 
-```bash
-npm run dev
-npm run build
-npm run preview
-npm run validate
-npm run fix
-```
+This project is built for reliability and speed:
 
-Short description:
-
-- `dev`: starts the Astro development server
-- `build`: creates the production build
-- `preview`: serves the built output locally
-- `validate`: runs Astro checks, ESLint, and Prettier checks
-- `fix`: runs ESLint fixes, Prettier write, and Astro checks
-
-## Notes
-
-- `nextjs-backup/` is kept only as migration reference material.
-- `public/` contains static files such as images, icons, `app-ads.txt`, and verification assets.
-- Project-specific pages such as `kafadar`, `qusafe`, and `legends-of-aestera` are part of this repository's route structure.
-
-## Deployment
-
-The site is intended to be deployed as a static Astro build. Vercel is the current target, but any host that can serve the generated output is suitable.
+- `npm run validate`: Runs Astro check, ESLint, and Prettier verification.
+- `npm run fix`: Automatic resolution of code quality and formatting issues.
+- `npm run build`: Production optimization and asset minification.
 
 ## Contact
 
-- Website: https://goldsword.dev
-- Email: mobilteknolojileri@gmail.com
-- GitHub: https://github.com/mobilteknolojileri
+- **Website:** [goldsword.dev](https://goldsword.dev)
+- **Email:** [mobilteknolojileri@gmail.com](mailto:mobilteknolojileri@gmail.com)
+- **GitHub:** [mobilteknolojileri](https://github.com/mobilteknolojileri)
+
+---
+
+_© 2026 goldsword. Built for performance, designed for impact._
