@@ -1,5 +1,5 @@
 ---
-title: "Tutorial Hell’den Çıkış: AI ile Gerçekten Öğrenip Üreten Geliştirici Olmak"
+title: "Tutorial Hell'den Çıkış: AI ile Öğrenen Geliştirici Olun"
 description: "Saatlerce eğitim tüketip hiçbir şey üretememe döngüsünü kırın. Yapay zekayı sadece kod yazdırmak için değil, mimari düşünen bir mentor gibi kullanmayı öğrenin."
 date: 2026-03-22
 tags: ["ai", "öğrenme", "yazılım", "verimlilik", "kariyer"]

@@ -1,5 +1,5 @@
 ---
-title: "Astro SEO Kâbusu: Sadece Bir '/' (Slash) Yüzünden Google Bizi Neden İndekslemedi?"
+title: "Astro SEO: Trailing Slash '/' Sorunu ve Çözümü"
 description: "Sitemizde her şey mükemmel görünürken, blog yazılarımızın Google'da çıkmamasının arkasındaki o ufak ama yıkıcı 'Trailing Slash' sorununu nasıl çözdüğümüzü anlatıyorum."
 date: 2026-03-22
 updated: 2026-03-22

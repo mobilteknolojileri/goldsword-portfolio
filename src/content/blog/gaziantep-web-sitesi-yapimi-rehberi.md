@@ -1,5 +1,5 @@
 ---
-title: "Gaziantep Web Sitesi Yapımı Rehberi: Planlamadan Yayınlamaya"
+title: "Gaziantep Web Sitesi Yapımı: Planlama ve Yayınlama"
 description: "Gaziantep'teki işletmeler için web sitesi sürecini analiz, tasarım, geliştirme ve sürekli bakım adımlarıyla anlatıyoruz."
 date: 2026-02-15
 updated: 2026-02-16

@@ -1,5 +1,5 @@
 ---
-title: "Astro'da sitemap-index.xml 404 Sorunu: Neden Olur, Nasıl Çözülür?"
+title: "Astro sitemap-index.xml 404 Sorunu ve Çözümü"
 description: "Astro projelerinde sitemap-index.xml dosyasının production ortamında 404 hatası vermesi sık rastlanan ama çözümü net bir problemdir. Bu yazıda bu hatanın gerçek nedenini detaylarıyla inceliyoruz."
 date: 2026-02-15
 updated: 2026-02-16

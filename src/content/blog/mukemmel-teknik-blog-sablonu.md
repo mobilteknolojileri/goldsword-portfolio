@@ -1,5 +1,5 @@
 ---
-title: "Geliştirici Blogları İçin Markdown Şablonum ve SEO Notlarım"
+title: "Geliştirici Blogları İçin Markdown Şablonu ve SEO"
 description: "Teknik blog yazarken hem okunabilirliği (UX) artıran hem de SEO'ya katkı sağlayan kullanışlı Markdown notlarım. Kendi kullandığım şablonu da aşağıya bıraktım."
 date: 2026-03-22
 updated: 2026-03-22
