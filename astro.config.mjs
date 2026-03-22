@@ -10,9 +10,12 @@ export default defineConfig({
     tailwind({
       configFile: "./tailwind.config.mjs",
     }),
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes("/blog/task"),
+    }),
   ],
   output: "static",
+  trailingSlash: "never",
   site: "https://goldsword.dev",
   image: {
     domains: ["images.unsplash.com"],

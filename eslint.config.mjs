@@ -26,6 +26,6 @@ export default [
 
   // Global ignores
   {
-    ignores: ["dist/", ".astro/", "node_modules/", "nextjs-backup/", "*.config.*"],
+    ignores: ["dist/", ".astro/", "node_modules/", "*.config.*"],
   },
 ];
