@@ -122,7 +122,7 @@ export const aesteraMetadata: Metadata = generateMetadata({
   description:
     "Red ve Robinhood ile epik bir macera. El yapımı bölümler, dinamik düşmanlar ve boss savaşları içeren piksel platform oyunu.",
   path: "/legends-of-aestera",
-  image: "/assets/projects/legends-of-aestera/hero.png",
+  image: "/assets/projects/legends-of-aestera/hero.webp",
   locale: "tr",
   keywords: ["2d platform oyunu", "aksiyon oyunu", "pixel art", "indie game", "unity game"],
 });
@@ -132,7 +132,7 @@ export const kafadarMetadata: Metadata = generateMetadata({
   description:
     "Quiz oluştur, paylaş ve skor karşılaştır. Gen Z odaklı eğlenceli arkadaşlık testi uygulaması.",
   path: "/kafadar",
-  image: "/assets/projects/kafadar-mobile/icon.png",
+  image: "/assets/projects/kafadar-mobile/icon.webp",
   locale: "tr",
   keywords: ["arkadaşlık testi", "quiz uygulaması", "arkadaş quiz", "friendship test"],
 });
