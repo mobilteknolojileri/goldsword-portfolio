@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
   name: "goldsword",
   titleSuffix: "| goldsword",
   description:
-    "Freelancer Yazılım & Web Tasarım. Mobil uygulama, web sitesi ve özel yazılım çözümleri.",
+    "Uzaktan hizmetle yazılım ve web tasarım hizmetleri. Mobil uygulama geliştirme, web siteleri ve profesyonel SEO çözümleriyle markanızı dijitalde büyütün.",
   url: "https://goldsword.dev",
   author: "goldsword",
   locale: "tr",
