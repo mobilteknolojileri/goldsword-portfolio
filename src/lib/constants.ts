@@ -394,42 +394,6 @@ export const PROJECTS = [
     ],
   },
   {
-    slug: "safeknot",
-    title: "SafeKnot - Ebeveyn Kontrol",
-    description:
-      "Çoklu dil ve RTL desteğiyle modernize edilen ebeveyn kontrol uygulaması; güvenli takip ve bildirim odaklı.",
-    category: "Mobile",
-    technologies: ["Android", "Java/Kotlin", "XML", "i18n"],
-    color: "from-blue-500 to-cyan-500",
-    image: "/assets/projects/safeknot-app/hero.webp",
-    detailedDescription:
-      "Ebeveynlerin çocuklarının dijital aktivitelerini takip edebilmeleri için geliştirilen mobil uygulama. Mevcut geleneksel XML tabanlı arayüz modernize edilerek kullanıcı deneyimi iyileştirildi.",
-    features: [
-      "XML arayüz modernizasyonu",
-      "UX iyileştirmeleri",
-      "Çoklu dil: Arapça, İngilizce, Almanca, Fransızca",
-      "Modern UI tasarım",
-      "Responsive optimizasyon",
-      "Performans iyileştirme",
-      "RTL dil desteği (Arapça)",
-    ],
-    challenges:
-      "XML yapısını koruyarak modernizasyon, 4 dil entegrasyonu, RTL (Right-to-Left) Arapça desteği",
-    links: [],
-    screenshots: [
-      "/assets/projects/safeknot-app/screenshot-1.webp",
-      "/assets/projects/safeknot-app/screenshot-2.webp",
-      "/assets/projects/safeknot-app/screenshot-3.webp",
-      "/assets/projects/safeknot-app/screenshot-4.webp",
-      "/assets/projects/safeknot-app/screenshot-5.webp",
-      "/assets/projects/safeknot-app/screenshot-6.webp",
-      "/assets/projects/safeknot-app/screenshot-7.webp",
-      "/assets/projects/safeknot-app/screenshot-8.webp",
-      "/assets/projects/safeknot-app/screenshot-9.webp",
-      "/assets/projects/safeknot-app/screenshot-10.webp",
-    ],
-  },
-  {
     slug: "numeric-wheel",
     title: "Numeric Wheel - Puzzle Oyunu",
     description:
