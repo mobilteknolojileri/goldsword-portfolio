@@ -1,99 +1,50 @@
-# goldsword | Portfolio & Engineering Hub
+# goldsword.dev
 
-[![Astro](https://img.shields.io/badge/Astro-BC52EE?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build/)
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+Source of [goldsword.dev](https://goldsword.dev), my portfolio and Turkish blog. I build mobile apps and websites and help with software problems on Android phones; the site shows that work, the case studies behind it and a few guides.
 
-A performance-focused portfolio and developer content platform built with Astro 5 and AI-assisted engineering workflows. This project serves as a production-grade showcase for software architecture, product-centric landing pages, and technical case studies.
+It's a static Astro 7 site styled with Tailwind CSS 4. React 19 is only used for the two interactive parts (the contact form and the password strength demo), and the case studies are written in MDX. Hosted on Vercel.
 
-## Vision
+## Running it
 
-This repository is more than a code collection; it is a manifestation of the shift from Tutorial-based learning to Product-centric engineering. It reflects a commitment to building, shipping, and validating real-world ideas rather than consuming endless tutorials. It bridges the gap between clean code and measurable business value.
-
-## Why This Project Matters
-
-- Demonstrates real-world Island Architecture beyond basic tutorials.
-- Focuses on performance-first engineering and technical SEO.
-- Showcases product-centric thinking, emphasizing business impact over simple UI development.
-
-## Key Features
-
-- **Island Architecture:** Leverages Astro's partial hydration to deliver near-perfect Performance and Core Web Vitals.
-- **Product Presentation:** Data-driven project showcases for SaaS, mobile applications, and custom automation tools.
-- **Strategic Content:** A blog engine powered by MDX and Zod-validated content collections.
-- **AI-Assisted Workflows:** Built with AI-assisted methodologies (prompt-driven content drafting, code scaffolding, and SEO structuring).
-- **Technical SEO:** Enterprise-standard indexing (Canonical tags, trailing slash management, and JSON-LD schema).
-
-## The Stack
-
-- **Framework:** Astro 5 (Static Site Generation / Island Architecture)
-- **UI:** React 19, Tailwind CSS, Framer Motion
-- **Tooling:** TypeScript, ESLint, Prettier (Automated code validation)
-- **Email:** Serverless contact flow via EmailJS.
-
-## Project Organization
-
-```text
-src/
-  components/   Shared visual atoms and interactive building blocks
-  config/       Global configuration & SEO token management
-  content/      Blog data with strict type-validation (Zod)
-  features/     Module-based page sections (Hero, Portfolio, Services)
-  layouts/      Core Page templates
-  lib/          SEO utilities, constant data, and helper functions
-  pages/        Astro routing (Blog, Projects, Services)
-  styles/       Global CSS and Design Tokens (Tailwind)
-
-public/         Static assets (Verification, Sitemap, Images)
-docs/           Internal developer conventions & style guides
-```
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.x or higher
-- npm 9+
-
-### Setup
+Needs Node 22.12 or newer.
 
 ```bash
-# Clone and install
-npm install
-
-# Run Dev Server
+npm ci
 npm run dev
 ```
 
-The site will be available at `http://localhost:4321`.
+The dev server runs at http://localhost:4321.
 
-## Environment Configuration
+- `npm run build` builds the site into `dist/`
+- `npm run preview` serves that build
+- `npm run check` runs astro check, ESLint and Prettier
+- `npm run fix` applies the ESLint and Prettier fixes
 
-Create a local `.env` file to enable contact & metadata features:
+## Environment
+
+Nothing is required. With these set, the contact form sends mail through EmailJS (without them it opens the visitor's mail app) and the search console verification tags are added:
 
 ```bash
-PUBLIC_EMAILJS_SERVICE_ID=your_id
-PUBLIC_EMAILJS_TEMPLATE_ID=your_id
-PUBLIC_EMAILJS_PUBLIC_KEY=your_key
+PUBLIC_EMAILJS_SERVICE_ID=
+PUBLIC_EMAILJS_TEMPLATE_ID=
+PUBLIC_EMAILJS_PUBLIC_KEY=
 PUBLIC_SITE_URL=https://goldsword.dev
-PUBLIC_GOOGLE_VERIFICATION=your_code
+PUBLIC_GOOGLE_VERIFICATION=
+PUBLIC_BING_VERIFICATION=
+PUBLIC_YANDEX_VERIFICATION=
 ```
 
-## Developer Experience
+## Where things are
 
-This project is built for reliability and speed:
+- `src/pages`: routes
+- `src/features`: home page sections
+- `src/components`, `src/layouts`: shared pieces and page layouts
+- `src/content`: blog posts (Markdown) and case studies (MDX)
+- `src/lib`: project data, reviews and SEO helpers
+- `src/styles/globals.css`: Tailwind theme and shared classes
 
-- `npm run validate`: Runs Astro check, ESLint, and Prettier verification.
-- `npm run fix`: Automatic resolution of code quality and formatting issues.
-- `npm run build`: Production optimization and asset minification.
+The case studies are Turkish versions of [mobilteknolojileri/case-studies](https://github.com/mobilteknolojileri/case-studies). Commit messages follow [docs/conventions/commit.md](docs/conventions/commit.md).
 
 ## Contact
 
-- **Website:** [goldsword.dev](https://goldsword.dev)
-- **Email:** [mobilteknolojileri@gmail.com](mailto:mobilteknolojileri@gmail.com)
-- **GitHub:** [mobilteknolojileri](https://github.com/mobilteknolojileri)
-
----
-
-_© 2026 goldsword. Built for performance, designed for impact._
+[mobilteknolojileri@gmail.com](mailto:mobilteknolojileri@gmail.com) · [GitHub](https://github.com/mobilteknolojileri) · [Bionluk](https://bionluk.com/goldsword)

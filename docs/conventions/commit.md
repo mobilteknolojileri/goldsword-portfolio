@@ -1,9 +1,6 @@
-# Commit Conventions
+# Commit conventions
 
-Conventional Commits format.
-
-> [!IMPORTANT]
-> To maintain backwards traceability of the project history, commits must be as **atomic** (one discrete change per commit) and **clear** as possible. Use plain English to explicitly describe the action performed.
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/). One change per commit, so the history stays easy to read and easy to revert.
 
 ## Format
 
@@ -32,7 +29,7 @@ Conventional Commits format.
 `pages` `blog` `seo` `legal` `portfolio` `hero` `services` `faq` `research`
 `contact` `config` `layout` `effects` `ui` `deps` `docs` `ci` `readme`
 
-> **Note:** For static assets (images, icons), use `chore(assets)`.
+Images, icons and fonts go under `chore(assets)`.
 
 ## Examples
 
@@ -49,64 +46,16 @@ perf(seo): add llms.txt for ai discoverability
 
 ## Rules
 
-- **Atomic**: One logical change per commit
-- **Imperative**: "add" not "added"
-- **Lowercase**: description starts lowercase
-- **No code identifiers**: Avoid function/class/constant names in subject:
-  - ❌ `add SITE_CONFIG import` → uppercase constant
-  - ❌ `fix useScrollAnimation` → code identifier
-  - ✅ `add site configuration` → descriptive text
-  - ✅ `fix scroll animation hook` → descriptive text
-- **No period**: no `.` at end
-- **Header max 72 chars**: type + scope + description combined
+- One logical change per commit
+- Imperative mood: "add", not "added"
+- Lowercase description, no period at the end
+- No code identifiers in the subject: "fix scroll animation hook", not "fix useScrollAnimation"
+- The whole header stays within 72 characters
 
-## Breaking Change
-
-Add `!` after scope:
+## Breaking changes, reverts, issues
 
 ```
 feat(seo)!: restructure schema output format
-```
-
-## Revert
-
-```
 revert: feat(blog): add new post
-```
-
-## Issue Reference
-
-```
 fix(legal): resolve missing privacy page (#42)
 ```
-
-## AI Instructions
-
-> [!CAUTION]
-> **DO NOT** execute git commands directly in the terminal. ALWAYS provide a bulk, copy-pasteable code block containing the commands for the user to run manually.
-
-When suggesting commits:
-
-1. **Batch format**: Provide commits as copy-pasteable PowerShell commands. **NO comment lines** (no `#` prefixes):
-
-```powershell
-git add "src/pages/kafadar/privacy-policy.astro" "src/pages/kafadar/delete-account.astro"
-git commit -m "feat(legal): add kafadar privacy and delete-account pages"
-
-git add "src/features/services/index.tsx"
-git commit -m "refactor(services): remove tech keyword badges"
-```
-
-2. **Quote all paths**: PowerShell requires quotes:
-
-```powershell
-git add "src/pages/blog/[slug].astro"
-```
-
-3. **Atomic commits**: Group related files, separate unrelated changes into different commits.
-
-4. **STRICT lowercase rule**: NEVER use camelCase, PascalCase or code identifiers in commit message subject:
-   - ❌ `use getMetadata function` → camelCase identifier
-   - ❌ `add BaseLayout component` → PascalCase identifier
-   - ✅ `use metadata helper` → descriptive lowercase
-   - ✅ `add base layout component` → descriptive lowercase
