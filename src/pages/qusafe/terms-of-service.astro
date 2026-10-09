@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Navbar from "@/components/layout/Navbar";
 
 const COMPANY_NAME = "QuSafe";
 const CONTACT_EMAIL = "mobilteknolojileri@gmail.com";
@@ -12,45 +11,48 @@ const JURISDICTION = "Türkiye / Gaziantep";
   title={`Terms of Service - ${COMPANY_NAME} | goldsword`}
   description={`${COMPANY_NAME} Terms of Service - Service rules, acceptable use, and legal terms.`}
 >
-  <Navbar client:load />
-
   <div class="mx-auto max-w-3xl px-4 pb-20 pt-32">
     <article>
       <div class="mb-8">
         <h1 class="text-heading mb-2 text-3xl font-bold">Terms of Service</h1>
-        <p class="text-body/60">Kullanım Şartları</p>
-        <p class="text-body/40 mt-4 text-sm">Last updated: December 2026</p>
+        <p class="text-muted">Kullanım Şartları</p>
+        <p class="text-muted mt-4 text-sm">Last updated: December 2025</p>
       </div>
 
       <div class="text-body space-y-8">
         <section>
           <h2 class="text-heading mb-4 text-xl font-semibold">1. Acceptance of Terms</h2>
           <p class="leading-relaxed">
-            <strong class="text-heading">{COMPANY_NAME}</strong> uygulamasını veya {WEBSITE_URL} üzerindeki
-            ilgili sayfaları kullanarak bu Kullanım Şartları'nı kabul etmiş olursunuz.
+            <strong class="text-heading">{COMPANY_NAME}</strong> uygulamasını veya {WEBSITE_URL}{" "}
+            üzerindeki ilgili sayfaları kullanarak bu Kullanım Şartları'nı kabul etmiş olursunuz.
           </p>
           <p class="mt-3 leading-relaxed">
-            By using <strong class="text-heading">{COMPANY_NAME}</strong> or the related pages at {
-              WEBSITE_URL
-            }, you agree to these Terms. If you do not agree, do not use the app.
+            By using <strong class="text-heading">{COMPANY_NAME}</strong> or the related pages at{" "}
+            {WEBSITE_URL}, you agree to these Terms. If you do not agree, do not use the app.
           </p>
         </section>
 
         <section>
           <h2 class="text-heading mb-4 text-xl font-semibold">2. Who We Are & Contact</h2>
           <p class="leading-relaxed">
-            Bu şartlar {COMPANY_NAME} için geçerlidir. Destek ve güvenlik bildirimleri için: <a
+            Bu şartlar {COMPANY_NAME} için geçerlidir. Destek ve güvenlik bildirimleri için:{" "}
+            <a
               href={`mailto:${CONTACT_EMAIL}`}
-              class="text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400"
-              >{CONTACT_EMAIL}</a
-            >.
+              class="text-primary-700 underline underline-offset-2 transition-colors hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
+            >
+              {CONTACT_EMAIL}
+            </a>
+            .
           </p>
           <p class="mt-3 leading-relaxed">
-            These Terms apply to {COMPANY_NAME}. For support and security reports: <a
+            These Terms apply to {COMPANY_NAME}. For support and security reports:{" "}
+            <a
               href={`mailto:${CONTACT_EMAIL}`}
-              class="text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400"
-              >{CONTACT_EMAIL}</a
-            >.
+              class="text-primary-700 underline underline-offset-2 transition-colors hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
+            >
+              {CONTACT_EMAIL}
+            </a>
+            .
           </p>
         </section>
 
@@ -64,8 +66,8 @@ const JURISDICTION = "Türkiye / Gaziantep";
             bazı ek özellikler sunabilir.
           </p>
           <p class="mt-3 leading-relaxed">
-            {COMPANY_NAME} is a vault-style app for passwords and similar sensitive data. It may offer
-            encrypted on-device storage, optional cloud sync, and additional features.
+            {COMPANY_NAME} is a vault-style app for passwords and similar sensitive data. It may
+            offer encrypted on-device storage, optional cloud sync, and additional features.
           </p>
         </section>
 
@@ -93,12 +95,13 @@ const JURISDICTION = "Türkiye / Gaziantep";
           </p>
           <ul class="ml-4 mt-3 list-inside list-disc space-y-2">
             <li>
-              TR: Tersine mühendislik / sömürü geliştirme / yetkisiz testler yasaktır.<br /> EN: Reverse
-              engineering, exploit development, or unauthorized security testing is prohibited.
+              TR: Tersine mühendislik / sömürü geliştirme / yetkisiz testler yasaktır.
+              <br /> EN: Reverse engineering, exploit development, or unauthorized security testing
+              is prohibited.
             </li>
             <li>
-              TR: Sorumlu güvenlik bildirimi için {CONTACT_EMAIL} üzerinden iletişime geçin.<br /> EN:
-              For responsible disclosure, contact {CONTACT_EMAIL}.
+              TR: Sorumlu güvenlik bildirimi için {CONTACT_EMAIL} üzerinden iletişime geçin.
+              <br /> EN: For responsible disclosure, contact {CONTACT_EMAIL}.
             </li>
           </ul>
         </section>
@@ -122,19 +125,25 @@ const JURISDICTION = "Türkiye / Gaziantep";
             7. Optional Cloud Sync & Third Parties
           </h2>
           <p class="leading-relaxed">
-            Bulut senkronizasyonu isteğe bağlı olabilir. Kasa içeriği cihazda şifrelenmiş halde
-            tutulabilir; yine de sınırlı meta veriler işlenebilir. Ayrıntılar için <a
+            Bulut senkronizasyonu isteğe bağlı olabilir. Kasa içeriği cihazda şifrelenmiş hâlde
+            tutulabilir; yine de sınırlı meta veriler işlenebilir. Ayrıntılar için{" "}
+            <a
               href="/qusafe/privacy-policy"
-              class="text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400"
-              >Gizlilik Politikası</a
-            >'na bakın.
+              class="text-primary-700 underline underline-offset-2 transition-colors hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
+            >
+              Gizlilik Politikası
+            </a>{" "}
+            sayfasına bakın.
           </p>
           <p class="mt-3 leading-relaxed">
-            Cloud sync may be optional. Vault content may be stored in encrypted form. See the <a
+            Cloud sync may be optional. Vault content may be stored in encrypted form. See the{" "}
+            <a
               href="/qusafe/privacy-policy"
-              class="text-primary-600 transition-colors hover:text-primary-700 dark:text-primary-400"
-              >Privacy Policy</a
-            > for details.
+              class="text-primary-700 underline underline-offset-2 transition-colors hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
+            >
+              Privacy Policy
+            </a>{" "}
+            for details.
           </p>
         </section>
 
@@ -153,23 +162,22 @@ const JURISDICTION = "Türkiye / Gaziantep";
           </p>
           <ul class="ml-4 mt-3 list-inside list-disc space-y-2">
             <li>
-              TR: Abonelikler otomatik yenilenebilir; iptal edilene kadar yenileme devam eder.<br /> EN:
-              Subscriptions may auto-renew until cancelled.
+              TR: Abonelikler otomatik yenilenebilir; iptal edilene kadar yenileme devam eder.
+              <br /> EN: Subscriptions may auto-renew until cancelled.
             </li>
             <li>
-              TR: Aboneliği yönetme/iptal etme işlemleri cihazınızın mağaza ayarlarından yapılır.<br
-              /> EN: Manage/cancel subscriptions from your device store settings.
+              TR: Aboneliği yönetme/iptal etme işlemleri cihazınızın mağaza ayarlarından yapılır.
+              <br /> EN: Manage/cancel subscriptions from your device store settings.
             </li>
             <li>
-              TR: İade/ücret itirazı süreçleri genellikle mağaza politikalarına tabidir.<br /> EN: Refunds/charge
-              disputes are typically governed by the store's policies.
+              TR: İade/ücret itirazı süreçleri genellikle mağaza politikalarına tabidir.
+              <br /> EN: Refunds/charge disputes are typically governed by the store's policies.
             </li>
           </ul>
-          <div
-            class="mt-6 rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-dark-700 dark:bg-dark-800"
-          >
+          <div class="mt-6 rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-dark-700 dark:bg-dark-800">
             <p class="leading-relaxed">
-              TR: Abonelikle ilgili destek için bize yazın: {CONTACT_EMAIL}<br />
+              TR: Abonelikle ilgili destek için bize yazın: {CONTACT_EMAIL}
+              <br />
               EN: For subscription support, contact: {CONTACT_EMAIL}
             </p>
           </div>
@@ -184,8 +192,8 @@ const JURISDICTION = "Türkiye / Gaziantep";
             yazılım ve kriptografi zamanla değişir. Mutlak güvenlik garantisi veremeyiz.
           </p>
           <p class="mt-3 leading-relaxed">
-            {COMPANY_NAME} aims to follow widely accepted security practices. However, software and cryptography
-            evolve. We do not provide an absolute security guarantee.
+            {COMPANY_NAME} aims to follow widely accepted security practices. However, software and
+            cryptography evolve. We do not provide an absolute security guarantee.
           </p>
         </section>
 
@@ -194,8 +202,8 @@ const JURISDICTION = "Türkiye / Gaziantep";
             10. Warranty Disclaimer & Limitation of Liability
           </h2>
           <p class="leading-relaxed">
-            Uygulama "olduğu gibi" sunulur. Uygulanabilir hukuk izin verdiği ölçüde, tüm garantileri
-            reddederiz. Dolaylı, arızi, özel veya sonuç olarak doğan zararlardan sorumlu
+            Uygulama "olduğu gibi" sunulur. Uygulanabilir hukukun izin verdiği ölçüde, tüm
+            garantileri reddederiz. Dolaylı, arızi, özel veya sonuç olarak doğan zararlardan sorumlu
             tutulamayız.
           </p>
           <p class="mt-3 leading-relaxed">
@@ -222,8 +230,8 @@ const JURISDICTION = "Türkiye / Gaziantep";
         <section>
           <h2 class="text-heading mb-4 text-xl font-semibold">12. Governing Law & Disputes</h2>
           <p class="leading-relaxed">
-            Bu şartlar {JURISDICTION} hukukuna göre yorumlanır; ancak zorunlu tüketici mevzuatından doğan
-            haklarınız saklıdır.
+            Bu şartlar {JURISDICTION} hukukuna göre yorumlanır; ancak zorunlu tüketici mevzuatından
+            doğan haklarınız saklıdır.
           </p>
           <p class="mt-3 leading-relaxed">
             These Terms are governed by the laws of {JURISDICTION}, without prejudice to mandatory
