@@ -1,8 +1,8 @@
 ---
 title: "Astro SEO İçin 10 Maddelik Teknik Kontrol Listesi"
-description: "Astro tabanlı sitelerde taranabilirlik, hız ve zengin sonuç performansını artırmak için pratik bir teknik SEO kontrol listesi hazırladık."
+description: "Astro ile yaptığım siteleri yayına almadan önce kullandığım teknik SEO kontrol listesi: canonical, sitemap, görseller, meta etiketleri, yapılandırılmış veri ve performans için 10 madde."
 date: 2026-02-15
-updated: 2026-02-16
+updated: 2026-10-07
 tags: ["seo checklist", "astro", "teknik seo", "web performans"]
 category: "seo"
 heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
@@ -10,92 +10,65 @@ draft: false
 intent: "how-to"
 faq:
   - question: "Bu listedeki maddeleri hangi sırayla uygulamalıyım?"
-    answer: "Önce taranabilirlik ve canonical kontrollerini yapın, sonra schema ve performans maddelerine geçin. En son Search Console ile doğrulama yapın."
+    answer: "Önce taranabilirlik ve canonical kontrollerini yapın, ardından yapılandırılmış veri ve performans maddelerine geçin. En sonda her şeyi Search Console'dan doğrulayın."
 ---
 
-> 💡 **TL;DR:** Sitenizin indekslenmesi ve hızlı açılması için sadece temiz kod yazmak yetmez. Astro projelerinde sitemap, image optimization, robots.txt ve meta etiketlerinin kusursuz bir uyum içinde olması gerekir.
+Temiz kod, bir sitenin dizine girmesi ve hızlı açılması için tek başına yetmiyor. Astro projelerinde sitemap'in, görsel optimizasyonunun, `robots.txt` dosyasının ve meta etiketlerinin birbiriyle uyumlu çalışması gerekiyor.
 
-Yeni bir Astro projesi ayağa kaldırdığımızda hız testlerinden 100/100 almak harika hissettiriyor ama SEO altyapısını kurmayı atlarsak o hızın hiçbir anlamı kalmıyor. Kendi projelerimde "canlıya almadan önce" her defasında baştan araştırma yapmamak için oluşturduğum pratik bir teknik SEO kontrol listem var. Hazır elimde varken, bu listeyi derleyip toparlamak istedim.
+Yeni bir Astro projesinin hız testlerinden 100/100 alması insanın hoşuna gidiyor. Bununla birlikte, SEO altyapısı hazır değilse o hızın pek bir anlamı kalmıyor. Kendi projelerimi canlıya almadan önce her seferinde aynı şeyleri baştan araştırmamak için bir teknik SEO kontrol listesi çıkardım. Aşağıdaki liste onun toparlanmış hâli.
 
-> 💡 **Peki Neden Özellikle Astro?** Astro, "Zero JS by default" (varsayılan olarak sıfır JS) yaklaşımıyla en hızlı yüklenen web sayfalarını sunarak Google'ın Core Web Vitals metriklerinde bizi otomatik olarak 1-0 öne geçiriyor.
+Astro'nun burada bir avantajı var: “Zero JS by default” yaklaşımıyla sayfaya varsayılan olarak hiç JavaScript göndermiyor. Bu da Core Web Vitals metriklerinde işe bir adım önde başlamak demek.
 
-İşte sitenizi yayına almadan önce kontrol etmeniz gereken **10 kritik madde**:
+Gerisi ayarlara kalıyor. Yayından önce kontrol etmenizi önerdiğim 10 madde aşağıda.
 
-## 1. Canonical URL Yapılandırması
+## 1. Canonical URL yapılandırması
 
-Her sayfanın tekil olduğunu arama motorlarına bildirmek için `canonical` etiketini mutlaka kullanın.
+Her sayfanın asıl adresini arama motorlarına `canonical` etiketiyle bildirin. Böylece yinelenen içerik (duplicate content) sorununun önüne geçersiniz. Adresi her sayfaya elle yazmak yerine `Astro.url` ile dinamik olarak üretin.
 
-- Yinelenen içerik (duplicate content) cezasından kaçının.
-- `Astro.url` kullanarak dinamik linkler oluşturun.
+## 2. `robots.txt` ve sitemap entegrasyonu
 
-## 2. Robots.txt ve Sitemap Entegrasyonu
+Botların sitede yolunu bulabilmesi için önce `@astrojs/sitemap` paketini kurun. Ardından `robots.txt` dosyasında sitemap adresini açıkça belirtin.
 
-Arama motoru botlarının yolunu kaybetmemesi için:
+## 3. Görsel optimizasyonu
 
-- `@astrojs/sitemap` paketini kurun.
-- `robots.txt` dosyanızda sitemap adresini açıkça belirtin.
+Bu maddede işin çoğunu Astro'nun yerleşik `<Image />` bileşeni üstleniyor:
 
-## 3. Image Optimization (Görsel Optimizasyonu)
+- Görselleri otomatik olarak WebP formatına çevirir.
+- Boyut belirtmeyi zorunlu tuttuğu için sayfa yüklenirken düzen kaymasını (CLS) önler.
+- Geç yükleme (lazy loading) ile ilk açılışı hızlandırır.
 
-Astro'nun yerleşik `<Image />` bileşeni hayat kurtarır:
+## 4. Meta etiketleri ve Open Graph
 
-- Görselleri otomatik olarak **WebP** formatına çevirir.
-- CLS (Cumulative Layout Shift) sorununu çözmek için boyutlandırmayı zorunnu kılar.
-- **Lazy loading** ile ilk yükleme hızını artırır.
+Sayfa başlığı tek başına yetmez. Bağlantılarınızın sosyal medyada düzgün görünmesi için `og:image`, `og:title` ve `og:description` etiketlerini her sayfaya ayrı ayrı yazın. Twitter card tipini de belirleyin.
 
-## 4. Metadata ve Open Graph Yönetimi
+## 5. Yapılandırılmış veri ve zengin sonuçlar
 
-Sadece başlık yetmez! Sosyal medyada paylaşım kalitesi için:
+Sayfalara JSON-LD formatında yapılandırılmış veri ekleyin. Blog yazılarında `BlogPosting`, hizmet sayfalarında `Service` şemasını kullanın. Bu işaretleme, Google'ın sayfanın neyi anlattığını anlamasına yardımcı olur; üstelik sayfa zengin sonuçla gösterildiğinde tıklanma oranını (CTR) da artırabilir.
 
-- `og:image`, `og:title` ve `og:description` etiketlerini her sayfa için özelleştirin.
-- Twitter card tipini belirlemeyi unutmayın.
+Zengin sonuç ise garanti değil. Nitekim Google, SSS zengin sonuçlarını Ağustos 2023'ten itibaren yalnızca tanınmış devlet ve sağlık sitelerinde gösteriyordu; 7 Mayıs 2026'dan beri hiçbir sitede göstermiyor. Bir işletme kendisi hakkındaki yorumları kendi sitesinde yayımlıyorsa, o yorumların yıldızlarını da 2019'dan beri göstermiyor.
 
-## 5. Schema Markup (Zengin Sonuçlar)
+## 6. Sayfalandırma ve iç bağlantılar
 
-Google'da yıldızlı veya SSS (FAQ) şeklinde görünmek için:
+Botların sitenin derindeki sayfalara da ulaşabilmesi için kategori ve etiket sayfalarını doğru kurgulayın. Yazıların altına bir “ilgili yazılar” bölümü ekleyin; sayfalar birbirine bağlandıkça hem okuyucu hem bot sitede dolaşmaya devam eder.
 
-- **JSON-LD** formatında yapılandırılmış veri ekleyin.
-- Blog yazıları için `BlogPosting`, hizmetler için `Service` şemalarını kullanın.
+## 7. Yazı tipleri ve LCP (Largest Contentful Paint)
 
-> **İpucu:** Yapılandırılmış veriler, arama sonuçlarındaki tıklanma oranınızı (CTR) anlamlı ölçüde artırır.
+Yazı tiplerinin geç yüklenmesi performansı düşürür. Google Fonts kullanıyorsanız yazı tiplerini kendi sunucunuzda barındırın ya da `font-display: swap` kullanın. Sayfanın ilk ekranında kullanılan yazı tiplerini de preload edin.
 
-## 6. Sayfalandırma ve İç Linkleme
+## 8. 404 sayfası ve hata yönetimi
 
-Botların sitemizin derinliklerine inmesi için:
+Yanlış bir adrese düşen ziyaretçiyi kaybetmemek için markanıza uygun, onu sitenin geri kalanına yönlendiren bir 404 sayfası tasarlayın. Kırık bağlantıları da düzenli olarak kontrol edin.
 
-- Kategori ve etiket sayfalarını doğru kurgulayın.
-- İlgili yazılar (related posts) bölümüyle sirkülasyonu sağlayın.
+## 9. Mobil uyumluluk ve dokunma hedefleri
 
-## 7. Yazı Tipleri ve LCP (Largest Contentful Paint)
+Sayfayı önce telefon için düşünün. Düğmelere ve bağlantılara parmakla rahatça dokunulabildiğini test edin, `viewport` meta etiketinin de doğru tanımlandığından emin olun.
 
-Yazı tiplerinin geç yüklenmesi performansı düşürür:
+## 10. Performans testi ve sürekli takip
 
-- Google Fontlarını yerel olarak barındırın veya `font-display: swap` kullanın.
-- Kritik yazı tiplerini **preload** edin.
+Yayına çıkmadan önce Lighthouse ya da PageSpeed Insights skorunuz en az 90 olmalı. Gerçek kullanıcı verilerini (RUM) izleyecek araçları da bu aşamada bağlayın.
 
-## 8. 404 Sayfası ve Hata Yönetimi
+## Yayından sonra
 
-Kullanıcıyı kaybetmemek için:
+Teknik SEO aslında bir kere yapılıp unutulan bir iş değil. Astro sağlam bir altyapı sunuyor; aramadaki görünürlük ise bu altyapıyı doğru yapılandırmanıza bağlı.
 
-- Markanıza uygun, eğlenceli ve yönlendirici bir **404 sayfası** tasarlayın.
-- Ölü linkleri düzenli olarak kontrol edin.
-
-## 9. Mobil Uyumluluk ve Dokunmatik Hedefler
-
-"Mobile-First" bir dünyadayız:
-
-- Butonların ve linklerin dokunulabilirliğini test edin.
-- `viewport` meta etiketinin doğruluğundan emin olun.
-
-## 10. Performans Testi ve Sürekli Takip
-
-Yayına çıkmadan önce:
-
-- **Lighthouse** veya **PageSpeed Insights** skoru 90+ olmalı.
-- Gerçek kullanıcı verilerini (RUM) izlemek için gerekli araçları bağlayın.
-
-## Sonuç
-
-Teknik SEO bir "yap ve unut" süreci değildir. Astro'nun sağladığı bu güçlü altyapıyı doğru yapılandırarak, dijital dünyada kalıcı bir görünürlük elde edebilirsiniz.
-
-Hala eksikleriniz olduğunu düşünüyorsanız [iletişim sayfamızdan](/#contact) teknik analiz talebinde bulunabilirsiniz. 👋
+Sitenizde hâlâ eksik bir şey olduğunu düşünüyorsanız [iletişim formundan](/#contact) teknik analiz isteyebilirsiniz.

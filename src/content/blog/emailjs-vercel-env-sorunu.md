@@ -1,28 +1,29 @@
 ---
 title: "EmailJS ve Vercel Üzerinde Environment Variable Sorunları"
-description: "Vercel üzerinde EmailJS yapılandırması sırasında karşılaşılan PUBLIC_ vs NEXT_PUBLIC_ ön ek karmaşası ve çözüm yolları."
+description: "Vercel'de EmailJS değişkenlerinin PUBLIC_ ve NEXT_PUBLIC_ ön ekleri karışınca iletişim formum canlıda “The public key is required” hatası verdi. Sorunun iki sebebini ve çözümünü yazdım."
 date: 2026-03-10
+updated: 2026-10-07
 tags: ["emailjs", "vercel", "environment-variables", "astro", "bug-fix"]
 category: "case-study"
 draft: false
 ---
 
-> 💡 **TL;DR:** Vercel üzerinde EmailJS ayarlarınızı yaparken değişken (ENV) adlarınızın başındaki `PUBLIC_` ve `NEXT_PUBLIC_` karmaşasına dikkat edin.
+Vercel'de EmailJS ayarlarını yaparken ortam değişkenlerinin adlarına, özellikle baştaki `PUBLIC_` ve `NEXT_PUBLIC_` ön eklerine dikkat edin.
 
-Geçtiğimiz günlerde Goldsword portfolyo sitesini Vercel üzerinde devreye alırken EmailJS ile ilgili beni saatlerce ekrana kitleyen ilginç bir sorunla karşılaştım. Yerelde (localhost) tıkır tıkır çalışan iletişim formu, prod ortamında aniden "The public key is required" hatası fırlatmaya başladı.
+Nitekim Goldsword portfolyo sitesini Vercel'de yayına alırken EmailJS tarafında saatlerimi alan bir sorunla karşılaştım. Localhost'ta düzgün çalışan iletişim formu, canlı ortamda birden “The public key is required” hatası vermeye başladı.
 
-## Sorunun Tespiti ve Orijini
+## Sorunun kaynağı
 
-Vercel Dashboard üzerinde çevre değişkenleri (environment variables) doğru şekilde tanımlanmış olmasına rağmen, Astro projesi bu değişkenleri okuyamıyordu. Yapılan incelemede sorunun iki ana nedeni olduğu anlaşıldı:
+Ortam değişkenleri (environment variables) Vercel Dashboard'da doğru şekilde tanımlanmıştı; buna karşın Astro projesi onları okuyamıyordu. İnceleyince sorunun iki sebebi olduğu ortaya çıktı:
 
-1.  **Prefix (Ön Ek) Uyumsuzluğu:** Vercel üzerinde değişkenler `NEXT_PUBLIC_` ön ekiyle tanımlanmışken, kod içerisinde `PUBLIC_` ön ekiyle aranıyordu.
-2.  **Client-Side Initialization:** EmailJS'in istemci tarafında (React bileşeni içinde) açıkça başlatılmaması, prop geçişleri sırasında zamanlama sorunlarına neden olabiliyordu.
+1. Ön ekler uyuşmuyordu. Değişkenler Vercel'de `NEXT_PUBLIC_` ön ekiyle tanımlanmıştı, kod ise onları `PUBLIC_` ön ekiyle arıyordu.
+2. EmailJS istemci tarafında, yani React bileşeninin içinde açıkça başlatılmıyordu. Bu da prop'lar aktarılırken zamanlama sorunlarına yol açabiliyordu.
 
-## Çözüm Adımları
+## Çözüm adımları
 
-### 1. Dinamik Önek Kontrolü
+### 1. İki ön eki de kontrol etmek
 
-Astro sayfalarında değişkenleri okurken her iki ön eki de kontrol edecek bir yapı kurduk:
+Astro sayfalarında değişkenleri okurken iki ön eke de bakan bir yapı kurdum:
 
 ```javascript
 const emailjsConfig = {
@@ -41,9 +42,9 @@ const emailjsConfig = {
 };
 ```
 
-### 2. Bileşen Düzeyinde Initialization
+### 2. EmailJS'i bileşenin içinde başlatmak
 
-React bileşeni yüklendiğinde `emailjs.init()` metodunu çağırarak anahtarı sisteme tanıttık:
+React bileşeni yüklendiğinde `emailjs.init()` metodunu çağırarak anahtarı EmailJS'e tanıttım:
 
 ```javascript
 useEffect(() => {
@@ -53,6 +54,6 @@ useEffect(() => {
 }, [emailjsConfig.publicKey]);
 ```
 
-## Sonuç
+## Benzer bir hata alıyorsanız
 
-Bu basit ama kritik dokunuşlar sayesinde hem yerel hem de canlı ortamda çalışan stabil bir iletişim formu elde ettik. Eğer siz de benzer bir hata alıyorsanız, öncelikle değişken adlarınızın framework'ünüzün beklediği formata uygun olup olmadığını kontrol edin.
+Bu iki değişiklikten sonra iletişim formu hem yerelde hem canlı ortamda düzgün çalıştı. Dolayısıyla siz de benzer bir hata alıyorsanız önce değişken adlarınızın, kullandığınız framework'ün beklediği biçimde olup olmadığını kontrol edin.

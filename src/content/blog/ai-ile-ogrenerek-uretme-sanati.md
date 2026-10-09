@@ -1,7 +1,8 @@
 ---
-title: "Tutorial Hell'den Çıkış: AI ile Öğrenen Geliştirici Olun"
-description: "Saatlerce eğitim tüketip hiçbir şey üretememe döngüsünü kırın. Yapay zekayı sadece kod yazdırmak için değil, mimari düşünen bir mentor gibi kullanmayı öğrenin."
+title: "Tutorial Hell'den Çıkış: AI ile Öğrenerek Üretmek"
+description: "Saatlerce eğitim izleyip hiçbir şey üretememe döngüsünü kırmak için yapay zekâyı nasıl kullandığımı yazdım: yalnızca kod yazdıran bir araç olarak değil, mimariyi birlikte düşündüğüm bir mentor olarak."
 date: 2026-03-22
+updated: 2026-10-07
 tags: ["ai", "öğrenme", "yazılım", "verimlilik", "kariyer"]
 category: "yazılım"
 heroImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2400&auto=format&fit=crop"
@@ -9,74 +10,42 @@ draft: false
 intent: "guide"
 ---
 
-Yazılıma giren herkesin düştüğü o tuzağı biliyorsun:  
-**Tutorial Hell.** (Eğitim Cehennemi)
+Yazılıma başlayan hemen herkesin düştüğü bir tuzak var, muhtemelen siz de tanıyorsunuz: tutorial hell, yani eğitim cehennemi.
 
-Saatlerce kurs izlenir. Notlar alınır. “Anladım ya” hissi gelir. Sonra VS Code açılır…  
-Ve boş ekran. Hiçbir şey yazamazsın.
+Saatlerce kurs izlersiniz, not alırsınız, "anladım ya" hissi gelir. Sonra VS Code'u açarsınız ve karşınızda boş bir ekran. Hiçbir şey yazamazsınız.
 
-Çünkü gerçek problem şudur:  
-**İzlemek ≠ Yapabilmek**
+Asıl sorun şu: İzlemek, yapabilmek demek değil.
 
-Ben bu döngüyü kırdığımda fark ettiğim şey şuydu:
+Bu döngüyü kırdığımda şunu fark ettim: Yapay zekâ döneminde en değerli beceri kod yazmak değil, doğru şeyi tasarlamak ve doğru soruyu sormak.
 
-> Yapay zeka çağında en değerli skill kod yazmak değil,  
-> **doğru şeyi tasarlamak ve doğru soruyu sormaktır.**
+## Önce öğrenip sonra yapmayı bıraktım
 
----
+Eski yöntemde 40 saat kurs izler, not alır, öğrendiklerinizi belki bir gün kullanırsınız. Öte yandan, yenisinde bir fikir bulur, doğrudan başlar ve öğrenirken üretirsiniz.
 
-## 1. Oyun Değişti: Önce Öğren, Sonra Yap Devri Bitti
-
-Eski model:
-
-- 40 saat kurs izle
-- Not al
-- Belki bir gün kullanırsın
-
-Yeni model:
-
-- Fikir bul
-- Direkt başla
-- Öğrenirken üret
-
-Artık şöyle çalışıyorum:
+Ben artık şöyle çalışıyorum:
 
 1. Bir fikir seçiyorum.
-2. Hiç bilmesem bile direkt projeye giriyorum.
-3. AI’a **“Bunu nasıl yaparım?”** değil, **“Bunu doğru şekilde nasıl tasarlarız?”** diye soruyorum.
+2. Konuyu hiç bilmesem bile doğrudan projeye giriyorum.
+3. Yapay zekâya "Bunu nasıl yaparım?" diye değil, "Bunu doğru şekilde nasıl tasarlarız?" diye soruyorum.
 
----
+## Yapay zekâdan kod değil, mimari isteyin
 
-## 2. AI’a Kod Değil, Mimari Sordur
+Çoğu kişinin düştüğü hata, yapay zekâya "Bana X uygulamasının kodunu yaz" demek. Bu sizi geliştirici yapmaz, kopyala-yapıştır operatörü yapar.
 
-Çoğu kişinin yaptığı en büyük hata:
+"Login sistemi yaz" demek yerine şunları isteyin:
 
-> “Bana X uygulaması kodunu yaz”
+- "JWT tabanlı kimlik doğrulama sistemi için production seviyesinde bir mimari kur."
+- "Backend için katmanlı yapı (controller, service, repository) kullan."
+- "Güvenlik risklerini açıkla ve klasör yapısı öner."
+- "Sonra birlikte adım adım kodlayalım."
 
-Bu seni geliştirici yapmaz. Seni copy-paste operatörü yapar. Onun yerine şöyle sor:
+Fark burada başlıyor.
 
-### ❌ Kötü Prompt:
+## Planı yapay zekâya yaptırın, ama körü körüne değil
 
-- “Login sistemi yaz”
+Bir projeye başlarken ilk işim kod yazmak değil, plan yaptırmak. İlk mesajım şu: "Kod yazma. Önce proje planı çıkar."
 
-### ✅ Doğru Prompt:
-
-- “JWT tabanlı authentication sistemi için production-level bir mimari kur.”
-- “Backend için katmanlı yapı (controller, service, repository) kullan.”
-- “Security risklerini açıkla ve folder structure öner.”
-- “Sonra birlikte ADIM ADIM implement edelim.”
-
-İşte fark burada başlıyor.
-
----
-
-## 3. Proje Hiyerarşisini AI’a Kurdur (Ama Körü Körüne Değil)
-
-Bir projeye başlarken ilk yaptığım şey kod yazmak değil, plan yaptırmak:
-
-> “Kod yazma. Önce proje planı çıkar.”
-
-**Örnek prompt:**
+Örnek bir prompt:
 
 ```text
 Bir mobil uygulama geliştiriyorum. Özellikler:
@@ -96,68 +65,42 @@ Bana şunları ver:
 Kod yazma. Sadece plan ver.
 ```
 
-Bu sana şunları kazandırır:
+Böylece büyük resmi görmeyi ve projeyi bir bütün olarak düşünmeyi öğrenirsiniz. Üstelik kararları senior bir geliştirici gibi verme refleksi de buradan gelir.
 
-- Büyük resmi görme ve proje düşünme kası.
-- Senior gibi karar alma refleksi.
+## En önemli beceri: "Neden?" diye sormak
 
----
+Yapay zekâ size kod verdiğinde yapılabilecek en büyük hata, kod çalıştı diye "tamam" deyip geçmek. Onun yerine şunları sorun:
 
-## 4. En Kritik Skill: “Neden?” Diye Sormak
+- "Neden bu yapı seçildi?"
+- "Bunu daha basit yapamaz mıyız?"
+- "Bu ölçeklenir mi, yoksa production'da patlar mı?"
+- "Bu fonksiyonu async yazdın. Sync olsa ne olurdu?"
 
-AI sana kod verdiğinde en büyük hata: _"Çalıştı tamam!"_ deyip geçmektir. Hayır.
+Gerçek öğrenme o anda başlıyor.
 
-Şunları sor:
+## Yapay zekâ mentor olabilir, ama yöneten sizsiniz
 
-- “Neden bu yapı seçildi?”
-- “Bunu daha basit yapamaz mıyız?”
-- "Bu ölçeklenir mi veya production’da patlar mı?"
-- **“Bu fonksiyonu async yazdın. Sync olsa ne olurdu?”**
+Eskiden forumlarda soru soran biri bazen sert bir dille yargılanır, moral bozan cevaplar alırdı. Şimdi karşınızda sabrı tükenmeyen, aynı detayı istediğiniz kadar yeniden açıklayan bir araç var.
 
-İşte o an gerçek öğrenme başlıyor.
+Yalnız bir şartı var: Yapay zekâ kendi başına ne iyi bir emir kulu ne de iyi bir mentor. Başka bir deyişle, onu iyi yapan, sizin sorduğunuz sorular.
 
----
+## Bitirip yayına almak
 
-## 5. AI = Mentor (Ama Sen Yönetiyorsun)
+Kaç kurs bitirdiğiniz kimsenin umurunda olmaz, hatta kaç proje yaptığınız da. Bakılan şey, ne yayımladığınızdır.
 
-Eskiden forumlara girer, bazen sertçe yargılanır ve moral bozucu tepkiler alırdık. Şimdi ise karşında sınırsız sabrı olan, her detayı tekrar tekrar açıklayan bir güç var.
+Hedefiniz şu olsun: Küçük bir şey yapın, bitirin ve yayımlayın. Söz dizimiyle uğraşmayı ve boilerplate kod yazmayı büyük ölçüde yapay zekâya bırakabilirsiniz. Siz de ürün fikrine, kullanıcı deneyimine ve problemi çözmeye odaklanırsınız.
 
-Ama kritik nokta şu:
+## Adım adım yöntem
 
-> AI iyi bir köle değil, iyi bir mentor da değil.  
-> **Onu iyi yapan şey, senin sorduğun sorular.**
+1. Küçük bir proje seçin.
+2. Mimariyi yapay zekâya kurdurun.
+3. Kodu onunla birlikte yazın.
+4. Her satırı sorgulayın.
+5. Projeyi bitirin ve deploy edin.
+6. Yeni bir projeye geçin, aynı döngüyü tekrarlayın.
 
----
+## Asıl mesele nasıl kullandığınız
 
-## 6. Shipping Culture: Gerçek Geliştirici Olmanın Tek Yolu
+Eğitim izlemek size hazır olduğunuzu hissettirir, proje yapmak ise sizi geliştirir. Farkı aslında yapay zekâyı kullanmanız değil, onu nasıl kullandığınız belirler.
 
-Dünya şuna bakar:
-
-- Kaç kurs bitirdin? → Umursamaz.
-- Kaç proje yaptın? → Umursamaz.
-- **NE YAYINLADIN?** → **İşte buna bayılır.**
-
-Artık hedef şu olmalı: Küçük yap, bitir ve yayınla. AI sayesinde syntax ile uğraşmazsın, boilerplate yazmazsın. Sen şuna odaklanırsın: Ürün fikri, UX ve problem çözme.
-
----
-
-## 7. Gerçek Strateji (Net)
-
-1. Küçük bir proje seç.
-2. AI’a mimari kurdur.
-3. Kodları birlikte yaz.
-4. Her satırı sorgula.
-5. Bitir ve **deploy et.**
-6. Yeni projeye geç ve tekrarla.
-
----
-
-## Sonuç
-
-Tutorial izlemek seni hazır hissettirir. Proje yapmak seni geliştirir. Ama asıl farkı yaratan şey: Yapay zekayı kullanmak değil, **onu nasıl kullandığın.**
-
-Eğer doğru soruları sorarsan AI senin junior’ın değil, **Senior mentor’un** olur.
-
----
-
-**Son soru:** Sen AI’ı şu an nasıl kullanıyorsun? Kod yazdıran bir araç mı? Yoksa sana düşünmeyi öğreten bir mentor mu?
+Doğru soruları sorduğunuzda yapay zekâ, kod yazdırdığınız bir junior olmaktan çıkar; size düşünmeyi öğreten senior bir mentora dönüşür.

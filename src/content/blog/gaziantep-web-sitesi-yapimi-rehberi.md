@@ -1,86 +1,68 @@
 ---
-title: "Gaziantep Web Sitesi Yapımı: Planlama ve Yayınlama"
-description: "Gaziantep'teki işletmeler için web sitesi sürecini analiz, tasarım, geliştirme ve sürekli bakım adımlarıyla anlatıyoruz."
+title: "Gaziantep Web Sitesi Yapımı: Planlama ve Yayımlama"
+description: "Gaziantep'teki işletmeler için web sitesi yapımını adım adım anlattım: sitenin hedefi, site yapısı, altyapı seçimi, içerik planı, geliştirme ve yayından sonraki bakım."
 date: 2026-02-15
-updated: 2026-02-16
+updated: 2026-10-07
 tags: ["gaziantep web tasarım", "web sitesi yapımı", "dijital strateji", "astro"]
 category: "web"
 heroImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
 draft: false
 faq:
   - question: "Gaziantep'te web sitesi fiyatları nasıl belirlenir?"
-    answer: "Fiyat; sayfa sayısı, içerik yoğunluğu, entegrasyon ihtiyacı ve teknik altyapı kararlarına göre belirlenir. Net fiyat için kapsam dokümanı gerekir."
+    answer: "Fiyatı sayfa sayısı, içeriğin yoğunluğu, entegrasyon ihtiyacı ve altyapıyla ilgili teknik kararlar belirler. Dolayısıyla net fiyat için önce kapsamın bir dokümanda yazılı hâle gelmesi gerekir."
   - question: "Web sitesi ne kadar sürede yayına hazır olur?"
-    answer: "Kapsama göre değişir; kurumsal bir site ortalama 2-4 hafta, daha kapsamlı projeler 4-8 hafta içinde tamamlanır."
+    answer: "Kapsama göre değişir. Kurumsal bir site ortalama 2-4 hafta, daha büyük projeler 4-8 hafta içinde tamamlanır."
 intent: "guide"
 ---
 
-> 💡 **TL;DR:** Kaliteli bir web sitesi estetikten çok "hedef odaklı" planlamaya, temiz bir bilgi mimarisine ve Astro gibi güçlü bir teknik donanıma dayanmalıdır.
+Gaziantep'te rekabet eden bir işletme için web sitesi, "bir sitemiz olsun" diye yaptırılan bir vitrin değil. Doğrudan satış yaptığınız ve müşterinin güvenini kazandığınız bir kanal. Buna rağmen "hızlı yapalım bitsin, ucuza gelsin" anlayışıyla kurulan siteler yüzünden internette görünmez kalan birçok yerel işletme görüyorum.
 
-Gaziantep pazarında rekabet eden bir işletme için web sitesi artık "durumumuz var yaptıralım" dediğiniz bir vitrin değil; doğrudan **satış ve güven kanalınızdır**. Birçok yerel işletmenin "hızlı yapalım bitsin, ucuza gelsin" yaklaşımı yüzünden dijitalde nasıl görünmez olduğuna sıkça şahit oluyorum.
+Kaliteli bir site güzel görünmekle yetinmez. Neyi hedeflediği belli olmalı, bilgi mimarisi sade kurulmalı ve Astro gibi güçlü bir altyapının üstünde durmalı. Müşteriniz ister Gaziantep'te ister dünyanın başka bir yerinde olsun, güvenini kazanmak için sitenin hızlı açılması ve telefonda düzgün çalışması gerekir.
 
-> ⚠️ **Kritik İpucu:** Web siteniz sadece güzel görünmekle kalmamalı; Gaziantep'teki ve globaldeki potansiyel müşterilerinizin güvenini kazanacak kadar hızlı, sorunsuz ve mobil uyumlu olmalı.
+Siteyi kim yaparsa yapsın, onunla çalışırken nelere dikkat etmeniz gerektiğini aşağıda sırasıyla yazdım.
 
-Bu rehber, teknik ekiplerle çalışırken nelere dikkat etmeniz gerektiğini açık şekilde anlatır.
+## Önce hedefi belirleyin
 
-## 1) İş hedefini netleştirin
+Web sitesi yapımı tasarımla değil, hedefle başlar. Sitenin sizin için ne yapacağına en baştan karar verin.
 
-Web sitesi her şeyden önce net bir **iş hedefini** taşımalıdır. Hedefiniz nedir?
+Hedef talep toplamak olabilir: Ziyaretçi hizmetlerinizi görür ve sizden teklif ister. Ürünlerinizi hem Gaziantep'te hem şehir dışında doğrudan satmak istiyorsanız online satış yapan bir site gerekir. Bazen de amaç satış değil, kurumsal kimliğinizi internette sağlamlaştırıp marka güveni oluşturmaktır.
 
-- **Talep toplama mı?** (Hizmetleriniz için teklif almak)
-- **Online satış mı?** (Ürünlerinizi doğrudan Gaziantep ve dışına satmak)
-- **Marka güveni mi?** (Kurumsal kimliğinizi dijitalde sağlamlaştırmak)
+Hedef belli değilse tasarım ne kadar iyi olursa olsun sonuç zayıf kalır.
 
-_Hedef belli değilse, tasarım iyi olsa bile sonuç zayıf kalır._
+## Site yapısını sade kurun
 
-## 2) Bilgi mimarisini sade kurun
+Ziyaretçi aradığı şeye en fazla 3 tıkta ulaşabilmeli. Yapı karmaşıklaştıkça insanlar çoğu zaman istediğini bulamadan siteden çıkar.
 
-Kullanıcının **"3 tıkta hedefe ulaşma"** prensibi korunmalı. Karmaşık yapılar ziyaretçiyi kaçırır.
+Ana menü en önemli 4-5 başlıktan oluşmalı. Her sayfa tek bir amaca hizmet etsin ve ziyaretçiyi tek bir adıma (CTA) yönlendirsin. Size ulaşmanın yolu da her sayfada ziyaretçinin elinin altında dursun.
 
-- **Ana menü** en kritik 4-5 başlıktan oluşmalı.
-- Her sayfa **tek bir amaca** (CTA) hizmet etmeli.
-- İletişim adımı her sayfada, parmak ucu mesafesinde olmalı.
+## Altyapıyı bilinçli seçin
 
-## 3) Teknik yığını bilinçli seçin
+Astro gibi performansa odaklanan bir altyapıyla sayfalar hızlı açılır, ziyaretçi beklemez. Arama motorları siteyi daha kolay tarar. Üstelik bakım maliyeti de düşük kalır.
 
-Astro gibi modern ve **performans odaklı** bir yapıyla şunları elde edersiniz:
+Yine de teknolojiyi moda olduğu için değil, ilk adımda belirlediğiniz hedefe hizmet ettiği için seçin.
 
-- **Ultra hızlı açılış süreleri** (Kullanıcıyı bekletmeyen deneyim)
-- **Daha iyi SEO taranabilirliği** (Google'da üst sıralara çıkış)
-- **Düşük bakım maliyeti** (Geleceğe hazır altyapı)
+## İçeriği en baştan planlayın
 
-> Teknoloji seçimi sadece moda olduğu için değil, **iş hedefinize** hizmet ettiği için yapılmalıdır.
+Sayfalar yayına çıkmadan önce içeriğin iskeleti hazır olmalı:
 
-## 4) İçerik stratejisini en başta planlayın
+1. Her sayfanın kendine özgü başlığı ve meta açıklaması.
+2. Ziyaretçinin sorusuna doğrudan cevap veren bir metin.
+3. Sayfaların birbirine nasıl bağlanacağını gösteren bir iç bağlantı planı.
 
-Sayfalar yayına çıkmadan önce şu temel yapı hazır olmalı:
+Teknik SEO tarafında kontrol etmeniz gereken temel maddeleri [Astro SEO teknik kontrol listesi](/blog/astro-seo-10-madde-checklist) yazısında topladım.
 
-1. Her sayfanın özgün **başlık/açıklama (Title/Meta)** planı.
-2. Kullanıcının sorusuna doğrudan cevap veren **metin akışı**.
-3. Sayfalar arası **iç linkleme** planı.
+## Geliştirme ve kalite kontrolü
 
-SEO tarafında temel checklist için şu yazıyı da mutlaka okuyun: [Astro SEO teknik kontrol listesi](/blog/astro-seo-10-madde-checklist).
+Kod yazma aşamasında işini bilen bir geliştirici bileşenleri tekrar kullanılabilir şekilde kurar; aynı parçayı her sayfada baştan yazmamak işi hızlandırır. Meta verileri ve şema işaretlemesini tek bir yerden yönetir, böylece bir sayfada unutulan bir etiket SEO hatasına dönüşmez. Otomatik test komutlarıyla da hataları yayına çıkmadan yakalar.
 
-## 5) Geliştirme ve kalite güvence
+## Yayından sonra bakım
 
-Kod yazımı aşamasında profesyonel bir ekip:
+Siteyi yayına almak işin sonu değil. Ayda bir performansa ve Google'ın sayfaları dizine alıp almadığına bakılmalı, içerikler belli aralıklarla güncellenmeli. Kırık bağlantılar ve teknik hatalar ise fark edildiği anda düzeltilmeli.
 
-- Bileşen yapısını **tekrar kullanılabilir** kurar (Hız kazandırır).
-- Metadata ve schema yapılarını **merkezi** yönetir (SEO hatasını önler).
-- Otomatik **test komutlarını** kullanarak hata payını sıfıra indirir.
+Sitemap'iniz 404 veriyorsa [bu sorunu anlattığım vaka yazısına](/blog/sitemap-index-404-cozumu) bakabilirsiniz.
 
-## 6) Yayınlama sonrası bakım
+## Süreç de tasarım kadar önemli
 
-Yayına çıkmak aslında bir bitiş değil, **yeni bir başlangıçtır**. Sürekli gelişim için:
+Kısacası, plan doğru, içerik net ve altyapı temiz olduğunda Gaziantep'te aramada görünür olmak da, gelen ziyaretçiyi müşteriye çevirmek de kolaylaşır.
 
-- **Aylık performans** ve Google Index takibi yapılmalı.
-- İçerikler periyodik olarak **güncellenmeli**.
-- Kırık linkler ve teknik hatalar anında temizlenmeli.
-
-Sitemap tarafında can sıkıcı bir örnek yaşadıysanız şu vaka yazısına bakın: [Sitemap 404 problemi nasıl çözülür?](/blog/sitemap-index-404-cozumu).
-
-## Sonuç
-
-İyi bir web sitesi, estetik kadar **süreç kalitesiyle** kazanır. Doğru plan + net içerik + temiz teknik altyapı bir araya geldiğinde, Gaziantep pazarında arama görünürlüğünüz ve dönüşümleriniz kaçınılmaz olarak artar.
-
-> Projenizin kapsamını birlikte netleştirmek isterseniz [iletişim formu](/#contact) üzerinden bana ulaşabilirsiniz. 👋
+Projenizin kapsamını birlikte netleştirmek isterseniz [iletişim formundan](/#contact) bana yazabilirsiniz.

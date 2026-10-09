@@ -1,8 +1,8 @@
 ---
 title: "Astro sitemap-index.xml 404 Sorunu ve Çözümü"
-description: "Astro projelerinde sitemap-index.xml dosyasının production ortamında 404 hatası vermesi sık rastlanan ama çözümü net bir problemdir. Bu yazıda bu hatanın gerçek nedenini detaylarıyla inceliyoruz."
+description: "Astro projesinde sitemap-index.xml canlıda 404 verdiğinde baktığım yerler: sitemap entegrasyonu, robots.txt, build çıktısı ve vercel.json'daki yönlendirme kuralları."
 date: 2026-02-15
-updated: 2026-02-16
+updated: 2026-10-07
 tags: ["sitemap", "astro", "teknik seo", "hata çözümü"]
 category: "case-study"
 heroImage: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2340&auto=format&fit=crop"
@@ -10,17 +10,19 @@ draft: false
 intent: "troubleshooting"
 ---
 
-> 💡 **TL;DR:** Localhost'ta çalışan sitemap dosyanız Vercel/Netlify üzerinde 404 veriyorsa; sorun muhtemelen Astro'daki 'trailingSlash' kararsızlığından veya Vercel'in Clean URLs özelliğinden kaynaklanıyordur.
+Sitemap dosyanız localhost'ta açılıyor ama Vercel ya da Netlify'da 404 veriyorsa iki şeye bakın: Dosya build çıktısında gerçekten var mı, varsa sunucudaki yönlendirme ve rewrite kurallarından biri o adresi başka bir yere çeviriyor mu.
 
-Astro projelerinde `sitemap-index.xml` dosyasının production ortamında 404 hatası vermesi ilk günden beri forumlarda çok sık rastlanan ama çözümü etrafta pek net anlatılmayan bir krizdir. Geçenlerde kendi projemi yayına alırken tam da bu duvara tosladım. Bu yazıda, bu hatanın **gerçekte neden kaynaklandığını** ve tekrar etmemesi için uyguladığım kesin çözümü anlatıyorum.
+Astro projelerinde `sitemap-index.xml` dosyasının production ortamında 404 vermesi forumlarda sık rastlanan bir sorun; ne var ki çözümü pek net anlatılmıyor. Kendi projemi yayına alırken ben de aynı hatayla karşılaştım. Hatanın gerçekte nereden kaynaklandığını ve tekrar yaşanmaması için uyguladığım çözümü aşağıda yazdım.
 
-## Hatanın Kaynağı: Static vs Hybrid Mode
+## Hatanın kaynağı: build mi, sunucu mu
 
-Astro varsayılan olarak statik bir yapıdadır. Ancak sitemap üretimi bazen build sürecinin en sonunda gerçekleşir ve sunucu yapılandırmasıyla çakışabilir.
+Astro varsayılan olarak statik bir site üretir. Astro 5'ten önce bunun yanında bir de `output: 'hybrid'` modu vardı. Astro 5 ile yalnızca `static` ve `server` kaldı; bir sayfanın build sırasında mı, istek geldiğinde mi üretileceği artık sayfa bazında `prerender` ile seçiliyor.
 
-### Adım 1: Yapılandırma Kontrolü
+Sitemap entegrasyonu dosyayı build sürecinin en sonunda yazar. Dolayısıyla dosya build çıktısında var ama canlıda 404 veriyorsa sorun build'de değil, dosyanın yayında nasıl sunulduğundadır.
 
-İlk olarak `astro.config.mjs` dosyanızda sitemap entegrasyonunun doğru tanımlandığından emin olun:
+### Adım 1: Yapılandırmayı kontrol edin
+
+Önce `astro.config.mjs` dosyanızda sitemap entegrasyonunun doğru tanımlandığından emin olun:
 
 ```javascript
 import sitemap from "@astrojs/sitemap";
@@ -31,9 +33,9 @@ export default defineConfig({
 });
 ```
 
-### Adım 2: Robots.txt Doğrulaması
+### Adım 2: `robots.txt` dosyasını doğrulayın
 
-Botlar sitemap'i bulamazsa, tarama bütçeniz boşa gider. `public/robots.txt` dosyanız şu şekilde görünmeli:
+Sitemap adresini `robots.txt` dosyasına da yazın; Google, sitemap'i Search Console'a göndermeseniz de buradan bulabilir. `public/robots.txt` dosyanız şöyle görünmeli:
 
 ```text
 User-agent: *
@@ -42,20 +44,20 @@ Allow: /
 Sitemap: https://goldsword.dev/sitemap-index.xml
 ```
 
-## Neden 404 Alıyorsunuz?
+## `trailingSlash` ayarı ve yönlendirmeler
 
-En yaygın neden, **Trailing Slash** (sondaki eğik çizgi) ayarlarıdır. Astro'da `trailingSlash: 'always'` veya `'never'` ayarı, sitemap dosyasının fiziksel konumunu etkileyebilir.
+Astro'daki `trailingSlash: 'always'` ya da `'never'` ayarı sitemap dosyasının yerini değiştirmez. Sitemap açısından belirlediği şey, dosyanın içinde listelenen URL'lerin sonunda slash olup olmayacağıdır. Bu adreslerin canonical adreslerinizle aynı biçimde olması gerekir; bunu [trailing slash yazısında](/blog/astro-trailing-slash-seo-sorunu-cozumu) anlattım. Öte yandan, `sitemap-index.xml` dosyasının kendisi 404 veriyorsa sebep büyük ihtimalle başka yerdedir.
 
-> **Kritik Bilgi:** Eğer sitenizi Vercel'de barındırıyorsanız, Vercel'in kendi "Clean URLs" özelliği sitemap dosyasını yanlış yönlendiriyor olabilir.
+> Siteniz Vercel'deyse özellikle `vercel.json` dosyasındaki yönlendirme ve rewrite kurallarını kontrol edin.
 
-## Kalıcı Çözüm Reçetesi
+## Kalıcı çözüm
 
-1. **Build Komutunu Güncelleyin:** `npm run build` sonrası sitemap'in gerçekten `dist/` klasörüne çıktığından emin olun.
-2. **Absolute URL Kullanın:** Şemalarınızda ve linklerinizde her zaman mutlak (absolute) URL tercih edin.
-3. **Manual Check:** Tarayıcıdan doğrudan `/sitemap-index.xml` adresine gittiğinizde XML çıktısını görmelisiniz.
+1. `npm run build` sonrasında sitemap'in gerçekten `dist/` klasörüne çıktığından emin olun.
+2. Yapılandırılmış veri şemalarında ve bağlantılarda her zaman mutlak URL kullanın.
+3. Tarayıcıdan doğrudan `/sitemap-index.xml` adresine gidin; karşınıza XML çıktısı gelmeli.
 
-## Sonuç
+## Sorun sürüyorsa
 
-Sitemap hataları SEO performansınızı doğrudan etkiler. Eğer tüm adımlara rağmen sorun devam ediyorsa, Astro'nun versiyon güncellemelerini ve entegrasyon ayarlarını tekrar gözden geçirin.
+Bütün bu adımlara rağmen sorun devam ediyorsa Astro'nun sürüm güncellemelerine ve entegrasyon ayarlarına yeniden bakın.
 
-Teknik sorunlarla uğraşmak yerine işinize odaklanmak isterseniz, [profesyonel destek](/#contact) alabilirsiniz. 👋
+Bu tür teknik sorunlarla uğraşmak yerine kendi işinize odaklanmak isterseniz [iletişim formundan](/#contact) bana yazabilirsiniz.
