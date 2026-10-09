@@ -52,7 +52,7 @@ Aynı telefonda banka uygulaması da açılmıyorsa ya da WhatsApp giriş yaptı
 
 Burada telefonu suçlamak yanlış olur, çünkü sorun büyük ihtimalle telefonda değil.
 
-Uygulama parmak izini ekrandaki sensörle değil, kamerayla okur. Diğer bir deyişle, telefonunuzun parmak izi okuyucusu ne kadar iyi olursa olsun burada devreye girmez. Sonucu ışık, elin kuruluğu ve parmak izinin ne kadar belirgin olduğu belirler. Yaş ilerledikçe parmak izi silinir, elleriyle çalışmış insanlarda daha da çok silinir. Hac ve umre başvurularında bu sorunun sık çıkmasının sebebi de bu.
+Uygulama parmak izini ekrandaki sensörle değil, kamerayla okur. Diğer bir deyişle telefonunuzun parmak izi okuyucusu ne kadar iyi olursa olsun burada devreye girmez. Sonucu ışık, elin kuruluğu ve parmak izinin ne kadar belirgin olduğu belirler. Yaş ilerledikçe parmak izi silinir, elleriyle çalışmış insanlarda daha da çok silinir. Hac ve umre başvurularında bu sorunun sık çıkmasının sebebi de bu.
 
 Birkaç denemede olmadıysa telefon değiştirmek genelde işe yaramaz. O noktada kayıt bir Tasheer merkezinde yapılır ve resmî olarak kabul edilen yol budur. Ayrıntısı için doğru adres başvurunuzun yürüdüğü kanal: Diyanet ya da acenteniz.
 

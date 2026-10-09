@@ -46,7 +46,7 @@ Sitemap: https://goldsword.dev/sitemap-index.xml
 
 ## `trailingSlash` ayarı ve yönlendirmeler
 
-Astro'daki `trailingSlash: 'always'` ya da `'never'` ayarı sitemap dosyasının yerini değiştirmez. Sitemap açısından belirlediği şey, dosyanın içinde listelenen URL'lerin sonunda slash olup olmayacağıdır. Bu adreslerin canonical adreslerinizle aynı biçimde olması gerekir; bunu [trailing slash yazısında](/blog/astro-trailing-slash-seo-sorunu-cozumu) anlattım. Öte yandan, `sitemap-index.xml` dosyasının kendisi 404 veriyorsa sebep büyük ihtimalle başka yerdedir.
+Astro'daki `trailingSlash: 'always'` ya da `'never'` ayarı sitemap dosyasının yerini değiştirmez. Sitemap açısından belirlediği şey, dosyanın içinde listelenen URL'lerin sonunda slash olup olmayacağıdır. Bu adreslerin canonical adreslerinizle aynı biçimde olması gerekir; bunu [trailing slash yazısında](/blog/astro-trailing-slash-seo-sorunu-cozumu) anlattım. Öte yandan `sitemap-index.xml` dosyasının kendisi 404 veriyorsa sebep büyük ihtimalle başka yerdedir.
 
 > Siteniz Vercel'deyse özellikle `vercel.json` dosyasındaki yönlendirme ve rewrite kurallarını kontrol edin.
 

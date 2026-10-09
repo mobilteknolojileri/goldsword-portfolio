@@ -14,7 +14,7 @@ Geliştirici olarak blog yazmak bazen kod yazmaktan daha yorucu. İlk yazıları
 
 Teknik bir soruna çözüm arayan kişi genellikle yazıyı okumaz, tarar ve doğrudan çözümün olduğu satırı bulmak ister. Bir hatanın peşindeyken ben de böyle okuyorum.
 
-Bu yüzden hem okuyanı yormayan hem de SEO'yu gözeten birkaç standart Markdown kalıbı oturttum. Hiçbiri ek bir eklenti gerektirmiyor; diğer bir deyişle, hepsi düz Markdown ile yazılıyor. Kendi projelerinizde de aynen kullanabilirsiniz.
+Bu yüzden hem okuyanı yormayan hem de SEO'yu gözeten birkaç standart Markdown kalıbı oturttum. Hiçbiri ek bir eklenti gerektirmiyor; diğer bir deyişle hepsi düz Markdown ile yazılıyor. Kendi projelerinizde de aynen kullanabilirsiniz.
 
 ## Yazının başında kısa bir özet
 
@@ -82,7 +82,7 @@ async function veriGetir() {
 
 ## Tablolarda durum etiketleri
 
-Karmaşık emojiler Mac'te ve Windows'ta farklı görünebiliyor, uzun HTML rozet (badge) sınıfları da koyu temada beklenmedik şekilde bozulabiliyor. Öte yandan, köşeli parantez içine yazılmış düz metin bir etiket bu iki sorunu da yaşatmıyor ve tabloda derli toplu duruyor.
+Karmaşık emojiler Mac'te ve Windows'ta farklı görünebiliyor, uzun HTML rozet (badge) sınıfları da koyu temada beklenmedik şekilde bozulabiliyor. Öte yandan köşeli parantez içine yazılmış düz metin bir etiket bu iki sorunu da yaşatmıyor ve tabloda derli toplu duruyor.
 
 Markdown'da şöyle yazıyorum:
 

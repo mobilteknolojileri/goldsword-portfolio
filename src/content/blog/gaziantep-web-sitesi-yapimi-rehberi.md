@@ -63,6 +63,6 @@ Sitemap'iniz 404 veriyorsa [bu sorunu anlattığım vaka yazısına](/blog/sitem
 
 ## Süreç de tasarım kadar önemli
 
-Kısacası, plan doğru, içerik net ve altyapı temiz olduğunda Gaziantep'te aramada görünür olmak da, gelen ziyaretçiyi müşteriye çevirmek de kolaylaşır.
+Kısacası plan doğru, içerik net ve altyapı temiz olduğunda Gaziantep'te aramada görünür olmak da, gelen ziyaretçiyi müşteriye çevirmek de kolaylaşır.
 
 Projenizin kapsamını birlikte netleştirmek isterseniz [iletişim formundan](/#contact) bana yazabilirsiniz.

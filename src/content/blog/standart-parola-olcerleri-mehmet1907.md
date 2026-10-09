@@ -98,7 +98,7 @@ Tersi de var. Bir kullanıcı İngilizce klavyede `IBRAHIM` yazsın (sıradan AS
 // dictionary'de "ıbrahım" yok → eşleşmiyor!
 ```
 
-İki klavye, birbirinin tersi iki tuzak. Diğer bir deyişle, yalnızca `toLowerCase()` kullanırsanız `İSTANBUL`'u, yalnızca `toLocaleLowerCase('tr-TR')` kullanırsanız `IBRAHIM`'i kaçırırsınız.
+İki klavye, birbirinin tersi iki tuzak. Diğer bir deyişle yalnızca `toLowerCase()` kullanırsanız `İSTANBUL`'u, yalnızca `toLocaleLowerCase('tr-TR')` kullanırsanız `IBRAHIM`'i kaçırırsınız.
 
 ## Çözüm: iki ayrı küçük harf dönüşümü
 

@@ -15,7 +15,7 @@ faq:
 
 Temiz kod, bir sitenin dizine girmesi ve hızlı açılması için tek başına yetmiyor. Astro projelerinde sitemap'in, görsel optimizasyonunun, `robots.txt` dosyasının ve meta etiketlerinin birbiriyle uyumlu çalışması gerekiyor.
 
-Yeni bir Astro projesinin hız testlerinden 100/100 alması insanın hoşuna gidiyor. Bununla birlikte, SEO altyapısı hazır değilse o hızın pek bir anlamı kalmıyor. Kendi projelerimi canlıya almadan önce her seferinde aynı şeyleri baştan araştırmamak için bir teknik SEO kontrol listesi çıkardım. Aşağıdaki liste onun toparlanmış hâli.
+Yeni bir Astro projesinin hız testlerinden 100/100 alması insanın hoşuna gidiyor. Bununla birlikte SEO altyapısı hazır değilse o hızın pek bir anlamı kalmıyor. Kendi projelerimi canlıya almadan önce her seferinde aynı şeyleri baştan araştırmamak için bir teknik SEO kontrol listesi çıkardım. Aşağıdaki liste onun toparlanmış hâli.
 
 Astro'nun burada bir avantajı var: “Zero JS by default” yaklaşımıyla sayfaya varsayılan olarak hiç JavaScript göndermiyor. Bu da Core Web Vitals metriklerinde işe bir adım önde başlamak demek.
 

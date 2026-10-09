@@ -51,7 +51,7 @@ WhatsApp girişte bu olumsuz bildirimi görür ve telefondaki kopyanın değişt
 3. **WhatsApp.** Girişte bu bildirime bakar ve kopyanın değiştirilmiş olabileceğini varsayar.
 4. **Resmî uygulama uyarısı.** Ekrana gelen mesaj uygulamayı suçlar; oysa sorun cihazın bildiriminde.
 
-Başka bir deyişle, doğru cümle şu olurdu: "Bu cihaz kendini doğrulayamıyor." Ekranda yazan ise "resmi uygulamaya sahip değilsiniz." İkisi çok farklı şeyler; insanların yanlış çözüme gitmesinin tek sebebi de aradaki bu fark.
+Başka bir deyişle doğru cümle şu olurdu: "Bu cihaz kendini doğrulayamıyor." Ekranda yazan ise "resmi uygulamaya sahip değilsiniz." İkisi çok farklı şeyler; insanların yanlış çözüme gitmesinin tek sebebi de aradaki bu fark.
 
 ## Hesabınıza bir şey olmuyor
 

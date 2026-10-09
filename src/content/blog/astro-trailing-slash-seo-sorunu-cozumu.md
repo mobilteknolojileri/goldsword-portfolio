@@ -92,4 +92,4 @@ Sonrasını kendi Search Console hesabımdan izledim. Birkaç gün içinde Googl
 
 URL'nin sonundaki tek bir `/` önemsiz görünebilir. Ama arama motoru için bu, iki ayrı adres anlamına gelebiliyor. Bu fark da içeriğin kopya sayılmasına ya da dizin dışında kalmasına yol açabiliyor.
 
-Kısacası, Google bazı sayfalarınızı dizine eklemiyorsa ilk bakacağınız yer şu: `sitemap.xml` dosyanızdaki adres ile sayfadaki `<link rel="canonical">` etiketinin gösterdiği adres, **sondaki slash dâhil birebir aynı olmalı**.
+Kısacası Google bazı sayfalarınızı dizine eklemiyorsa ilk bakacağınız yer şu: `sitemap.xml` dosyanızdaki adres ile sayfadaki `<link rel="canonical">` etiketinin gösterdiği adres, **sondaki slash dâhil birebir aynı olmalı**.

@@ -28,7 +28,7 @@ Fotoğraf gitti. Ya başka bir şeyi silmek isterken oldu, ya telefon çocuğun 
 
 Kısa cevabı baştan yazayım, çünkü aramaya harcanan ilk yarım saat en kıymetlisi.
 
-Telefonun kendi hafızasından silinen bir fotoğraf, "kurtarma yazılımı" denen şeylerle çoğu zaman geri gelmez. Geri gelen, neredeyse her seferinde o fotoğrafın başka bir yerdeki kopyasıdır. Diğer bir deyişle, yapılacak iş kurtarmak değil, kopyayı bulmak. Böyle bir kopya da sandığınızdan daha sık çıkar.
+Telefonun kendi hafızasından silinen bir fotoğraf, "kurtarma yazılımı" denen şeylerle çoğu zaman geri gelmez. Geri gelen, neredeyse her seferinde o fotoğrafın başka bir yerdeki kopyasıdır. Diğer bir deyişle yapılacak iş kurtarmak değil, kopyayı bulmak. Böyle bir kopya da sandığınızdan daha sık çıkar.
 
 Bir de istisnası var: hafıza kartı. Orada durum tersine dönüyor; aşağıda ayrıca yazdım.
 

@@ -102,7 +102,7 @@ export const PROJECTS: Project[] = [
       { value: "108", label: "commit, 25 günde" },
     ],
     detailedDescription:
-      "Kendi uygulamam. Kullanıcı kendi hakkında sorular yazar, tek bir bağlantı paylaşır ve arkadaşlarının onu ne kadar tanıdığını görür. Böyle bir uygulamada her şey o bağlantıya dayanır. Dolayısıyla aynı adres üç farklı ziyaretçiye cevap vermek zorunda: uygulaması kurulu olan kişiye, kurulu olmayan kişiye ve bağlantı bir sohbete yapıştırılınca ön izleme çeken sunucuya. Uygulama kuruluysa Android App Links sayesinde işletim sistemi bağlantıyı web'e uğratmadan uygulamaya verir; kurulu değilse veri tabanına hiç bağlanmayan statik bir Astro sitesi karşılar. Veri tarafı dört tablolu bir Supabase şeması. Uygulamayı Şubat ve Mart 2026'da 25 günde 108 commit'le yazdım; 8 Mart 2026'dan beri Google Play'de.",
+      "Kendi uygulamam. Kullanıcı kendi hakkında sorular yazar, tek bir bağlantı paylaşır ve arkadaşlarının onu ne kadar tanıdığını görür. Böyle bir uygulamada her şey o bağlantıya dayanır. Dolayısıyla aynı adres üç farklı ziyaretçiye cevap vermek zorunda: uygulaması kurulu olan kişiye, kurulu olmayan kişiye ve bağlantı bir sohbete yapıştırılınca ön izleme çeken sunucuya. Uygulama kuruluysa Android App Links sayesinde işletim sistemi bağlantıyı webe uğratmadan uygulamaya verir; kurulu değilse veri tabanına hiç bağlanmayan statik bir Astro sitesi karşılar. Veri tarafı dört tablolu bir Supabase şeması. Uygulamayı Şubat ve Mart 2026'da 25 günde 108 commit'le yazdım; 8 Mart 2026'dan beri Google Play'de.",
     features: [
       "Soru tipi ve tema seçerek test kurma",
       "Uygulama kuruluysa doğrudan teste açılan paylaşım bağlantısı (Android App Links)",
@@ -115,7 +115,7 @@ export const PROJECTS: Project[] = [
       "AdMob: test yayımlarken ödüllü video, test çözüldükten sonra geçiş reklamı",
     ],
     challenges:
-      "Asıl zorluk, aynı paylaşım adresinin uygulaması kurulu olana da, olmayana da, ön izleme çeken sunucuya da doğru cevap vermesiydi. Test bitince reklam kapanmadan sonuç ekranına geçildiği için bazı cihazlarda uygulama çöküyordu; artık uygulama reklamın kapanmasını bekliyor. Tanıtım sitesi mobilde 84 alıyordu: 337 KB'lık PNG logoyu gösterildiği boyutlarda WebP'ye çevirdim, yazı tipini ve mağaza rozetlerini siteye taşıdım; PageSpeed hem mobilde hem masaüstünde dört kategoride 100 verdi. Öte yandan bir sorun hâlâ açık: Paylaşım bağlantısı web'de 404 dönüyor ve bağlantıyı 404 sayfasındaki bir betik kurtarıyor. Sohbet ön izlemeleri ve arama motorları bu yüzden hata sayfası görüyor.",
+      "Asıl zorluk, aynı paylaşım adresinin uygulaması kurulu olana da, olmayana da, ön izleme çeken sunucuya da doğru cevap vermesiydi. Test bitince reklam kapanmadan sonuç ekranına geçildiği için bazı cihazlarda uygulama çöküyordu; artık uygulama reklamın kapanmasını bekliyor. Tanıtım sitesi mobilde 84 alıyordu: 337 KB'lık PNG logoyu gösterildiği boyutlarda WebP'ye çevirdim, yazı tipini ve mağaza rozetlerini siteye taşıdım; PageSpeed hem mobilde hem masaüstünde dört kategoride 100 verdi. Öte yandan bir sorun hâlâ açık: Paylaşım bağlantısı webde 404 dönüyor ve bağlantıyı 404 sayfasındaki bir betik kurtarıyor. Sohbet ön izlemeleri ve arama motorları bu yüzden hata sayfası görüyor.",
     links: [
       {
         label: "Google Play",

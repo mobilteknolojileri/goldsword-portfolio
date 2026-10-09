@@ -20,7 +20,7 @@ Bu döngüyü kırdığımda şunu fark ettim: Yapay zekâ döneminde en değerl
 
 ## Önce öğrenip sonra yapmayı bıraktım
 
-Eski yöntemde 40 saat kurs izler, not alır, öğrendiklerinizi belki bir gün kullanırsınız. Öte yandan, yenisinde bir fikir bulur, doğrudan başlar ve öğrenirken üretirsiniz.
+Eski yöntemde 40 saat kurs izler, not alır, öğrendiklerinizi belki bir gün kullanırsınız. Öte yandan yenisinde bir fikir bulur, doğrudan başlar ve öğrenirken üretirsiniz.
 
 Ben artık şöyle çalışıyorum:
 
@@ -82,7 +82,7 @@ Gerçek öğrenme o anda başlıyor.
 
 Eskiden forumlarda soru soran biri bazen sert bir dille yargılanır, moral bozan cevaplar alırdı. Şimdi karşınızda sabrı tükenmeyen, aynı detayı istediğiniz kadar yeniden açıklayan bir araç var.
 
-Yalnız bir şartı var: Yapay zekâ kendi başına ne iyi bir emir kulu ne de iyi bir mentor. Başka bir deyişle, onu iyi yapan, sizin sorduğunuz sorular.
+Yalnız bir şartı var: Yapay zekâ kendi başına ne iyi bir emir kulu ne de iyi bir mentor. Başka bir deyişle onu iyi yapan, sizin sorduğunuz sorular.
 
 ## Bitirip yayına almak
 

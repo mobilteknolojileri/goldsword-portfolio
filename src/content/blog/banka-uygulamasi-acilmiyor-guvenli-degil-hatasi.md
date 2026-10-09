@@ -87,7 +87,7 @@ Bu uyarı bir güvenlik ihlali olduğunu göstermez; hesabınıza birinin girdi�
 
 Bu uyarı hesabınıza, paranıza, kartlarınıza ve banka kayıtlarınıza dokunmaz. Telefonun içindeki verilere de. Etkilenen tek şey, o uygulamanın o telefonda çalışması.
 
-Bununla birlikte, telefonu ikinci el aldıysanız ve üstündeki ROM'u kimin kurduğunu bilmiyorsanız bu, uyarıdan bağımsız ayrı bir risktir; telefonu üreticinin orijinal yazılımına döndürmek ya da kontrol ettirmek iyi olur.
+Bununla birlikte telefonu ikinci el aldıysanız ve üstündeki ROM'u kimin kurduğunu bilmiyorsanız bu, uyarıdan bağımsız ayrı bir risktir; telefonu üreticinin orijinal yazılımına döndürmek ya da kontrol ettirmek iyi olur.
 
 ## Kalan iş ne
 

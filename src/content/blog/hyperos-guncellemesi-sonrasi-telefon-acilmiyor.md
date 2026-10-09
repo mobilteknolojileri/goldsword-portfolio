@@ -67,7 +67,7 @@ Bunun teknik bir sebebi var ve bilmek insanı rahatlatır.
 
 Telefonun depolama alanı bölümlere ayrılmıştır. Android bir bölümde; fotoğraflarınız, mesajlarınız, uygulamalarınız ve içlerindeki veriler başka bir bölümde. Güncelleme yalnızca sistemin bölümüne yazar, verilerinizin bulunduğu bölüme dokunmaz.
 
-Başka bir deyişle, telefon açılmıyor olabilir, sistem gerçekten bozulmuş olabilir ve verileriniz yine de yerli yerinde olabilir. Çoğu zaman da öyledir.
+Başka bir deyişle telefon açılmıyor olabilir, sistem gerçekten bozulmuş olabilir ve verileriniz yine de yerli yerinde olabilir. Çoğu zaman da öyledir.
 
 Ne var ki bunu bozan iki durum var. Biri yukarıda yazdığım sıfırlama; doğrudan veri bölümünü siler. Diğeri şu: Bazı modellerde ve bazı bölge sürümlerinde cihazı ayağa kaldırmanın elde kalan tek yolu, verileri de silen bir sürüm yazmaktır. Bu bir kaza değil, bir tercih; o yüzden önce sizinle konuşurum. Siz onaylamadan veri silen bir adım atmam.
 
