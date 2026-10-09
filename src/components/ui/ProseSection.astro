@@ -1,0 +1,24 @@
+---
+interface Props {
+  title: string;
+  eyebrow?: string;
+  id?: string;
+  tinted?: boolean;
+}
+
+const { title, eyebrow, id, tinted = false } = Astro.props;
+---
+
+<section id={id} class:list={["section", tinted && "section-tint"]}>
+  <div class="section-container section-padding">
+    <div class="max-w-3xl">
+      <div data-reveal>
+        {eyebrow && <p class="eyebrow mb-4">{eyebrow}</p>}
+        <h2 class="section-title">{title}</h2>
+      </div>
+      <div class="prose prose-lg mt-8 max-w-none text-[#3a3f4b] dark:prose-invert prose-headings:tracking-tight prose-p:leading-8 prose-a:font-semibold prose-a:text-primary-700 prose-a:underline-offset-4 prose-strong:font-semibold prose-strong:text-gray-900 prose-li:my-1.5 dark:text-[#c9cdd6] dark:prose-a:text-primary-300 dark:prose-strong:text-white">
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>

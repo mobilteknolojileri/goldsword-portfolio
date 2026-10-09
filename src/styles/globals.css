@@ -1,35 +1,263 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Class-based dark mode, set on <html> by BaseLayout before first paint */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Set on <html> by the same script: controls that only work with JS show up without a shift */
+@custom-variant js (&:where(.js *));
+
+@theme {
+  --font-sans:
+    "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono:
+    "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  /* Indigo: buttons, links, focus */
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
+  --color-primary-950: #1e1b4b;
+
+  /* Gold from the logo's sword: accents and hover states, not body text */
+  --color-gold-50: #fdf8ec;
+  --color-gold-100: #fbf0d2;
+  --color-gold-200: #f7e0a3;
+  --color-gold-300: #f6cd66;
+  --color-gold-400: #e5b552;
+  --color-gold-500: #d9a84a;
+  --color-gold-600: #c38d39;
+  --color-gold-700: #9c6d27;
+  --color-gold-800: #7a5420;
+  --color-gold-900: #5c3f19;
+
+  /* Copper: the wire between process steps */
+  --color-copper-200: #f0c9a6;
+  --color-copper-300: #e3a46f;
+  --color-copper-400: #cd8550;
+  --color-copper-500: #b87333;
+  --color-copper-600: #95582a;
+  --color-copper-700: #6f4120;
+
+  /* Dark surfaces around the logo background (#0f1013) */
+  --color-dark-50: #f5f6f8;
+  --color-dark-100: #e6e8ec;
+  --color-dark-200: #d0d3da;
+  --color-dark-300: #a9aebb;
+  --color-dark-400: #7d8391;
+  --color-dark-500: #4d525d;
+  --color-dark-600: #363a43;
+  --color-dark-700: #262930;
+  --color-dark-800: #181a1f;
+  --color-dark-900: #0f1013;
+  --color-dark-950: #0a0b0d;
+
+  --color-accent-50: #fff1f2;
+  --color-accent-100: #ffe4e6;
+  --color-accent-200: #fecdd3;
+  --color-accent-300: #fda4af;
+  --color-accent-400: #fb7185;
+  --color-accent-500: #e11d48;
+  --color-accent-600: #be123c;
+  --color-accent-700: #9f1239;
+  --color-accent-800: #881337;
+  --color-accent-900: #4c0519;
+
+  /* CSS-only, so nothing waits for JS */
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* Transform only: an opacity fade would delay LCP */
+  --animate-rise-in: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-marquee: marquee 48s linear infinite;
+  --animate-drift: drift 22s ease-in-out infinite alternate;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes rise-in {
+    from {
+      transform: translateY(10px);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-4%, 6%, 0) scale(1.08);
+    }
+  }
+}
+
+/* Geist and Geist Mono, OFL (public/fonts/LICENSE.txt), both cut down to Latin, Turkish and
+   common punctuation. Geist Mono only sets small labels, so motion.ts loads it after the page. */
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  /* Keep Tailwind 3's preflight defaults */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  .dark *,
+  .dark ::after,
+  .dark ::before {
+    border-color: var(--color-dark-700);
   }
 
-  /* Shiki Code Block Styles (Astro) */
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Keep anchor targets clear of the fixed navbar */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    /* Native scrollbars, form controls and pickers follow the chosen theme */
+    color-scheme: light;
+    accent-color: var(--color-primary-600);
+    caret-color: var(--color-primary-600);
+    /* Touch: the press states replace the grey tap flash */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html.dark {
+    color-scheme: dark;
+    accent-color: var(--color-primary-400);
+    caret-color: var(--color-primary-300);
+  }
+
+  body {
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    /* clip, not hidden: hidden breaks position: sticky */
+    overflow-x: clip;
+    width: 100%;
+    color: #3a3f4b;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  .dark body {
+    color: #c9cdd6;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 3px;
+    border-radius: 0.375rem;
+  }
+
+  .dark :focus-visible {
+    outline-color: var(--color-primary-300);
+  }
+
+  ::selection {
+    background-color: var(--color-primary-600);
+    color: white;
+  }
+
+  /* Scrollbars: a thin indigo pill that turns gold under the pointer. Chromium and Safari take
+     the ::-webkit rules; Firefox only knows the standard properties. */
+  ::-webkit-scrollbar {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(79 70 229 / 0.3);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover,
+  ::-webkit-scrollbar-thumb:active {
+    background-color: var(--color-gold-400);
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background-color: rgb(165 180 252 / 0.28);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover,
+  .dark ::-webkit-scrollbar-thumb:active {
+    background-color: var(--color-gold-400);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: rgb(79 70 229 / 0.35) transparent;
+    }
+
+    html.dark {
+      scrollbar-color: rgb(165 180 252 / 0.3) transparent;
+    }
+  }
+
+  /* Shiki: light theme by default, dark variables under .dark */
   .prose pre.astro-code {
-    background-color: #f8fafc !important;
-    /* slate-50 */
-    border: 1px solid #e2e8f0;
-    /* slate-200 */
+    background-color: #ffffff !important;
+    border: 1px solid var(--color-gray-200);
     padding: 1.25rem !important;
-    border-radius: 0.75rem !important;
-    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.02);
+    border-radius: 0.875rem !important;
     overflow-x: auto;
   }
 
-  /* Shiki Dual-Theme Dark Mode Toggle */
   html.dark .prose pre.astro-code {
-    background-color: var(--shiki-dark-bg) !important;
-    border-color: #1e293b;
-    /* slate-800 */
+    background-color: var(--color-dark-950) !important;
+    border-color: var(--color-dark-700);
   }
 
   html.dark .astro-code,
@@ -41,7 +269,7 @@
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 
-  /* Fix Tailwind Typography prose-code aggressive override inside pre */
+  /* Undo the plugin's inline code styles inside code blocks */
   .prose pre code {
     background-color: transparent !important;
     padding: 0 !important;
@@ -50,56 +278,19 @@
     border-radius: 0 !important;
   }
 
-  * {
-    box-sizing: border-box;
+  /* No backticks around inline code. !important because the plugin sits in a later layer. */
+  .prose code::before,
+  .prose code::after {
+    content: none !important;
   }
 
-  html {
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+  /* Blockquotes are used for notes, so no quote marks */
+  .prose blockquote p:first-of-type::before,
+  .prose blockquote p:last-of-type::after {
+    content: none !important;
   }
 
-  body {
-    font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  ::selection {
-    background-color: rgb(79, 70, 229);
-    color: white;
-  }
-
-  ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(107, 114, 128, 0.3);
-    border-radius: 9999px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(107, 114, 128, 0.5);
-  }
-
-  .dark ::-webkit-scrollbar-thumb {
-    background-color: rgba(156, 163, 175, 0.3);
-    border-radius: 9999px;
-  }
-
-  .dark ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(156, 163, 175, 0.5);
-  }
-
-  /* View Transitions */
+  /* The theme toggle does its own circular reveal */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
@@ -113,333 +304,713 @@
   ::view-transition-new(root) {
     z-index: 999;
   }
+
+  /* Set by the theme toggle for a single frame */
+  .theme-switching,
+  .theme-switching *,
+  .theme-switching *::before,
+  .theme-switching *::after {
+    transition: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+/* ---------- Text colours ---------- */
+
+@utility text-heading {
+  color: #0f1115;
+  @variant dark {
+    color: #f6f7f9;
+  }
+}
+
+@utility text-body {
+  color: #3a3f4b;
+  @variant dark {
+    color: #c9cdd6;
+  }
+}
+
+@utility text-muted {
+  /* 6.1:1 on white, 6.6:1 on dark-900 */
+  color: #5a6070;
+  @variant dark {
+    color: #9aa1af;
+  }
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---------- Layout ---------- */
+
+@utility section-container {
+  @apply mx-auto w-full max-w-6xl;
+}
+
+@utility section-padding {
+  @apply px-5 sm:px-6 lg:px-8;
+}
+
+@utility section {
+  @apply py-20 sm:py-24 lg:py-28;
+}
+
+/* Alternate band between sections */
+@utility section-tint {
+  @apply border-y border-gray-200/70 bg-slate-50 dark:border-dark-800 dark:bg-dark-950;
+}
+
+/* ---------- Type scale ---------- */
+
+/* Label above a title, led by a short gold line */
+@utility eyebrow {
+  @apply inline-flex items-center gap-3 text-sm font-semibold tracking-wide text-primary-700 dark:text-primary-300;
+  &::before {
+    content: "";
+    flex: none;
+    width: 2rem;
+    height: 2px;
+    border-radius: 9999px;
+    background-image: linear-gradient(
+      90deg,
+      rgb(195 141 57 / 0),
+      var(--color-gold-600) 45%,
+      var(--color-gold-400)
+    );
+    filter: drop-shadow(0 0 3px rgb(229 181 82 / 0.75));
+  }
+  @variant dark {
+    &::before {
+      background-image: linear-gradient(
+        90deg,
+        rgb(217 168 74 / 0),
+        var(--color-gold-500) 45%,
+        var(--color-gold-200)
+      );
+    }
+  }
+}
+
+@utility page-title {
+  @apply text-4xl leading-[1.08] font-extrabold tracking-tight text-heading sm:text-5xl lg:text-[3.5rem];
+  text-wrap: balance;
+}
+
+@utility section-title {
+  @apply text-3xl leading-[1.12] font-bold tracking-tight text-heading sm:text-4xl lg:text-[2.6rem];
+  text-wrap: balance;
+}
+
+@utility section-lead {
+  @apply mt-4 max-w-2xl text-lg leading-relaxed text-body;
+  text-wrap: pretty;
+}
+
+/* ---------- Surfaces ---------- */
+
+@utility card {
+  @apply rounded-2xl border border-gray-200/90 bg-white shadow-[0_1px_2px_rgb(15_17_21/0.04),0_2px_8px_-2px_rgb(15_17_21/0.06)] dark:border-dark-700 dark:bg-dark-800 dark:shadow-none;
+}
+
+@utility card-interactive {
+  @apply card transition duration-300 ease-out hover:-translate-y-1 hover:border-gold-400 hover:shadow-[0_18px_40px_-18px_rgb(217_168_74/0.55)] active:scale-[0.985] dark:hover:border-gold-400/60 dark:hover:shadow-[0_18px_44px_-18px_rgb(217_168_74/0.3)];
+  /* Touch screens have no hover: the card crossing the middle of the screen (motion.ts) gets
+     the gold edge instead */
+  @media (hover: none) {
+    &.is-centered {
+      border-color: var(--color-gold-400);
+      box-shadow: 0 18px 40px -18px rgb(217 168 74 / 0.55);
+    }
+    @variant dark {
+      &.is-centered {
+        border-color: rgb(229 181 82 / 0.6);
+        box-shadow: 0 18px 44px -18px rgb(217 168 74 / 0.3);
+      }
+    }
+  }
+}
+
+/* Gradient icon tiles, one colour per meaning */
+@utility tile {
+  display: flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  color: #fff;
+  background-image: linear-gradient(135deg, var(--tile-from, #6366f1), var(--tile-to, #7c3aed));
+  box-shadow:
+    0 10px 22px -10px var(--tile-glow, rgb(99 102 241 / 0.6)),
+    inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+
+@utility tile-sm {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.625rem;
+}
+
+@utility tile-indigo {
+  --tile-from: #6366f1;
+  --tile-to: #7c3aed;
+  --tile-glow: rgb(99 102 241 / 0.6);
+}
+
+@utility tile-violet {
+  --tile-from: #a855f7;
+  --tile-to: #6d28d9;
+  --tile-glow: rgb(168 85 247 / 0.55);
+}
+
+@utility tile-sky {
+  --tile-from: #38bdf8;
+  --tile-to: #2563eb;
+  --tile-glow: rgb(14 165 233 / 0.55);
+}
+
+@utility tile-emerald {
+  --tile-from: #34d399;
+  --tile-to: #059669;
+  --tile-glow: rgb(16 185 129 / 0.55);
+}
+
+@utility tile-gold {
+  --tile-from: #f6cd66;
+  --tile-to: #c38d39;
+  --tile-glow: rgb(217 168 74 / 0.55);
+}
+
+@utility tile-rose {
+  --tile-from: #fb7185;
+  --tile-to: #db2777;
+  --tile-glow: rgb(244 63 94 / 0.5);
+}
+
+@utility tile-slate {
+  --tile-from: #4b5563;
+  --tile-to: #111827;
+  --tile-glow: rgb(17 24 39 / 0.45);
+}
+
+/* Plain tile for third-party logos, sized where it's used */
+@utility logo-tile {
+  @apply flex flex-none items-center justify-center overflow-hidden bg-white shadow-[0_6px_16px_-10px_rgb(15_17_21/0.35)] ring-1 ring-gray-200 dark:bg-dark-700 dark:ring-dark-600;
+}
+
+/* LinkTile box, sized in the component */
+@utility link-tile {
+  @apply inline-flex items-center rounded-xl border border-gray-200 bg-white font-semibold text-gray-800 shadow-xs transition hover:-translate-y-0.5 hover:border-gold-400 hover:shadow-[0_12px_24px_-14px_rgb(217_168_74/0.6)] active:scale-[0.97] dark:border-dark-700 dark:bg-dark-800 dark:text-gray-100 dark:hover:border-gold-400/60;
+}
+
+/* Each chip tinted with its brand colour (--tech / --tech-dark) */
+@utility tech-chip {
+  border-color: color-mix(in srgb, var(--tech) 24%, #fff);
+  background-color: color-mix(in srgb, var(--tech) 6%, #fff);
+  @variant dark {
+    border-color: color-mix(in srgb, var(--tech-dark) 26%, var(--color-dark-800));
+    background-color: color-mix(in srgb, var(--tech-dark) 10%, var(--color-dark-800));
+  }
+}
+
+@utility badge {
+  @apply inline-flex items-center gap-1 rounded-full bg-primary-50 px-2.5 py-1 text-xs font-semibold text-primary-700 ring-1 ring-primary-100 dark:bg-primary-400/10 dark:text-primary-200 dark:ring-primary-400/20;
+}
+
+@utility badge-neutral {
+  @apply inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 dark:bg-dark-700 dark:text-gray-200;
+}
+
+@utility badge-gold {
+  @apply inline-flex items-center gap-1 rounded-full bg-gold-50 px-2.5 py-1 text-xs font-semibold text-gold-800 ring-1 ring-gold-200 dark:bg-gold-400/10 dark:text-gold-200 dark:ring-gold-400/25;
+}
+
+/* ---------- Buttons ---------- */
+
+@utility btn {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition duration-200 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-60;
+}
+
+@utility btn-lg {
+  @apply min-h-13 px-7 text-base;
+}
+
+@utility btn-primary {
+  @apply btn bg-primary-600 text-white shadow-[0_1px_0_rgb(255_255_255/0.18)_inset,0_10px_24px_-10px_rgb(79_70_229/0.7)] hover:-translate-y-px hover:bg-primary-700 hover:shadow-[0_1px_0_rgb(255_255_255/0.18)_inset,0_14px_28px_-10px_rgb(79_70_229/0.75)] dark:hover:bg-primary-500;
+}
+
+@utility btn-secondary {
+  @apply btn border border-gray-300 bg-white text-gray-900 shadow-xs hover:-translate-y-px hover:border-primary-400 hover:text-primary-700 dark:border-dark-600 dark:bg-dark-800 dark:text-white dark:hover:border-primary-400 dark:hover:text-primary-200;
+}
+
+@utility btn-ghost {
+  @apply btn text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-200 dark:hover:bg-dark-800 dark:hover:text-white;
+}
+
+@utility link {
+  @apply font-semibold text-primary-700 decoration-primary-300 underline-offset-4 hover:underline dark:text-primary-300 dark:decoration-primary-400/50;
+}
+
+/* data-active = current page or section in view. With JS the sliding indicator draws the pill. */
+@utility nav-link {
+  @apply relative block rounded-full px-3.5 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-dark-800 dark:hover:text-white;
+  &[data-active="true"] {
+    @apply bg-primary-50 text-primary-700 dark:bg-primary-400/10 dark:text-primary-200;
+  }
+  [data-nav-spy="ready"] &[data-active="true"] {
+    @apply bg-transparent;
+  }
+}
+
+/* Contents links, current heading highlighted by motion.ts */
+@utility toc-link {
+  @apply -ml-px block border-l-2 border-transparent py-1 pl-3 text-sm leading-snug text-gray-600 transition-colors hover:border-copper-400 hover:text-gray-950 dark:text-gray-400 dark:hover:border-copper-500 dark:hover:text-white;
+  &[data-active="true"] {
+    @apply border-gold-500 font-semibold text-gold-700 dark:border-gold-400 dark:text-gold-300;
+  }
+}
+
+/* Registered so the step numbers can fade from copper to gold */
+@property --tile-from {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #6366f1;
+}
+
+@property --tile-to {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #7c3aed;
 }
 
 @layer components {
-  .section-padding {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .section-padding {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .section-padding {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-  }
-
-  .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .dark .glass {
-    background: rgba(15, 23, 42, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  /* Contrast Overrides for Light Mode */
-  .text-body {
-    color: #374151;
-    /* Gray-700 for better contrast on white */
-  }
-
-  .text-muted {
-    color: #4b5563;
-    /* Gray-600 instead of 500 */
-  }
-
-  /* Portfolio Overlay Contrast */
-  .project-card-overlay {
-    background: rgba(0, 0, 0, 0.6);
-    /* Increased from 0.2 for text contrast */
-  }
-
   .gradient-text {
-    background-image: linear-gradient(to right, rgb(79, 70, 229), rgb(37, 99, 235));
+    background-image: linear-gradient(100deg, #1e40af, #2563eb 45%, #0284c7);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
   }
 
-  .gradient-bg {
-    background-image: linear-gradient(
-      to bottom right,
-      rgba(79, 70, 229, 0.05),
-      rgba(37, 99, 235, 0.05),
-      rgba(79, 70, 229, 0.05)
+  .dark .gradient-text {
+    background-image: linear-gradient(100deg, #93c5fd, #60a5fa 45%, #38bdf8);
+  }
+
+  /* Faint grid behind hero sections */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(15 17 21 / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(15 17 21 / 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  .dark .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  }
+
+  /* Soft background light. The radial mask is painted once, while a blur filter this size is
+     redrawn on every frame the shape drifts or the theme reveal runs. */
+  .glow {
+    scale: 1.45;
+    mask-image: radial-gradient(
+      closest-side,
+      #000 35%,
+      rgb(0 0 0 / 0.84) 52%,
+      rgb(0 0 0 / 0.5) 69%,
+      rgb(0 0 0 / 0.16) 85%,
+      transparent
     );
-    position: relative;
   }
 
-  .gradient-bg::before,
-  .gradient-bg::after {
-    content: "";
+  /* ---------- Scroll reveal ---------- */
+  /* Hidden only with js-reveal and no reduced-motion preference. The head script removes
+     js-reveal if motion.ts doesn't load. */
+  @media (prefers-reduced-motion: no-preference) {
+    .js-reveal [data-reveal] {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .js-reveal [data-reveal].is-revealed {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* The eyebrow line draws in after its block appears */
+    .js-reveal [data-reveal] .eyebrow::before {
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--reveal-delay, 0ms) + 0.2s);
+    }
+
+    .js-reveal [data-reveal].is-revealed .eyebrow::before {
+      transform: none;
+    }
+  }
+
+  @media print {
+    .js-reveal [data-reveal],
+    .js-reveal [data-reveal] .eyebrow::before {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* ---------- Case study diagrams ---------- */
+  /* Full size on desktop; on phones shrink to 78%, then scroll */
+  .cs-diagram svg {
+    display: block;
+    width: var(--w);
+    max-width: 100%;
+    min-width: calc(var(--w) * 0.78);
+    height: auto;
+    margin-inline: auto;
+    font-family: var(--font-sans);
+  }
+
+  .cs-diagram .cs-code {
+    font-family: var(--font-mono);
+  }
+
+  .cs-diagram .cs-title {
+    font-size: 14px;
+    font-weight: 600;
+    fill: #0f1115;
+  }
+
+  .cs-diagram .cs-title.cs-code {
+    font-size: 13px;
+  }
+
+  .cs-diagram .cs-sub {
+    font-size: 12.5px;
+    font-weight: 500;
+    fill: #5a6070;
+  }
+
+  .cs-diagram .cs-sub.cs-code {
+    font-size: 12px;
+  }
+
+  .cs-diagram .cs-label {
+    font-size: 12px;
+    font-weight: 600;
+    fill: #4b5563;
+  }
+
+  .cs-diagram .cs-label.cs-code {
+    font-size: 11.5px;
+  }
+
+  .cs-diagram .cs-box {
+    fill: #fff;
+    stroke: #d1d5db;
+  }
+
+  .cs-diagram .cs-box-start {
+    fill: var(--color-primary-50);
+    stroke: var(--color-primary-300);
+  }
+
+  .cs-diagram .cs-box-store {
+    fill: #ecfdf5;
+    stroke: #6ee7b7;
+  }
+
+  .cs-diagram .cs-box-decision {
+    fill: #fffbeb;
+    stroke: var(--color-gold-300);
+  }
+
+  .cs-diagram .cs-edge {
+    fill: none;
+    stroke: #9ca3af;
+    stroke-width: 1.5;
+  }
+
+  .cs-diagram .cs-arrow {
+    fill: #9ca3af;
+  }
+
+  .cs-diagram .cs-label-bg {
+    fill: #f8fafc;
+    stroke: #e5e7eb;
+  }
+
+  .dark .cs-diagram .cs-title {
+    fill: #f6f7f9;
+  }
+
+  .dark .cs-diagram .cs-sub {
+    fill: #9aa1af;
+  }
+
+  .dark .cs-diagram .cs-label {
+    fill: #c9cdd6;
+  }
+
+  .dark .cs-diagram .cs-box {
+    fill: var(--color-dark-800);
+    stroke: var(--color-dark-600);
+  }
+
+  .dark .cs-diagram .cs-box-start {
+    fill: #1c1f33;
+    stroke: var(--color-primary-500);
+  }
+
+  .dark .cs-diagram .cs-box-store {
+    fill: #0f241d;
+    stroke: #10b981;
+  }
+
+  .dark .cs-diagram .cs-box-decision {
+    fill: #261f10;
+    stroke: var(--color-gold-500);
+  }
+
+  .dark .cs-diagram .cs-edge {
+    stroke: #5b6170;
+  }
+
+  .dark .cs-diagram .cs-arrow {
+    fill: #5b6170;
+  }
+
+  .dark .cs-diagram .cs-label-bg {
+    fill: #121317;
+    stroke: var(--color-dark-700);
+  }
+
+  /* ---------- Process steps ---------- */
+  /* Copper wire between the cards; hovering a step turns the wire up to it gold */
+  .step-tile {
+    --tile-from: var(--color-copper-300);
+    --tile-to: var(--color-copper-600);
+    --tile-glow: rgb(184 115 51 / 0.45);
+    transition:
+      --tile-from 450ms ease-out,
+      --tile-to 450ms ease-out,
+      box-shadow 450ms ease-out,
+      scale 450ms ease-out,
+      rotate 450ms ease-out;
+  }
+
+  .step::after {
     position: absolute;
-    width: 300px;
-    height: 300px;
     border-radius: 9999px;
-    filter: blur(60px);
-    z-index: -1;
-    opacity: 0.1;
     pointer-events: none;
+    transition:
+      background-position 500ms ease-out,
+      box-shadow 500ms ease-out;
   }
 
-  .gradient-bg::before {
-    background: radial-gradient(circle, rgb(79, 70, 229), transparent);
-    top: -100px;
-    left: -100px;
+  /* Phones: vertical wire */
+  .step:not(:last-child)::after {
+    content: "";
+    top: 100%;
+    left: calc(1px + 2.75rem - 1.5px);
+    width: 3px;
+    height: 1.5rem;
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-gold-300) 50%,
+      var(--color-copper-400) 50%
+    );
+    background-size: 100% 200%;
+    background-position: 0 100%;
   }
 
-  .gradient-bg::after {
-    background: radial-gradient(circle, rgb(37, 99, 235), transparent);
-    bottom: -100px;
-    right: -100px;
-    animation-delay: -10s;
+  /* Two columns: wire only within a row */
+  @media (width >= 40rem) {
+    .step:not(:last-child)::after {
+      content: none;
+      top: calc(1px + 2.75rem - 1.5px);
+      left: 100%;
+      width: 1.5rem;
+      height: 3px;
+      background-image: linear-gradient(
+        to right,
+        var(--color-gold-300) 50%,
+        var(--color-copper-400) 50%
+      );
+      background-size: 200% 100%;
+      background-position: 100% 0;
+    }
+
+    .step:nth-child(odd):not(:last-child)::after {
+      content: "";
+    }
   }
 
-  .card-hover {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
+  /* One row: wire between every step */
+  @media (width >= 64rem) {
+    .step:not(:last-child)::after {
+      content: "";
+      width: 2.5rem;
+    }
   }
 
-  .card-hover:hover {
-    transform: scale(1.05);
-    box-shadow:
-      0 20px 25px -5px rgba(0, 0, 0, 0.1),
-      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* Touch screens have no hover, so motion.ts sets data-reached as the steps scroll past */
+  .steps:has(.step:nth-child(2):hover) .step:nth-child(-n + 1)::after,
+  .steps:has(.step:nth-child(3):hover) .step:nth-child(-n + 2)::after,
+  .steps:has(.step:nth-child(4):hover) .step:nth-child(-n + 3)::after,
+  .steps[data-reached="2"] .step:nth-child(-n + 1)::after,
+  .steps[data-reached="3"] .step:nth-child(-n + 2)::after,
+  .steps[data-reached="4"] .step:nth-child(-n + 3)::after {
+    background-position: 0 0;
+    box-shadow: 0 0 10px rgb(246 205 102 / 0.85);
   }
 
-  .link-hover {
-    transition-property: color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 200ms;
+  .steps:has(.step:nth-child(1):hover) .step:nth-child(-n + 1) .step-tile,
+  .steps:has(.step:nth-child(2):hover) .step:nth-child(-n + 2) .step-tile,
+  .steps:has(.step:nth-child(3):hover) .step:nth-child(-n + 3) .step-tile,
+  .steps:has(.step:nth-child(4):hover) .step:nth-child(-n + 4) .step-tile,
+  .steps[data-reached="1"] .step:nth-child(-n + 1) .step-tile,
+  .steps[data-reached="2"] .step:nth-child(-n + 2) .step-tile,
+  .steps[data-reached="3"] .step:nth-child(-n + 3) .step-tile,
+  .steps[data-reached="4"] .step:nth-child(-n + 4) .step-tile {
+    --tile-from: var(--color-gold-300);
+    --tile-to: var(--color-gold-600);
+    --tile-glow: rgb(217 168 74 / 0.75);
   }
 
-  .link-hover:hover {
-    color: rgb(59 130 246);
+  .steps[data-reached="1"] > .step:nth-child(1),
+  .steps[data-reached="2"] > .step:nth-child(2),
+  .steps[data-reached="3"] > .step:nth-child(3),
+  .steps[data-reached="4"] > .step:nth-child(4) {
+    border-color: var(--color-gold-400) !important;
   }
 
-  .btn-primary {
-    background-color: rgb(59 130 246);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 200ms;
+  .dark .steps[data-reached="1"] > .step:nth-child(1),
+  .dark .steps[data-reached="2"] > .step:nth-child(2),
+  .dark .steps[data-reached="3"] > .step:nth-child(3),
+  .dark .steps[data-reached="4"] > .step:nth-child(4) {
+    border-color: rgb(229 181 82 / 0.6) !important;
   }
 
-  .btn-primary:hover {
-    background-color: rgb(37 99 235);
-    box-shadow:
-      0 10px 15px -3px rgba(0, 0, 0, 0.1),
-      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* ---------- Rating stars (components/ui/Stars.astro) ---------- */
+  /* Metallic gold with a glint that passes every few seconds */
+  .stars {
+    display: inline-flex;
+    gap: 0.15em;
+    font-size: 1rem;
+    filter: drop-shadow(0 0 0.3em rgb(246 205 102 / 0.45));
   }
 
-  .btn-secondary {
-    background-color: rgb(30 41 59);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 200ms;
+  .star {
+    width: 1em;
+    height: 1em;
+    background-image:
+      linear-gradient(105deg, transparent 42%, rgb(255 255 255 / 0.9) 50%, transparent 58%),
+      linear-gradient(
+        135deg,
+        #fff3c4,
+        var(--color-gold-300) 32%,
+        var(--color-gold-500) 62%,
+        var(--color-gold-700)
+      );
+    background-repeat: no-repeat;
+    background-size:
+      250% 100%,
+      100% 100%;
+    background-position:
+      200% 0,
+      0 0;
+    mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20d='M10.788%203.21c.448-1.077%201.976-1.077%202.424%200l2.082%205.006%205.404.434c1.164.093%201.636%201.545.749%202.305l-4.117%203.527%201.257%205.273c.271%201.136-.964%202.033-1.96%201.425L12%2018.354%207.373%2021.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434%202.082-5.005Z'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    animation: star-glint 4.5s ease-in-out infinite;
   }
 
-  .btn-secondary:hover {
-    background-color: rgb(51 65 85);
+  .star:nth-child(2) {
+    animation-delay: 90ms;
   }
 
-  .dark .btn-secondary {
-    background-color: rgb(51 65 85);
+  .star:nth-child(3) {
+    animation-delay: 180ms;
   }
 
-  .dark .btn-secondary:hover {
-    background-color: rgb(71 85 105);
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .star:nth-child(4) {
+    animation-delay: 270ms;
   }
 
-  .animate-in {
-    animation: fadeIn 0.5s ease-in-out;
+  .star:nth-child(5) {
+    animation-delay: 360ms;
   }
 
-  .text-heading {
-    color: rgb(17 24 39);
+  @keyframes star-glint {
+    0%,
+    60% {
+      background-position:
+        200% 0,
+        0 0;
+    }
+
+    100% {
+      background-position:
+        -100% 0,
+        0 0;
+    }
   }
 
-  .dark .text-heading {
-    color: rgb(249 250 251);
-    /* gray-50 */
+  /* ---------- Technology strip ---------- */
+  .marquee {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
   }
 
-  .text-subheading {
-    color: rgb(75 85 99);
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
   }
 
-  .dark .text-subheading {
-    color: rgb(243 244 246);
-    /* gray-100 */
-  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      mask-image: none;
+    }
 
-  .text-body {
-    color: rgb(55 65 81);
-  }
+    .marquee-track {
+      animation: none !important;
+      width: 100% !important;
+    }
 
-  .dark .text-body {
-    color: rgb(229 231 235);
-    /* gray-200 */
-  }
+    .marquee-track > ul {
+      flex: 1 1 auto !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      padding-inline: 1.25rem !important;
+    }
 
-  .text-muted {
-    color: rgb(75 85 99);
-  }
-
-  .dark .text-muted {
-    color: rgb(209 213 219);
-    /* gray-300 for even better contrast */
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(100px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  0% {
-    transform: translateY(-100px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideLeft {
-  0% {
-    transform: translateX(100px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideRight {
-  0% {
-    transform: translateX(-100px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes scaleIn {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes scaleOut {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
-}
-
-@keyframes rotateIn {
-  0% {
-    transform: rotate(-180deg) scale(0);
-    opacity: 0;
-  }
-
-  100% {
-    transform: rotate(0deg) scale(1);
-    opacity: 1;
+    .marquee-track > [aria-hidden="true"] {
+      display: none !important;
+    }
   }
 }

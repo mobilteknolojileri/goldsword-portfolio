@@ -1,0 +1,31 @@
+---
+interface Props {
+  class?: string;
+  /** Empty when the parent link already has a label */
+  alt?: string;
+}
+
+const { class: className = "h-8", alt = "goldsword" } = Astro.props;
+
+// One SVG per theme, the other one stays display: none
+const RATIO = 4.337;
+const HEIGHT = 32;
+const WIDTH = Math.round(HEIGHT * RATIO);
+---
+
+<img
+  src="/brand/logo-light.svg"
+  {alt}
+  width={WIDTH}
+  height={HEIGHT}
+  decoding="async"
+  class:list={["w-auto dark:hidden", className]}
+/>
+<img
+  src="/brand/logo-dark.svg"
+  {alt}
+  width={WIDTH}
+  height={HEIGHT}
+  decoding="async"
+  class:list={["hidden w-auto dark:block", className]}
+/>

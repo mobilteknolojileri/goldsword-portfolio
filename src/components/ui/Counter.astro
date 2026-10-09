@@ -1,0 +1,27 @@
+---
+import { parseCount } from "@/lib/count";
+
+interface Props {
+  value: string;
+}
+
+const { value } = Astro.props;
+const spec = parseCount(value);
+---
+
+{spec ? (
+  <>
+    <span class="sr-only">{value}</span>
+    <span
+      aria-hidden="true"
+      data-count-to={spec.to}
+      data-count-decimals={spec.decimals}
+      data-count-prefix={spec.prefix}
+      data-count-suffix={spec.suffix}
+    >
+      {value}
+    </span>
+  </>
+) : (
+  value
+)}

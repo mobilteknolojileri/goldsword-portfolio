@@ -1,0 +1,40 @@
+---
+import { FaFilePdf, FaGithub, FaGlobe, FaPlay } from "react-icons/fa";
+import { GoGitMerge } from "react-icons/go";
+import { SiAppstore, SiNpm, SiReact } from "react-icons/si";
+import { BionlukIcon, GmailIcon, GooglePlayIcon } from "@/components/icons/brands";
+import type { LinkBrand } from "@/lib/link-brand";
+
+interface Props {
+  brand: LinkBrand;
+  size?: number;
+}
+
+const { brand, size = 16 } = Astro.props;
+---
+
+{brand === "github" && (
+  <FaGithub size={size} className="text-gray-900 dark:text-white" aria-hidden="true" />
+)}
+{brand === "pull-request" && (
+  <GoGitMerge size={size} className="text-[#8250df] dark:text-[#a371f7]" aria-hidden="true" />
+)}
+{brand === "npm" && <SiNpm size={size} className="text-[#cb3837]" aria-hidden="true" />}
+{brand === "react-native-directory" && (
+  <SiReact size={size} className="text-[#087ea4] dark:text-[#61dafb]" aria-hidden="true" />
+)}
+{brand === "google-play" && <GooglePlayIcon size={size} />}
+{brand === "app-store" && <SiAppstore size={size} className="text-[#0d96f6]" aria-hidden="true" />}
+{brand === "bionluk" && <BionlukIcon size={Math.round(size * 0.9)} />}
+{brand === "email" && <GmailIcon size={Math.round(size * 1.15)} />}
+{brand === "pdf" && <FaFilePdf size={size} className="text-[#e5252a]" aria-hidden="true" />}
+{brand === "demo" && (
+  <FaPlay
+    size={Math.round(size * 0.8)}
+    className="text-emerald-600 dark:text-emerald-400"
+    aria-hidden="true"
+  />
+)}
+{brand === "web" && (
+  <FaGlobe size={size} className="text-primary-600 dark:text-primary-300" aria-hidden="true" />
+)}

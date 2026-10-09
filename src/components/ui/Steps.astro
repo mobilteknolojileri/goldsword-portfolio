@@ -1,0 +1,43 @@
+---
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+
+interface Props {
+  steps: { title: string; body: string }[];
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  id?: string;
+  tinted?: boolean;
+}
+
+const { steps, title, eyebrow = "Süreç", lead, id, tinted = false } = Astro.props;
+---
+
+<section id={id} class:list={["section", tinted && "section-tint"]}>
+  <div class="section-container section-padding">
+    <SectionHeader eyebrow={eyebrow} title={title} lead={lead} />
+
+    <!-- The wire between the cards is .step::after in globals.css -->
+    <ol
+      class:list={[
+        "steps mt-14 grid gap-6 sm:grid-cols-2 lg:gap-x-10",
+        steps.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3",
+      ]}
+    >
+      {steps.map((step, index) => (
+        <li
+          class="step card group relative p-6 transition duration-300 ease-out hover:-translate-y-1 hover:border-gold-400 hover:shadow-[0_22px_44px_-24px_rgb(217_168_74/0.75)] dark:hover:border-gold-400/70"
+          data-reveal
+        >
+          <span class="tile step-tile h-10 w-10 rounded-full font-mono text-sm font-semibold group-hover:scale-110 group-hover:rotate-6">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <h3 class="text-heading mt-5 text-lg font-bold transition-colors duration-300 group-hover:text-gold-700 dark:group-hover:text-gold-300">
+            {step.title}
+          </h3>
+          <p class="text-body mt-2 text-[0.9375rem] leading-relaxed">{step.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

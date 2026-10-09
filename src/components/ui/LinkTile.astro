@@ -1,0 +1,51 @@
+---
+// Link with the destination's logo (picked in lib/link-brand.ts). Add w-full to stretch it.
+import BrandGlyph from "@/components/icons/BrandGlyph.astro";
+import { linkBrand, type LinkBrand } from "@/lib/link-brand";
+
+interface Props {
+  href: string;
+  label: string;
+  detail?: string;
+  /** Override the logo guessed from the href */
+  brand?: LinkBrand;
+  size?: "md" | "sm";
+  class?: string;
+}
+
+const { href, label, detail, brand, size = "md", class: className } = Astro.props;
+const newTab = /^https?:/.test(href) || /\.pdf(?:$|[?#])/i.test(href);
+const mark = brand ?? linkBrand(href);
+const small = size === "sm";
+---
+
+<a
+  href={href}
+  {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+  class:list={[
+    "link-tile group/tile py-1.5 pl-1.5",
+    small ? "min-h-10 gap-2 pr-2.5 text-[0.8125rem]" : "min-h-11 gap-2.5 pr-3.5 text-sm",
+    className,
+  ]}
+>
+  <span
+    class:list={[
+      "logo-tile flex-none rounded-lg transition-transform duration-300 group-hover/tile:scale-110",
+      small ? "size-7" : "size-8",
+    ]}
+  >
+    <BrandGlyph brand={mark} size={small ? 14 : 16} />
+  </span>
+  <span class="min-w-0 flex-1 text-left">
+    <span class="block leading-tight">{label}</span>
+    {detail && <span class="text-muted block truncate text-xs font-medium">{detail}</span>}
+  </span>
+  {newTab && (
+    <span
+      aria-hidden="true"
+      class="ml-auto pl-1 text-gray-400 transition-transform duration-300 group-hover/tile:translate-x-0.5 group-hover/tile:-translate-y-0.5"
+    >
+      ↗
+    </span>
+  )}
+</a>
