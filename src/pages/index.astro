@@ -29,8 +29,10 @@ const emailjsConfig = {
   <Services />
   <FeaturedWork />
   <Testimonials />
-  <OpenSource />
-  <PasswordDemo client:visible />
+
+  <PasswordDemo client:visible>
+    <OpenSource />
+  </PasswordDemo>
   <Background />
   <Process />
   <Faq items={FAQ_DATA} />

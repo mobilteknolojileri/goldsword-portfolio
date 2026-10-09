@@ -1,7 +1,7 @@
 // Checked against GitHub and npm on 2026-10-08
 
 export interface OpenSourceItem {
-  kind: "Kütüphane" | "Katkı" | "Model" | "Araç";
+  kind: "Kütüphane" | "Katkı";
   title: string;
   body: string;
   meta?: string;
@@ -20,10 +20,6 @@ export const OPEN_SOURCE: OpenSourceItem[] = [
         href: "https://www.npmjs.com/package/react-native-password-intelligence",
       },
       { label: "Çekirdek paket", href: "https://www.npmjs.com/package/password-intelligence" },
-      {
-        label: "Canlı demo",
-        href: "https://mobilteknolojileri.github.io/react-native-password-intelligence/",
-      },
       {
         label: "React Native Directory",
         href: "https://reactnative.directory/package/react-native-password-intelligence",
@@ -49,22 +45,5 @@ export const OPEN_SOURCE: OpenSourceItem[] = [
     title: "faker-js için Türkçe soyadları",
     body: "Türkçe soyadı listesi 198 girdiden 370'e çıktı. Mayıs 2026'da birleştirildi.",
     links: [{ label: "PR #3839", href: "https://github.com/faker-js/faker/pull/3839" }],
-  },
-  {
-    kind: "Model",
-    title: "Kumaş kusuru tespiti",
-    body: "Fotoğraftaki delikleri bulan YOLOv8 modeli, FastAPI servisi ve Flutter uygulaması. mAP %95,1.",
-    links: [
-      { label: "GitHub", href: "https://github.com/mobilteknolojileri/fabric-defect-detection" },
-    ],
-  },
-  {
-    kind: "Araç",
-    title: "Xiaomi bootloader başvurusu",
-    body: "Günlük başvuru kotası Pekin saatiyle gece yarısı açılır; araç saati NTP'den alır ve tam o anda başvurur.",
-    meta: "GitHub'da 8 yıldız",
-    links: [
-      { label: "GitHub", href: "https://github.com/mobilteknolojileri/xiaomi-bootloader-unlocker" },
-    ],
   },
 ];
