@@ -1,24 +1,108 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Navbar from "@/components/layout/Navbar";
-import PortfolioPage from "@/features/portfolio/PortfolioPage";
-import ThemeToggle from "@/components/layout/ThemeToggle";
+import ProjectCard from "@/components/ui/ProjectCard.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import { PROJECTS, type ProjectCategory } from "@/lib/constants";
+import { CATEGORY_LABELS } from "@/config/portfolio";
+import { generateMetadata } from "@/lib/seo/metadata";
+
+const metadata = generateMetadata({
+  title: "Portfolyo: mobil, web ve açık kaynak işler",
+  description:
+    "Yayındaki mobil uygulamalar, web projeleri ve açık kaynak işler. Her birinde ne yaptığımı ve nerede zorlandığımı anlattım.",
+  path: "/portfolio",
+  keywords: ["portfolyo", "mobil uygulama projeleri", "web projeleri", "açık kaynak"],
+});
+
+const CATEGORY_ORDER: ProjectCategory[] = [
+  "Mobile",
+  "Web",
+  "Open Source",
+  "Backend",
+  "SEO",
+  "AI",
+  "Game",
+  "Design",
+];
+
+// Featured first, client work before own products
+const projects = [...PROJECTS].sort(
+  (a, b) =>
+    Number(Boolean(b.featured)) - Number(Boolean(a.featured)) ||
+    Number(b.kind === "client") - Number(a.kind === "client"),
+);
+
+const FILTER_CLASS =
+  "inline-flex min-h-10 items-center rounded-full border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition hover:border-primary-400 hover:text-primary-700 aria-pressed:border-primary-600 aria-pressed:bg-primary-600 aria-pressed:text-white dark:border-dark-600 dark:bg-dark-800 dark:text-gray-200 dark:hover:text-primary-200 dark:aria-pressed:border-primary-500 dark:aria-pressed:bg-primary-500 dark:aria-pressed:text-white";
+
+const categories = CATEGORY_ORDER.map((category) => ({
+  category,
+  count: PROJECTS.filter((project) => project.category === category).length,
+})).filter(({ count }) => count > 0);
 ---
 
-<BaseLayout
-  title="Portfolyo - goldsword"
-  description="Gaziantep Freelancer Yazılım projelerim ve mobil uygulama çalışmalarım."
->
-  <Navbar client:idle />
-  <ThemeToggle client:idle />
-
-  <PortfolioPage client:idle />
-
-  <footer class="border-t border-gray-100 bg-white py-10 dark:border-dark-800 dark:bg-dark-900">
-    <div class="section-container section-padding">
-      <p class="text-body text-center text-sm font-medium">
-        © 2026 goldsword. Tüm hakları saklıdır.
-      </p>
+<BaseLayout {...metadata}>
+  <section class="relative isolate overflow-hidden pt-28 pb-24 sm:pt-36">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[32rem]">
+      <div class="bg-grid absolute inset-0"></div>
+      <div class="absolute -top-48 right-[-10%] h-[30rem] w-[30rem] rounded-full bg-primary-500/15 glow"></div>
     </div>
-  </footer>
+
+    <div class="section-container section-padding">
+      <SectionHeader
+        as="h1"
+        eyebrow="Portfolyo"
+        title="Yaptığım işler"
+        lead="Yayındaki mobil uygulamalar, web projeleri ve açık kaynak işler. Her birinde ne yaptığımı ve işin nerede zorlaştığını anlattım."
+      />
+
+      <div
+        data-filter-bar
+        role="group"
+        aria-label="Kategoriye göre süz"
+        class="mt-10 hidden flex-wrap gap-2 js:flex"
+      >
+        <button type="button" data-filter="all" aria-pressed="true" class={FILTER_CLASS}>
+          Hepsi ({PROJECTS.length})
+        </button>
+        {categories.map(({ category, count }) => (
+          <button type="button" data-filter={category} aria-pressed="false" class={FILTER_CLASS}>
+            {CATEGORY_LABELS[category]} ({count})
+          </button>
+        ))}
+      </div>
+
+      <ul class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project, index) => (
+          <li data-category={project.category}>
+            <ProjectCard
+              project={project}
+              headingLevel="h2"
+              priority={index === 0}
+              reveal={index >= 3}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 </BaseLayout>
+
+<script>
+  // Without JS the filter bar stays hidden (js: variant) and everything is listed
+  const bar = document.querySelector<HTMLElement>("[data-filter-bar]");
+  if (bar) {
+    const buttons = bar.querySelectorAll<HTMLButtonElement>("[data-filter]");
+    const items = document.querySelectorAll<HTMLElement>("[data-category]");
+
+    buttons.forEach((button) =>
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        buttons.forEach((other) => other.setAttribute("aria-pressed", String(other === button)));
+        items.forEach((item) => {
+          item.hidden = filter !== "all" && item.dataset.category !== filter;
+        });
+      }),
+    );
+  }
+</script>
