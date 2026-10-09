@@ -2,6 +2,7 @@
 import { GooglePlayIcon } from "@/components/icons/brands";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionHeader from "@/components/ui/SectionHeader.astro";
+import { smallImageSrcset } from "@/lib/images";
 import type { Metadata } from "@/lib/seo/metadata";
 
 interface Props {
@@ -39,6 +40,7 @@ const {
   screens = [],
   legal,
 } = Astro.props;
+const showcaseSrcset = showcase ? smallImageSrcset(showcase.src) : undefined;
 
 // Games have no composite, so the first screenshot leads
 const [leadScreen, ...moreScreens] = showcase ? [] : screens;
@@ -93,6 +95,8 @@ const TONES = ["tile-indigo", "tile-sky", "tile-emerald"];
             {showcase ? (
               <img
                 src={showcase.src}
+                srcset={showcaseSrcset}
+                sizes={showcaseSrcset ? "(min-width: 1024px) 560px, 100vw" : undefined}
                 alt={showcase.alt}
                 width="1200"
                 height="860"

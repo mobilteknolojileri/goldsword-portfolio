@@ -1,4 +1,6 @@
 ---
+import { smallImageSrcset } from "@/lib/images";
+
 interface Props {
   src: string;
   alt: string;
@@ -7,12 +9,15 @@ interface Props {
 }
 
 const { src, alt, width, height } = Astro.props;
+const srcset = smallImageSrcset(src, width);
 ---
 
 <figure class="not-prose my-10">
   <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_24px_60px_-34px_rgb(15_17_21/0.45)] dark:border-dark-700 dark:bg-dark-800">
     <img
       src={src}
+      srcset={srcset}
+      sizes={srcset ? "(min-width: 1024px) 720px, 100vw" : undefined}
       alt={alt}
       width={width}
       height={height}

@@ -1,6 +1,7 @@
 ---
 import ServicePage from "@/layouts/ServicePage.astro";
 import ProseSection from "@/components/ui/ProseSection.astro";
+import { smallImageSrcset } from "@/lib/images";
 import type { FaqItem } from "@/features/faq/data";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { getFAQSchema, getLocalBusinessSchema } from "@/lib/seo/schema";
@@ -84,6 +85,8 @@ const FAQS: FaqItem[] = [
     <figure>
       <img
         src="/assets/projects/frozen-yogurt-website/site.webp"
+        srcset={smallImageSrcset("/assets/projects/frozen-yogurt-website/site.webp")}
+        sizes="(min-width: 768px) 720px, 100vw"
         alt="Frozen Yogurt Cafe sitesinin ilk ekranı"
         width="1200"
         height="816"
