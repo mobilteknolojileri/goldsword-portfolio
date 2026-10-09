@@ -153,15 +153,16 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
     // The topic goes into the body so the EmailJS template doesn't need a new field
     const message = `Konu: ${TOPICS[topic].label}\n\n${trimmedMessage}`;
 
-    // No EmailJS config: open the visitor's mail app instead
-    if (!isConfigured) {
+    const openMailApp = (note: string) => {
       const subject = encodeURIComponent(`goldsword.dev üzerinden mesaj: ${trimmedName}`);
       const body = encodeURIComponent(`${message}\n\n${trimmedName} <${trimmedEmail}>`);
       window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-      setSubmitStatus({
-        type: "success",
-        message: "E-posta uygulamanız açılıyor; mesajınızı oradan gönderebilirsiniz.",
-      });
+      setSubmitStatus({ type: "success", message: note });
+    };
+
+    // No EmailJS config: open the visitor's mail app instead
+    if (!isConfigured) {
+      openMailApp("E-posta uygulamanız açılıyor; mesajınızı oradan gönderebilirsiniz.");
       return;
     }
 
@@ -188,10 +189,10 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
       mountedAtRef.current = Date.now();
     } catch (error) {
       if (import.meta.env.DEV) console.error("EmailJS send failed:", error);
-      setSubmitStatus({
-        type: "error",
-        message: `Mesaj gönderilemedi. Lütfen ${CONTACT_EMAIL} adresine doğrudan yazın.`,
-      });
+      // The message still reaches the inbox through the visitor's mail app
+      openMailApp(
+        "Mesaj buradan gönderilemedi; e-posta uygulamanız açılıyor, oradan gönderebilirsiniz.",
+      );
     } finally {
       setIsSubmitting(false);
     }
