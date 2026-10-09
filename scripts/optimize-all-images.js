@@ -1,8 +1,5 @@
-/**
- * 🖼️ Image Optimization Script
- * Converts PNG images to WebP format and resizes them appropriately.
- * Run: node scripts/optimize-all-images.js
- */
+// Converts PNG images to WebP and resizes them.
+// Usage: node scripts/optimize-all-images.js
 import sharp from "sharp";
 import { readdir, stat } from "fs/promises";
 import { join, extname, basename } from "path";
@@ -35,11 +32,11 @@ async function getFiles(dir) {
 async function optimizeImage(filePath) {
   const name = basename(filePath);
   const outPath = filePath.replace(/\.png$/i, ".webp");
-  
+
   try {
     const meta = await sharp(filePath).metadata();
     let pipeline = sharp(filePath);
-    
+
     const resizeConfig = RESIZE_MAP[name];
     if (resizeConfig) {
       pipeline = pipeline.resize(resizeConfig.width, resizeConfig.height, {
@@ -51,44 +48,48 @@ async function optimizeImage(filePath) {
         withoutEnlargement: true,
       });
     }
-    
+
     await pipeline.webp({ quality: QUALITY }).toFile(outPath);
-    
+
     const originalSize = (await stat(filePath)).size;
     const newSize = (await stat(outPath)).size;
     const savings = ((1 - newSize / originalSize) * 100).toFixed(1);
-    
+
     console.log(
-      `✅ ${name} → ${basename(outPath)} | ${(originalSize / 1024).toFixed(0)}KB → ${(newSize / 1024).toFixed(0)}KB (-${savings}%)`
+      `${name} -> ${basename(outPath)}: ${(originalSize / 1024).toFixed(0)} KB -> ${(newSize / 1024).toFixed(0)} KB (-${savings}%)`,
     );
-    
+
     return { original: originalSize, optimized: newSize };
   } catch (err) {
-    console.error(`❌ ${name}: ${err.message}`);
+    console.error(`Failed: ${name}: ${err.message}`);
     return { original: 0, optimized: 0 };
   }
 }
 
 async function main() {
-  console.log("🖼️  Scanning for PNG images...\n");
-  
+  console.log("Looking for PNG files in public/assets\n");
+
   const files = await getFiles(PUBLIC_ASSETS);
   console.log(`Found ${files.length} PNG files\n`);
-  
+
   let totalOriginal = 0;
   let totalOptimized = 0;
-  
+
   for (const file of files) {
     const result = await optimizeImage(file);
     totalOriginal += result.original;
     totalOptimized += result.optimized;
   }
-  
+
   console.log("\n" + "=".repeat(50));
-  console.log(`📊 Total: ${(totalOriginal / 1024 / 1024).toFixed(1)}MB → ${(totalOptimized / 1024 / 1024).toFixed(1)}MB`);
-  console.log(`💾 Saved: ${((totalOriginal - totalOptimized) / 1024 / 1024).toFixed(1)}MB (-${((1 - totalOptimized / totalOriginal) * 100).toFixed(1)}%)`);
+  console.log(
+    `Total: ${(totalOriginal / 1024 / 1024).toFixed(1)} MB -> ${(totalOptimized / 1024 / 1024).toFixed(1)} MB`,
+  );
+  console.log(
+    `Saved: ${((totalOriginal - totalOptimized) / 1024 / 1024).toFixed(1)} MB (-${((1 - totalOptimized / totalOriginal) * 100).toFixed(1)}%)`,
+  );
   console.log("=".repeat(50));
-  console.log("\n⚠️  Remember to update image references in constants.ts from .png to .webp!");
+  console.log("\nImage paths in src/lib/constants.ts still end in .png; switch them to .webp.");
 }
 
 main();

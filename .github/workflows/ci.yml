@@ -35,11 +35,11 @@ jobs:
 
       - name: Verify sitemap
         run: |
-          test -f dist/sitemap-index.xml && echo "✅ Sitemap index exists" || exit 1
-          test -f dist/sitemap-0.xml && echo "✅ Sitemap-0 exists" || exit 1
+          test -f dist/sitemap-index.xml || (echo "dist/sitemap-index.xml is missing" && exit 1)
+          test -f dist/sitemap-0.xml || (echo "dist/sitemap-0.xml is missing" && exit 1)
 
       - name: Verify page count
         run: |
           PAGE_COUNT=$(find dist -name "index.html" | wc -l)
-          echo "✅ $PAGE_COUNT pages generated"
-          [ "$PAGE_COUNT" -ge 35 ] || (echo "❌ Expected at least 35 pages" && exit 1)
+          echo "$PAGE_COUNT pages built"
+          [ "$PAGE_COUNT" -ge 35 ] || (echo "Expected at least 35 pages" && exit 1)

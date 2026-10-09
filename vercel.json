@@ -1,6 +1,13 @@
 {
   "trailingSlash": false,
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/cv",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -27,7 +34,7 @@
         },
         {
           "key": "X-XSS-Protection",
-          "value": "1; mode=block"
+          "value": "0"
         }
       ]
     },
