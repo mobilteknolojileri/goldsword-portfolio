@@ -1,0 +1,294 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { CV } from "@/lib/cv";
+import { generateMetadata } from "@/lib/seo/metadata";
+
+// Not public yet: production redirects /cv home and the sitemap skips it
+if (import.meta.env.PROD) {
+  return Astro.redirect("/");
+}
+
+const metadata = generateMetadata({
+  title: "CV",
+  description:
+    "goldsword: yazılım geliştirici. React Native, TypeScript, açık kaynak katkılar ve npm üzerinde kaynağı doğrulanabilen yayınlar. Tarayıcıdan PDF olarak yazdırılabilen CV sayfası.",
+  path: "/cv",
+  keywords: ["cv", "özgeçmiş", "yazılım geliştirici", "react native", "typescript", "açık kaynak"],
+});
+
+const statusBadge: Record<string, { label: string; className: string }> = {
+  merged: { label: "Birleşti", className: "bg-emerald-100 text-emerald-700" },
+  review: { label: "İnceleniyor", className: "bg-amber-100 text-amber-700" },
+  open: { label: "Açık", className: "bg-sky-100 text-sky-700" },
+};
+---
+
+<BaseLayout {...metadata}>
+  <article class="cv-page section-container section-padding max-w-4xl pb-20 pt-28 sm:pt-32 print:max-w-none print:p-0">
+    <div class="mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 pb-6 dark:border-dark-700 print:hidden">
+      <div class="hidden sm:block">
+        <p class="text-muted text-sm">
+          Tarayıcıdan{" "}
+          <kbd class="rounded-xs border border-gray-300 bg-gray-50 px-1.5 py-0.5 text-xs dark:border-dark-600 dark:bg-dark-800">
+            Ctrl/Cmd + P
+          </kbd>{" "}
+          → "PDF olarak kaydet" ile indirilebilir.
+        </p>
+      </div>
+      <button
+        type="button"
+        onclick="window.print()"
+        class="btn-primary ml-auto"
+        aria-label="CV'yi yazdır veya PDF olarak indir"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="h-4 w-4"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"
+          ></path>
+        </svg>
+        PDF olarak indir
+      </button>
+    </div>
+
+    <header class="mb-10 print:mb-6">
+      <h1 class="text-heading mb-2 text-4xl font-extrabold tracking-tight md:text-5xl">
+        {CV.name}
+      </h1>
+      <p class="text-subheading text-xl font-semibold md:text-2xl">{CV.headline}</p>
+      <p class="text-body mt-4 max-w-3xl text-base leading-relaxed">{CV.summary}</p>
+
+      <ul
+        class="text-body mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm print:gap-x-4"
+        aria-label="İletişim bilgileri"
+      >
+        <li>
+          <a
+            href={`mailto:${CV.contact.email}`}
+            class="font-medium hover:text-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+          >
+            {CV.contact.email}
+          </a>
+        </li>
+        <li>{CV.contact.location}</li>
+        <li>
+          <a
+            href={CV.contact.website}
+            class="font-medium hover:text-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+          >
+            goldsword.dev
+          </a>
+        </li>
+        <li>
+          <a
+            href={CV.contact.github}
+            class="font-medium hover:text-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+          >
+            GitHub
+          </a>
+        </li>
+        {CV.contact.npm && (
+          <li>
+            <a
+              href={CV.contact.npm}
+              class="font-medium hover:text-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+            >
+              npm
+            </a>
+          </li>
+        )}
+        {CV.contact.linkedin && (
+          <li>
+            <a
+              href={CV.contact.linkedin}
+              class="font-medium hover:text-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+            >
+              LinkedIn
+            </a>
+          </li>
+        )}
+      </ul>
+    </header>
+
+    <section class="mb-10 print:mb-6" aria-labelledby="cv-highlights">
+      <h2
+        id="cv-highlights"
+        class="text-heading mb-4 text-xl font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400"
+      >
+        Öne Çıkanlar
+      </h2>
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {CV.highlights.map((h) => (
+          <li class="rounded-xl border border-gray-200 bg-white/60 p-4 dark:border-dark-700 dark:bg-dark-800/40 print:border print:bg-transparent">
+            <p class="text-heading font-semibold">{h.title}</p>
+            <p class="text-body mt-1 text-sm leading-relaxed">{h.detail}</p>
+            {h.link && (
+              <a
+                href={h.link}
+                class="mt-2 inline-block text-xs font-medium text-primary-600 hover:underline print:text-primary-700"
+              >
+                {h.link}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mb-10 print:mb-6" aria-labelledby="cv-experience">
+      <h2
+        id="cv-experience"
+        class="text-heading mb-4 text-xl font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400"
+      >
+        Deneyim
+      </h2>
+      <ol class="space-y-6">
+        {CV.experience.map((exp) => (
+          <li class="relative">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <div>
+                <h3 class="text-heading text-lg font-bold">{exp.role}</h3>
+                <p class="text-subheading text-sm font-semibold">
+                  {exp.company}
+                  {exp.location && <span class="text-muted"> · {exp.location}</span>}
+                </p>
+              </div>
+              <p class="text-muted text-sm font-medium">{exp.period}</p>
+            </div>
+            <p class="text-body mt-2 text-sm leading-relaxed">{exp.description}</p>
+            <ul class="mt-3 space-y-1.5 pl-5 text-sm leading-relaxed">
+              {exp.highlights.map((h) => (
+                <li class="text-body list-disc">{h}</li>
+              ))}
+            </ul>
+            {exp.technologies && exp.technologies.length > 0 && (
+              <p class="text-muted mt-3 text-xs">
+                <span class="font-semibold">Teknolojiler:</span> {exp.technologies.join(" · ")}
+              </p>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="mb-10 print:mb-6" aria-labelledby="cv-oss">
+      <h2
+        id="cv-oss"
+        class="text-heading mb-4 text-xl font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400"
+      >
+        Açık Kaynak Katkılar
+      </h2>
+      <ul class="space-y-3">
+        {CV.ossContributions.map((c) => (
+          <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span
+              class={`inline-flex shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${statusBadge[c.status].className} print:border print:border-current`}
+              aria-label={`Durum: ${statusBadge[c.status].label}`}
+            >
+              {statusBadge[c.status].label}
+            </span>
+            <a
+              href={c.link}
+              class="text-heading font-semibold hover:text-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+            >
+              {c.project}
+            </a>
+            <span class="text-body text-sm">· {c.contribution}</span>
+            <time class="text-muted ml-auto text-xs" datetime={c.date}>
+              {c.date}
+            </time>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mb-10 print:mb-6" aria-labelledby="cv-skills">
+      <h2
+        id="cv-skills"
+        class="text-heading mb-4 text-xl font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400"
+      >
+        Yetkinlikler
+      </h2>
+      <dl class="grid gap-4 sm:grid-cols-2">
+        {CV.skills.map((group) => (
+          <div>
+            <dt class="text-heading mb-1 text-sm font-bold">{group.category}</dt>
+            <dd class="text-body text-sm leading-relaxed">{group.items.join(" · ")}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="grid gap-8 sm:grid-cols-2 print:gap-4">
+      <section aria-labelledby="cv-education">
+        <h2
+          id="cv-education"
+          class="text-heading mb-3 text-xl font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400"
+        >
+          Eğitim
+        </h2>
+        <ul class="space-y-2 text-sm">
+          {CV.education.map((e) => (
+            <li>
+              <p class="text-heading font-semibold">{e.degree}</p>
+              <p class="text-subheading">
+                {e.institution} · {e.period}
+              </p>
+              {e.detail && <p class="text-muted text-xs">{e.detail}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section aria-labelledby="cv-languages">
+        <h2
+          id="cv-languages"
+          class="text-heading mb-3 text-xl font-bold uppercase tracking-wide text-primary-600 dark:text-primary-400"
+        >
+          Diller
+        </h2>
+        <ul class="space-y-2 text-sm">
+          {CV.languages.map((l) => (
+            <li class="text-body">
+              <span class="text-heading font-semibold">{l.name}</span> · {l.level}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  /* Print: single column on A4 */
+  @media print {
+    :global(html, body) {
+      background: white !important;
+      color: #111 !important;
+      font-size: 10pt;
+    }
+    a {
+      color: #111 !important;
+      text-decoration: underline;
+    }
+    h1,
+    h2,
+    h3 {
+      page-break-after: avoid;
+    }
+    section {
+      page-break-inside: avoid;
+    }
+    li {
+      page-break-inside: avoid;
+    }
+  }
+</style>
