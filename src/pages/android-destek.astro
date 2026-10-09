@@ -1,0 +1,306 @@
+---
+import { getCollection } from "astro:content";
+import ServicePage from "@/layouts/ServicePage.astro";
+import ProseSection from "@/components/ui/ProseSection.astro";
+import Steps from "@/components/ui/Steps.astro";
+import type { FaqItem } from "@/features/faq/data";
+import { COPY_TOKENS } from "@/config/seo";
+import { formatDate } from "@/lib/blog";
+import { generateMetadata } from "@/lib/seo/metadata";
+import { getFAQSchema } from "@/lib/seo/schema";
+
+const metadata = generateMetadata({
+  title: "Android Destek: Açılmayan Telefon ve ROM Sorunları",
+  description:
+    "Logoda kalan, güncellemeden sonra açılmayan, root ya da custom ROM sonrası bozulan Android telefonlar için yazılım desteği. ROM kurulumu da yapıyorum.",
+  path: "/android-destek",
+  locale: "tr",
+  keywords: [
+    "android teknik destek",
+    "telefon açılmıyor",
+    "logoda kalan telefon",
+    "custom rom kurulumu",
+    "bootloader kilidi açma",
+    "hyperos güncelleme sorunu",
+  ],
+});
+
+const HIGHLIGHTS = [
+  { label: "Kapsam", value: "Telefonun yazılım tarafı: açılış, sistem, uygulamalar ve veri" },
+  { label: "Kurulum", value: "Bootloader kilidi açma, kurtarma, custom ROM ve root" },
+  {
+    label: "Çalışma şekli",
+    value: "Telefon genelde sizde kalır; gerekirse bilgisayarınız üzerinden bağlanırım",
+  },
+  {
+    label: "Yapmadığım",
+    value: "Donanım tamiri ve sahibi belli olmayan cihazda hesap kilidi açma",
+  },
+];
+
+// Grouped by where the problem shows up
+const PROBLEM_LAYERS: { label: string; items: { text: string; href?: string }[] }[] = [
+  {
+    label: "Açılış",
+    items: [
+      { text: "Logoda kalıyor ya da kendi kendine yeniden başlıyor" },
+      { text: "Fastboot ya da kurtarma ekranından çıkmıyor" },
+      {
+        text: "Güncellemeden sonra hiç açılmadı",
+        href: "/blog/hyperos-guncellemesi-sonrasi-telefon-acilmiyor",
+      },
+    ],
+  },
+  {
+    label: "Sistem",
+    items: [
+      { text: "Güncellemeden sonra eskisi gibi çalışmıyor" },
+      {
+        text: "Root, custom ROM ya da kilit açmadan sonra çıkan sorun",
+        href: "#root-custom-rom-ve-bootloader-kilidi",
+      },
+      { text: "Yavaşladı, donuyor, ısınıyor" },
+    ],
+  },
+  {
+    label: "Uygulamalar",
+    items: [
+      {
+        text: 'WhatsApp "resmi uygulama" deyip giriş yaptırmıyor',
+        href: "/blog/giris-yapmak-icin-resmi-whatsapp-hatasi",
+      },
+      {
+        text: 'Banka uygulaması "cihazınız güvenli değil" diyor',
+        href: "/blog/banka-uygulamasi-acilmiyor-guvenli-degil-hatasi",
+      },
+      { text: "Vize biyometri uygulaması açılmıyor", href: "/blog/saudi-visa-bio-acilmiyor" },
+      { text: "Uygulama kapanıyor ya da verisini kaybediyor" },
+    ],
+  },
+  {
+    label: "Veri",
+    items: [
+      {
+        text: "Silinen fotoğraf ve mesajlar geri gelir mi?",
+        href: "/blog/silinen-fotograflar-geri-gelir-mi",
+      },
+      { text: "Depolama doldu, temizlik uygulaması hasar bıraktı" },
+      { text: "Hesap, yedek ve yeni telefona taşıma" },
+    ],
+  },
+];
+
+const STEPS = [
+  {
+    title: "Ne olduğunu yazın",
+    body: "Model, Android sürümü, sorunun ne zaman başladığı ve o sırada ne yapıldığı. Bu dördü çoğu durumda işin yarısıdır.",
+  },
+  {
+    title: "İnceleme",
+    body: "Ekran görüntüsüne ve hata mesajına bakarım. Gerekirse telefonu bilgisayarınıza takarsınız, ben de uzak bağlantıyla o bilgisayar üzerinden çalışırım.",
+  },
+  {
+    title: "Önce yedek",
+    body: "Bir şeyin silinmesi gerekecekse önce söylerim ve alınabilecek her şeyin yedeğini alırım.",
+  },
+  {
+    title: "Sonuç ve önlem",
+    body: "Sorunun neden çıktığını ve yeniden çıkmaması için ne yapmanız gerektiğini de yazarım.",
+  },
+];
+
+const FAQS: FaqItem[] = [
+  {
+    question: "Telefonum hiç açılmıyor, kurtarılabilir mi?",
+    answer:
+      "Belirtiye bağlı. Logoda kalan, sürekli yeniden başlayan ya da fastboot veya kurtarma ekranında bekleyen cihazların çoğunda sorun yazılımdadır ve bu cihazlar geri gelir. Ekranı hiç yanmayan, titreşmeyen cihazda ise sorun genellikle donanımdadır. Hangisi olduğu belirtiden anlaşılır, ilk yanıtta söylerim.",
+  },
+  {
+    question: "Root'lu ya da custom ROM yüklü cihaza bakıyor musunuz?",
+    answer:
+      "Evet, işin büyük kısmı zaten bu cihazlardan gelir. ROM yüklenirken bir adım atlanmış, yanlış imaj yazılmış ya da kurtarma moduna dönülemiyor olabilir; bu cihazların çoğu doğru imajla ve doğru sırayla geri gelir. Kilit açıldıktan sonra banka, ödeme ve WhatsApp uygulamalarının açılmaması ayrı bir konudur. Sebebi cihazın bütünlük kontrolünü geçememesidir; bu da kilit açık kalarak ve veri kaybetmeden çözülebilir.",
+  },
+  {
+    question: "Telefonuma root ya da custom ROM kurar mısınız?",
+    answer:
+      "Evet. Bootloader kilidini açar, kurtarma kurar, ROM yükler ve root'larım. Önce neleri kaybedeceğinizi konuşuruz: Garanti düşer, cihaz sıfırlanır, bazı banka ve ödeme uygulamaları çalışmayı bırakır. Her cihazda mümkün de değildir; Xiaomi'de kilit açmanın kendi şartları var. Sizin cihazınızda ne olacağını bakıp söylerim.",
+  },
+  {
+    question: "Verilerim silinir mi?",
+    answer:
+      "Amacım silmemek; işlerin çoğu hiçbir şey silinmeden biter. Bununla birlikte bazı sorunlarda cihazı ayağa kaldırmanın tek yolu sıfırlamaktır. O noktada dururum ve önce bunu konuşuruz; siz onaylamadan veri silen bir adım atmam. Alınabilecek bir yedek varsa önce onu alırım.",
+  },
+  {
+    question: "Silinen fotoğraf ve mesajlarım geri gelir mi?",
+    answer:
+      "Telefonun kendi hafızasından silinenler kurtarma programlarıyla çoğu zaman geri gelmez, çünkü Android'in deposu şifrelidir ve telefon boşalan yeri kendiliğinden temizler. Geri gelen, fotoğrafın başka yerdeki bir kopyasıdır: çöp kutuları, Google Fotoğraflar, sohbet uygulamaları, eski telefon ya da bilgisayar. Mesajlarda da bakılacak yer yedek ve karşı taraftır. Taşınabilir depolama olarak kullanılan hafıza kartı istisnadır; karta yeni bir şey yazılmadıysa şans vardır. Açılmayan telefon ise ayrı bir durum: Açılmaması verinin silindiği anlamına gelmez ve iş ona yeniden ulaşmaktır.",
+  },
+  {
+    question: 'WhatsApp "resmi uygulamaya sahip olmanız gerekir" diyor, hesabım kapanır mı?',
+    answer:
+      "Hayır. Bootloader kilidi açık cihazlarda Play Store'dan indirilen resmî uygulama da bu mesajı verir. Hesabınıza bir şey olmaz, yalnızca o cihazdan giriş yapamazsınız. Sebep cihazın bütünlük kontrolünü geçememesidir; banka, ödeme ve oyun uygulamaları da aynı yerde takılır. Sorun, kilidi kapatmadan ve veri kaybetmeden çözülebilir. Yapılabilecek en kötü şey, mesajı görüp dışarıdan kurulum dosyası indirmektir: O kopya gerçekten resmî değildir ve hesabın yasaklanma riski orada başlar.",
+  },
+  {
+    question: "Cihazı göndermem gerekiyor mu?",
+    answer:
+      "Çoğunlukla gerekmez. Ekran görüntüsü, hata mesajı ve gerekirse telefonun takılı olduğu bilgisayara uzak bağlantı yeter. Kabloyla yapılacak bir iş varsa ve yanınızda bilgisayar yoksa cihazı Gaziantep'e göndermeniz gerekir. Hangisinin gerektiğini ilk yanıtta söylerim.",
+  },
+  {
+    question: "Ücret nasıl belirleniyor?",
+    answer:
+      "Sabit bir fiyat listem yok, çünkü aynı belirtinin arkasından beş dakikalık da yarım günlük de bir iş çıkabilir. Sorunun ne olduğu anlaşılınca fiyatı söylerim; siz onaylamadan işe başlamam. Kapsam büyürse yeniden konuşuruz; sonradan habersiz ücret eklenmez.",
+  },
+];
+
+// Newest first
+const guides = (
+  await getCollection("blog", ({ data }) => !data.draft && data.category === "android")
+).sort(
+  (a, b) =>
+    b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title, "tr"),
+);
+---
+
+<ServicePage
+  metadata={metadata}
+  extraSchemas={[getFAQSchema(FAQS)]}
+  eyebrow="Android yazılım desteği"
+  title="Android Teknik Destek: Açılmayan Telefon, Güncelleme ve ROM Sorunları"
+  lead="Logoda kalan, güncellemeden sonra açılmayan, root'lanınca ya da custom ROM yüklenince bozulan Android telefonların yazılım tarafına bakarım. Bootloader kilidi açma ve ROM kurulumu da yaparım."
+  cta={{ label: "Sorununuzu anlatın", href: "/#contact" }}
+  secondaryCta={{ label: "Rehberler", href: "#rehberler" }}
+  highlights={HIGHLIGHTS}
+  faqs={FAQS}
+  closingTitle="Nereden başlamalı"
+  closingBody="İletişim formunda “Android destek”i seçip cihaz modelini, Android sürümünü ve sorunu yazın. Ekranda bir hata mesajı varsa onu da olduğu gibi ekleyin."
+>
+  <ProseSection id="katmanlar" title="Hangi sorunlara bakıyorum" tinted>
+    <p>
+      Çoğu zaman telefonun donanımı sağlamdır, bozulan yazılımdır: Güncelleme yarıda kalır, cihaz
+      logoda takılır ya da bir sabah dünkünün yarısı hızında açılır. Ben bu kısmına bakarım,
+      root'lanmış ya da custom ROM yüklenmiş cihazlar dâhil. Çoğu yerin "siz bozmuşsunuz" deyip geri
+      verdiği cihazlar bunlar.
+    </p>
+    <p>Her sorun telefon sizdeyken çözülmez; hangisinin öyle olduğunu en başta söylerim.</p>
+    <p>
+      Sorunları cihazın neresinde çıktıklarına göre sıraladım. Hakkında yazı olan bir soruna
+      dokunursanız o yazı açılır.
+    </p>
+
+    <div class="not-prose my-10 grid gap-4 sm:grid-cols-2">
+      {PROBLEM_LAYERS.map((layer) => (
+        <div class="card p-6" data-reveal>
+          <h3 class="eyebrow mb-4">{layer.label}</h3>
+          <ul class="space-y-3">
+            {layer.items.map((item) => (
+              <li class="text-body flex gap-3 leading-snug">
+                <span
+                  class="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-primary-600 dark:bg-primary-300"
+                  aria-hidden="true"
+                />
+                {item.href ? (
+                  <a href={item.href} class="link">
+                    {item.text}
+                  </a>
+                ) : (
+                  <span>{item.text}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <p>
+      Marka ayrımı yapmıyorum ama işlerin çoğu Xiaomi cihazlarından geliyor: Redmi ve POCO,
+      özellikle de HyperOS'a geçmiş olanlar.
+    </p>
+  </ProseSection>
+
+  <ProseSection
+    id="root-custom-rom-ve-bootloader-kilidi"
+    title="Root, custom ROM ve bootloader kilidi"
+  >
+    <p>
+      Kurulumu da yaparım: kilidi açmak, kurtarma kurmak, ROM yüklemek, root'lamak. Önce neleri
+      kaybedeceğinizi konuşuruz. Garanti düşer, cihaz sıfırlanır, bazı banka ve ödeme uygulamaları
+      çalışmayı bırakır. Xiaomi'de kilit açmanın kendi şartları var. Bunları duyup vazgeçen de
+      oluyor; bu da aslında iyi bir sonuç.
+    </p>
+    <p>
+      Kurulumdan sonra en sık gelen durum şu: ROM yüklenirken bir adım atlanmış ve cihaz artık
+      açılmıyor. Bu cihazların çoğu doğru imajla ve doğru sırayla geri gelir. Ne yaptığınızı olduğu
+      gibi yazmanız yeter; bir şeyi bozmuş olmak sorun değil, saklamak sorun.
+    </p>
+    <p>
+      Kilit açıldıktan sonra banka, ödeme ve WhatsApp açılmıyorsa sebep hepsinde aynı: Cihaz
+      bütünlük kontrolünü geçemiyor. Çoğu kilidi kapatmadan ve veri kaybetmeden çözülür. İki sınırı
+      baştan söyleyeyim. Telefonla temassız ödeme çoğunlukla geri gelmez. Kontroller de
+      güncellemelerle değişir, dolayısıyla bugün geçen bir cihaz aylar sonra yeniden takılabilir.
+    </p>
+  </ProseSection>
+
+  <ProseSection title="Veri kaybı ve kurtarma" tinted>
+    <p>
+      Açılmayan telefonda veri genelde silinmemiştir, hâlâ cihazın içindedir. Yapılacak iş ona
+      yeniden ulaşmaktır. Önceliğim de veriyi korumak; işlerin büyük kısmı tek bir dosya silinmeden
+      biter. Telefonu açmanın tek yolu sıfırlamaksa orada durur, önce sizinle konuşurum. Onayınız
+      olmadan veri silen bir adım atmam.
+    </p>
+    <p>
+      Öte yandan silinen fotoğraf ayrı bir konu. Telefonun kendi hafızasından silinen fotoğraf
+      kurtarma programlarıyla büyük ihtimalle geri gelmez, çünkü depo şifrelidir ve telefon boşalan
+      yeri kendiliğinden temizler. Bu yüzden aranacak şey, fotoğrafın başka bir yerdeki kopyasıdır.
+      Hafıza kartında durum farklı: Kart taşınabilir depolama olarak kullanılıyorsa ve üstüne yeni
+      bir şey yazılmadıysa şans vardır. Kopyayı nerede, hangi sırayla arayacağınızı{" "}
+      <a href="/blog/silinen-fotograflar-geri-gelir-mi">silinen fotoğraflar yazısında</a> anlattım.
+    </p>
+  </ProseSection>
+
+  <Steps
+    title="Nasıl ilerliyor"
+    lead="Kabloyla yapılacak bir iş çıkarsa telefonu yanınızdaki bir bilgisayara takmanız gerekir; bilgisayar yoksa cihazı Gaziantep'e gönderirsiniz."
+    steps={STEPS}
+  />
+
+  <ProseSection title="Yapmadığım işler" tinted>
+    <p>
+      Donanım tamiri yapmıyorum: Ekran, batarya, şarj soketi ve anakart ayrı bir tezgâhın işi.
+      Belirti oraya işaret ediyorsa bunu söylerim. Sahibi belli olmayan cihazda hesap kilidi açmam.
+    </p>
+  </ProseSection>
+
+  <section id="rehberler" class="section">
+    <div class="section-container section-padding">
+      <div class="max-w-2xl">
+        <p class="eyebrow mb-4">Blog</p>
+        <h2 class="section-title">Rehberler</h2>
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {guides.map((post) => (
+          <article class="card-interactive relative flex flex-col p-6" data-reveal>
+            <time datetime={post.data.date.toISOString()} class="text-muted text-xs">
+              {formatDate(post.data.date)}
+            </time>
+            <h3 class="text-heading mt-3 text-lg font-bold leading-snug tracking-tight">
+              <a
+                href={`/blog/${post.id}`}
+                class="after:absolute after:inset-0 after:rounded-2xl hover:text-primary-700 dark:hover:text-primary-300"
+              >
+                {post.data.title}
+              </a>
+            </h3>
+            <p class="text-body mt-3 line-clamp-3 text-sm leading-relaxed">
+              {post.data.description}
+            </p>
+            <p class="mt-auto pt-5 text-sm font-semibold text-primary-700 dark:text-primary-300">
+              {COPY_TOKENS.blogListCta} <span aria-hidden="true">→</span>
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</ServicePage>

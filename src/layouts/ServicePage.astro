@@ -1,0 +1,145 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Faq from "@/components/ui/Faq.astro";
+import ProjectCard from "@/components/ui/ProjectCard.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import { PROJECTS } from "@/lib/constants";
+import type { FaqItem } from "@/features/faq/data";
+import type { Metadata } from "@/lib/seo/metadata";
+
+interface Link {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  metadata: Metadata;
+  extraSchemas?: unknown[];
+  eyebrow: string;
+  title: string;
+  lead: string;
+  cta?: Link;
+  secondaryCta?: Link;
+  highlights: { label: string; value: string }[];
+  projectSlugs?: string[];
+  projectsTitle?: string;
+  faqs?: FaqItem[];
+  closingTitle?: string;
+  closingBody?: string;
+}
+
+const {
+  metadata,
+  extraSchemas = [],
+  eyebrow,
+  title,
+  lead,
+  cta = { label: "Projenizi anlatın", href: "/#contact" },
+  secondaryCta,
+  highlights,
+  projectSlugs = [],
+  projectsTitle = "Bu işten örnekler",
+  faqs = [],
+  closingTitle = "Nereden başlıyoruz",
+  closingBody = "İlk yanıtım fiyat teklifi olmaz, birkaç soru olur. Ne kadar ayrıntı verirseniz sorularım da o kadar azalır.",
+} = Astro.props;
+
+const projects = projectSlugs
+  .map((slug) => PROJECTS.find((project) => project.slug === slug))
+  .filter((project) => project !== undefined);
+---
+
+<BaseLayout {...metadata} extraSchemas={extraSchemas}>
+  <section class="relative isolate overflow-hidden pt-28 pb-16 sm:pt-36 md:pb-24">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="bg-grid absolute inset-0"></div>
+      <div class="absolute -top-48 right-[-12%] h-[32rem] w-[32rem] animate-drift rounded-full bg-primary-500/20 glow"></div>
+      <div class="absolute top-48 -left-48 h-[24rem] w-[24rem] animate-drift rounded-full bg-gold-400/15 glow [animation-delay:-11s] dark:bg-gold-400/10"></div>
+    </div>
+    <div class="section-container section-padding grid items-center gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16">
+      <div>
+        <p class="eyebrow animate-fade-up">{eyebrow}</p>
+        <h1 class="page-title mt-6 animate-rise-in">{title}</h1>
+        <p class="text-body mt-6 max-w-xl animate-fade-up text-lg leading-relaxed [animation-delay:120ms] sm:text-xl sm:leading-relaxed">
+          {lead}
+        </p>
+        <div class="mt-9 flex animate-fade-up flex-col gap-3 [animation-delay:200ms] sm:flex-row">
+          <a href={cta.href} class="btn-primary btn-lg">
+            {cta.label}
+            <span aria-hidden="true">→</span>
+          </a>
+          {secondaryCta && (
+            <a href={secondaryCta.href} class="btn-secondary btn-lg">
+              {secondaryCta.label}
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div class="relative animate-fade-up [animation-delay:160ms]">
+        <div
+          aria-hidden="true"
+          class="absolute -inset-px rounded-[1.375rem] bg-linear-to-br from-primary-400/60 via-gray-200/40 to-gold-400/60 dark:from-primary-400/40 dark:via-dark-700 dark:to-gold-400/40"
+        ></div>
+        <dl class="relative divide-y divide-gray-100 overflow-hidden rounded-[1.3rem] bg-white shadow-[0_30px_60px_-30px_rgb(15_17_21/0.35)] dark:divide-dark-700 dark:bg-dark-800">
+          {highlights.map((item) => (
+            <div class="px-6 py-5">
+              <dt class="text-muted text-xs font-semibold tracking-wide uppercase">{item.label}</dt>
+              <dd class="text-heading mt-1.5 leading-relaxed font-medium">{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <slot />
+
+  {projects.length > 0 && (
+    <section class="section border-t border-gray-200/70 dark:border-dark-800">
+      <div class="section-container section-padding">
+        <SectionHeader eyebrow="Yapılmış işler" title={projectsTitle}>
+          <a href="/portfolio" class="btn-secondary" slot="action">
+            Tüm projeler <span aria-hidden="true">→</span>
+          </a>
+        </SectionHeader>
+        <div class="mt-14 grid gap-8 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {faqs.length > 0 && <Faq items={faqs} />}
+
+  <section class="section-padding pb-24">
+    <div class="section-container">
+      <div
+        class="relative isolate overflow-hidden rounded-3xl bg-dark-900 px-8 py-14 text-white shadow-[0_40px_80px_-40px_rgb(15_17_21/0.6)] ring-1 ring-white/10 sm:px-14"
+        data-reveal
+      >
+        <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+          <div class="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-primary-600/40 glow"></div>
+          <div class="absolute -right-10 -bottom-28 h-72 w-72 rounded-full bg-gold-500/20 glow"></div>
+        </div>
+        <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          <div class="max-w-xl">
+            <h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+              {closingTitle}
+            </h2>
+            <p class="mt-4 text-lg leading-relaxed text-pretty text-gray-300">{closingBody}</p>
+          </div>
+          <a
+            href={cta.href}
+            class="btn btn-lg flex-none bg-white text-gray-900 shadow-lg hover:-translate-y-px hover:bg-gray-100"
+          >
+            {cta.label}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

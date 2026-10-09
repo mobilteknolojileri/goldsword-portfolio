@@ -1,100 +1,119 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import Navbar from "@/components/layout/Navbar";
-import Services from "@/features/services";
-import FAQ, { FAQ_DATA } from "@/features/faq";
-import ThemeToggle from "@/components/layout/ThemeToggle";
+import ServicePage from "@/layouts/ServicePage.astro";
+import ProseSection from "@/components/ui/ProseSection.astro";
+import Steps from "@/components/ui/Steps.astro";
+import type { FaqItem } from "@/features/faq/data";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { getFAQSchema, getLocalBusinessSchema } from "@/lib/seo/schema";
 
 const metadata = generateMetadata({
-  title: "Mobil Uygulama Geliştirme | Flutter ve React Native",
+  title: "Mobil Uygulama Geliştirme: React Native ve Flutter",
   description:
-    "iOS ve Android için hızlı, güvenli ve ölçeklenebilir mobil uygulama geliştirme. Tek kod tabanı ile sürdürülebilir ürün süreci.",
+    "iOS ve Android için tek kod tabanıyla mobil uygulama geliştirme. Fikirden mağazaya kadar tasarımı, geliştirmeyi ve yayını ben yürütürüm.",
   path: "/mobil-uygulama-gelistirme",
   locale: "tr",
   keywords: ["mobil uygulama geliştirme", "flutter", "react native", "ios", "android"],
 });
 
-const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
+const HIGHLIGHTS = [
+  {
+    label: "Platform",
+    value: "iOS ve Android, tek kod tabanıyla: React Native ve Expo ya da Flutter",
+  },
+  {
+    label: "Dâhil",
+    value: "Mağaza hesabı, sürüm imzası, mağaza metinleri, veri güvenliği formu ve yasal sayfalar",
+  },
+  { label: "Müşteri uygulamalarında", value: "23K+ indirme" },
+  { label: "Google Play'de", value: "Kafadar, QuSafe, Legends of Aestera" },
+];
+
+const STEPS = [
+  {
+    title: "Kapsam",
+    body: "Ekran listesini, kullanıcı akışını ve ilk sürüme nelerin girmeyeceğini birlikte yazıya dökeriz. Bu adım atlanırsa proje yolda büyür.",
+  },
+  {
+    title: "Tasarım",
+    body: "Ekranları ve geçişleri çizerim. Kod yazmaya başlamadan önce onayınızı alırım.",
+  },
+  {
+    title: "Geliştirme",
+    body: "İş ilerledikçe çalışan sürümleri parça parça teslim ederim. Diğer bir deyişle, uygulamayı ilk kez en sonda görmezsiniz.",
+  },
+  {
+    title: "Yayın ve sonrası",
+    body: "Mağaza hesabını, sürüm imzasını, metinleri, veri güvenliği formunu ve yasal sayfaları hazırlarım. Yayından sonra çökmeleri takip eder, güncellemeleri çıkarırım.",
+  },
+];
+
+const FAQS: FaqItem[] = [
+  {
+    question: "React Native mi, Flutter mı?",
+    answer:
+      "İşe göre değişir. Ürünü sonradan bir ekip sürdürecekse ve web tarafıyla kod paylaşılacaksa React Native, arayüz ve animasyon ağırlıklı bir işse Flutter seçerim. Kararı ilk görüşmede birlikte veririz.",
+  },
+  {
+    question: "Uygulamayı mağazaya siz mi yüklüyorsunuz?",
+    answer:
+      "Evet, yükleme işin içinde: Google Play ve App Store hesabının açılması, sürüm imzası, mağaza metinleri, ekran görüntüleri ve veri güvenliği formu. Gizlilik politikası ve hesap silme sayfası da gerekir; ikisini de ben kurarım.",
+  },
+  {
+    question: "Uygulama reddedilirse ne olur?",
+    answer:
+      "Ret gerekçesini okur, düzeltir ve yeniden gönderirim; bu iş kapsamın içindedir. Retlerin çoğu izin açıklaması, veri formu ya da eksik yasal sayfa yüzünden olur. Baştan doğru hazırlanınca bu tür retler genellikle yaşanmaz.",
+  },
+];
 ---
 
-<BaseLayout {...metadata} extraSchemas={extraSchemas}>
-  <Navbar client:idle />
-  <ThemeToggle client:idle />
+<ServicePage
+  metadata={metadata}
+  extraSchemas={[getLocalBusinessSchema(), getFAQSchema(FAQS)]}
+  eyebrow="Mobil uygulama · iOS ve Android"
+  title="Mobil Uygulama Geliştirme: React Native ve Flutter"
+  lead="Uygulama fikriyle mağazadaki uygulama arasında tasarım, geliştirme, test ve yayın adımları var. Dördünü de ben yürütürüm."
+  cta={{ label: "Projenizi anlatın", href: "/#contact" }}
+  secondaryCta={{ label: "Projelere bakın", href: "/portfolio" }}
+  highlights={HIGHLIGHTS}
+  projectSlugs={["ingilizceciyiz", "getyo-mobile"]}
+  projectsTitle="Hem App Store'da hem Google Play'de yayında iki müşteri uygulaması"
+  faqs={FAQS}
+>
+  <ProseSection title="Tek kod tabanı" tinted>
+    <p>
+      iOS ve Android'i ayrı ayrı yazmak bakımı ikiye katlar. React Native ve Flutter'da iki platform
+      da aynı koddan çıkar; platforma özel bir davranış gerektiğinde yalnızca o kısım ayrı yazılır.
+      Aşağıdaki iki uygulama da böyle yapıldı: İki mağazada aynı kod çalışıyor.
+    </p>
+    <p>
+      Kullandığım araçlar: React Native ve Expo, Flutter, Supabase, Firebase ve gerektiğinde kendi
+      yazdığım API. Bunlarla yayına çıkmış uygulamaları <a href="/portfolio">işler sayfasında</a>
+      görebilirsiniz.
+    </p>
+  </ProseSection>
 
-  <main class="pt-24">
-    <section class="bg-white py-20 dark:bg-dark-800">
-      <div class="section-container section-padding">
-        <div class="max-w-4xl">
-          <h1 class="text-heading mb-8 text-4xl font-black sm:text-6xl">
-            Fikrinizi <span class="text-primary-600">Çalışan Bir Mobil Ürüne</span> Dönüştürelim
-          </h1>
-          <p class="text-body mb-10 text-xl leading-relaxed">
-            Sadece uygulama geliştirmiyoruz; hedef kitlenize ulaşan, performanslı ve bakımı kolay
-            bir ürün altyapısı kuruyoruz. Flutter ve React Native ile iOS ve Android sürecini
-            hızlandırıyoruz.
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <a
-              href="#contact"
-              class="rounded-2xl bg-primary-600 px-8 py-4 font-bold text-white shadow-lg transition-colors hover:bg-primary-700"
-              >Teklif Al</a
-            >
-            <a
-              href="/portfolio"
-              class="rounded-2xl border-2 border-gray-100 px-8 py-4 font-bold transition-colors hover:bg-gray-50 dark:border-dark-700 dark:hover:bg-dark-900"
-              >Örnek Projeler</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
+  <Steps title="Uygulama geliştirme süreci" steps={STEPS} />
 
-    <Services client:visible />
-
-    <section
-      class="overflow-hidden border-y border-gray-100 bg-gray-50 py-24 dark:border-dark-800 dark:bg-dark-900"
-    >
-      <div class="section-container section-padding">
-        <h2 class="text-heading mb-16 text-center text-3xl font-black">Üretim Süreci</h2>
-        <div class="grid gap-8 md:grid-cols-4">
-          {
-            [
-              {
-                step: "01",
-                title: "Analiz",
-                desc: "İş hedefi, kullanıcı akışı ve teknik kapsam netleşir.",
-              },
-              {
-                step: "02",
-                title: "Tasarım",
-                desc: "Ekran akışları, etkileşimler ve bilgi mimarisi oluşturulur.",
-              },
-              {
-                step: "03",
-                title: "Geliştirme",
-                desc: "Temiz kod, performans ve test odaklı uygulama yazılır.",
-              },
-              {
-                step: "04",
-                title: "Yayın ve Bakım",
-                desc: "Store süreci, izleme ve sürekli iyileştirme planlanır.",
-              },
-            ].map((s) => (
-              <div class="relative rounded-3xl border border-gray-100 bg-white p-8 dark:border-dark-700 dark:bg-dark-800">
-                <span class="absolute right-6 top-4 text-6xl font-black text-primary-600/10">
-                  {s.step}
-                </span>
-                <h3 class="text-heading mb-3 text-xl font-bold">{s.title}</h3>
-                <p class="text-body">{s.desc}</p>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <FAQ client:visible />
-  </main>
-</BaseLayout>
+  <ProseSection title="Mağaza tarafı" tinted>
+    <p>
+      Google Play her uygulamadan çalışan bir gizlilik politikası adresi ister; hesap açılabilen
+      uygulamalarda bir hesap silme adresi de şarttır. Dolayısıyla bu sayfalar eksikse uygulama
+      yayına alınmaz, alınmışsa listeden kaldırılabilir. Kendi uygulamalarımda bunları nasıl
+      kurduğumu aşağıdaki sayfalarda görebilirsiniz:
+    </p>
+    <ul>
+      <li>
+        <a href="/kafadar">Kafadar</a>: <a href="/kafadar/privacy-policy">Gizlilik Politikası</a>,
+        <a href="/kafadar/delete-account">Hesap Silme</a>
+      </li>
+      <li>
+        <a href="/qusafe">QuSafe</a>: <a href="/qusafe/privacy-policy">Gizlilik Politikası</a>,
+        <a href="/qusafe/delete-account">Hesap Silme</a>
+      </li>
+      <li>
+        <a href="/legends-of-aestera">Legends of Aestera</a>:
+        <a href="/legends-of-aestera/privacy-policy">Gizlilik Politikası</a>
+      </li>
+    </ul>
+  </ProseSection>
+</ServicePage>

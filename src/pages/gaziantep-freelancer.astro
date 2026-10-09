@@ -1,16 +1,14 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import Navbar from "@/components/layout/Navbar";
-import Services from "@/features/services";
-import FAQ, { FAQ_DATA } from "@/features/faq";
-import ThemeToggle from "@/components/layout/ThemeToggle";
+import ServicePage from "@/layouts/ServicePage.astro";
+import ProseSection from "@/components/ui/ProseSection.astro";
+import type { FaqItem } from "@/features/faq/data";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { getFAQSchema, getLocalBusinessSchema } from "@/lib/seo/schema";
 
 const metadata = generateMetadata({
-  title: "Gaziantep Freelancer Yazılım Geliştirici ve Web Tasarım",
+  title: "Gaziantep Freelancer Yazılım Geliştirici",
   description:
-    "Gaziantep merkezli freelancer yazılım hizmetleri: web, mobil ve teknik SEO odaklı sürdürülebilir dijital çözümler.",
+    "Gaziantep'te freelancer yazılım geliştiriciyim. Web sitesi, mobil uygulama ve teknik SEO işlerini baştan sona tek başıma yürütürüm.",
   path: "/gaziantep-freelancer",
   locale: "tr",
   keywords: [
@@ -21,74 +19,77 @@ const metadata = generateMetadata({
   ],
 });
 
-const extraSchemas = [getLocalBusinessSchema(), getFAQSchema(FAQ_DATA)];
+const HIGHLIGHTS = [
+  { label: "Konum", value: "Gaziantep" },
+  { label: "İşler", value: "Web sitesi, mobil uygulama, backend ve teknik SEO" },
+  { label: "Teslim edilen proje", value: "30+" },
+  { label: "Müşteri uygulamalarında", value: "23K+ indirme" },
+];
+
+const FAQS: FaqItem[] = [
+  {
+    question: "Gaziantep dışındaki işleri alıyor musunuz?",
+    answer:
+      "Evet. Gaziantep'teyseniz yüz yüze görüşebiliriz. Şehir dışındaki ve yurt dışındaki projeleri görüntülü görüşmeyle ve ortak bir iş takibiyle yürütürüm. Hatta bugüne kadarki işlerimin çoğu böyle yapıldı.",
+  },
+  {
+    question: "Bir proje ne kadar sürede biter?",
+    answer:
+      "Kapsama bağlı. Tek sayfalık bir site birkaç gün, çok sayfalı bir kurumsal site bir iki hafta, yayına çıkacak bir mobil uygulama genellikle bir iki ay sürer. İlk görüşmede kapsamı yazıya döker, süreyi söylerim.",
+  },
+  {
+    question: "Teslimden sonra destek veriyor musunuz?",
+    answer:
+      "Evet. Hata düzeltme, sürüm güncellemesi ve mağaza tarafındaki uyum işleri devam eder. İsterseniz düzenli bir bakım anlaşması yaparız, isterseniz ihtiyaç duyduğunuzda bana yazarsınız.",
+  },
+];
 ---
 
-<BaseLayout {...metadata} extraSchemas={extraSchemas}>
-  <Navbar client:idle />
-  <ThemeToggle client:idle />
+<ServicePage
+  metadata={metadata}
+  extraSchemas={[getLocalBusinessSchema(), getFAQSchema(FAQS)]}
+  eyebrow="Freelancer · Gaziantep"
+  title="Gaziantep Freelancer Yazılım Geliştirici ve Web Tasarım"
+  lead="Gaziantep'te yaşıyorum. Web sitesi, mobil uygulama ve teknik SEO işleri yapıyorum; projeyi sizinle konuşan da yazan da teslim eden de benim."
+  cta={{ label: "Projenizi anlatın", href: "/#contact" }}
+  secondaryCta={{ label: "Projelere bakın", href: "/portfolio" }}
+  highlights={HIGHLIGHTS}
+  projectSlugs={["ingilizceciyiz", "getyo-mobile"]}
+  projectsTitle="Hem App Store'da hem Google Play'de yayında iki müşteri uygulaması"
+  faqs={FAQS}
+>
+  <ProseSection title="Ne yapıyorum" tinted>
+    <p>
+      Web tarafında Astro ve React ile hızlı açılan, arama motorlarının doğru okuduğu siteler
+      yaparım. Mobil tarafta React Native ve Flutter ile Google Play ve App Store'a çıkan
+      uygulamalar geliştiririm. Bunların arkasındaki backend, veri tabanı ve API işlerini de ben
+      üstlenirim.
+    </p>
+    <p>
+      Yayındaki sitelerin teknik SEO'suna da bakarım: taranabilirlik, canonical, şema, sayfa hızı.
+      Nitekim <a href="/blog">blogdaki yazıların</a> çoğu bu işler sırasında karşılaştığım gerçek
+      hatalardan çıktı.
+    </p>
+    <p>
+      Yayına çıkmış uygulamaları, web projelerini ve SEO çalışmalarını{" "}
+      <a href="/portfolio">işler sayfasında</a> bulabilirsiniz. Her birinde ne yaptığımı ve nerede
+      zorlandığımı yazdım.
+    </p>
+  </ProseSection>
 
-  <main class="pt-24">
-    <section class="bg-white py-20 dark:bg-dark-800">
-      <div class="section-container section-padding">
-        <div class="max-w-4xl">
-          <h1 class="text-heading mb-8 text-4xl font-black leading-tight sm:text-6xl md:text-7xl">
-            Gaziantep'te <span class="text-primary-600">Freelancer</span> Yazılım ve Dijital Üretim
-          </h1>
-          <p class="text-body mb-10 text-xl leading-relaxed">
-            İşletmenizin ihtiyacına göre net bir teknik yol haritası kuruyoruz. Ajans karmaşasından
-            uzak, doğrudan uzmanla çalışan ve ölçülebilir sonuç veren bir süreç sunuyoruz.
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <a
-              href="https://goldsword.dev/#contact"
-              class="rounded-2xl bg-primary-600 px-8 py-4 font-bold text-white shadow-lg transition-all hover:bg-primary-700"
-              >İletişime Geç</a
-            >
-            <a
-              href="/portfolio"
-              class="text-heading rounded-2xl bg-gray-100 px-8 py-4 font-bold transition-all hover:bg-gray-200 dark:bg-dark-900 dark:hover:bg-dark-800"
-              >Portfolyoyu İncele</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <Services client:visible />
-
-    <section
-      class="border-y border-gray-100 bg-gray-50 py-20 dark:border-dark-800 dark:bg-dark-900"
-    >
-      <div class="section-container section-padding">
-        <div class="max-w-3xl">
-          <h2 class="text-heading mb-6 text-3xl font-black">Neden Freelancer Modeli?</h2>
-          <ul class="text-body space-y-4 text-lg">
-            <li class="flex items-start gap-3">
-              <span class="font-bold text-primary-600 dark:text-primary-400">></span> Doğrudan benimle
-              istediğiniz zaman iletişime geçebilirsiniz.
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="font-bold text-primary-600">></span> Kapsama göre esnek, şeffaf ve kontrol
-              edilebilir maliyet.
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="font-bold text-primary-600">></span> Hızlı revizyon ve teknik önceliklere göre
-              net teslim planı.
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <FAQ client:visible />
-  </main>
-
-  <footer class="border-t border-gray-100 bg-white py-10 dark:border-dark-800 dark:bg-dark-900">
-    <div class="section-container section-padding">
-      <p class="text-body text-center text-sm font-medium">
-        © 2026 goldsword. Tüm hakları saklıdır.
-      </p>
-    </div>
-  </footer>
-</BaseLayout>
+  <ProseSection title="Ajans yerine doğrudan geliştirici">
+    <p>
+      Ajansta araya bir hesap yöneticisi girer ve teknik bir soru zincirin sonuna kadar gidip geri
+      döner. Burada öyle bir zincir yok.
+    </p>
+    <ul>
+      <li>Teknik bir sorunuzu doğrudan işi yapan kişiye, yani bana sorarsınız.</li>
+      <li>Fiyatı kapsama göre belirler, işe başlamadan yazarım; sonradan kalem eklenmez.</li>
+      <li>Revizyonu da kodu yazan kişiyle konuşursunuz.</li>
+    </ul>
+    <p>
+      Öte yandan bunun bir sınırı var: Aynı anda çok sayıda iş yürütmem. Takvimim doluysa bunu en
+      başta söylerim.
+    </p>
+  </ProseSection>
+</ServicePage>
