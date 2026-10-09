@@ -1,22 +1,27 @@
 import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
 
-// https://astro.build/config
+// Built, but kept out of the sitemap for now
+const UNLISTED_PATHS = new Set(["/cv"]);
+
 export default defineConfig({
-  integrations: [
-    react(),
-    tailwind({
-      configFile: "./tailwind.config.mjs",
-    }),
-    sitemap({
-      filter: (page) => !page.includes("/blog/task"),
-    }),
-  ],
+  site: "https://goldsword.dev",
   output: "static",
   trailingSlash: "never",
-  site: "https://goldsword.dev",
+  // The default ("jsx") drops the space between inline elements on separate lines
+  compressHTML: true,
+  integrations: [
+    // MDX for the case studies (figures, diagrams)
+    mdx(),
+    react(),
+    sitemap({ filter: (page) => !UNLISTED_PATHS.has(new URL(page).pathname) }),
+  ],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   image: {
     domains: ["images.unsplash.com"],
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
@@ -24,12 +29,10 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       themes: {
-        light: "github-light",
-        dark: "dracula",
+        light: "github-light-default",
+        dark: "github-dark-default",
       },
       wrap: true,
     },
-    // Markdown image optimization is enabled by default in Astro v5
-    // with the 'assets' flag, but we ensure it's prioritized here.
   },
 });

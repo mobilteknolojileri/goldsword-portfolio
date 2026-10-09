@@ -1,31 +1,31 @@
 import eslint from "@eslint/js";
-import tsparser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
 import astroPlugin from "eslint-plugin-astro";
+import reactHooks from "eslint-plugin-react-hooks";
+
+const tsFiles = ["src/**/*.{ts,tsx}"];
 
 export default [
-  // Astro files (handled by plugin)
+  {
+    ignores: ["dist/", ".astro/", "node_modules/", "*.config.*"],
+  },
+
   ...astroPlugin.configs.recommended,
 
-  // TypeScript & React files
+  { ...eslint.configs.recommended, files: tsFiles },
+  ...tsPlugin.configs["flat/recommended"].map((config) => ({ ...config, files: tsFiles })),
+  { ...reactHooks.configs.flat.recommended, files: tsFiles },
   {
-    ...eslint.configs.recommended,
-    files: ["src/**/*.{ts,tsx}"],
+    files: tsFiles,
     languageOptions: {
-      parser: tsparser,
-      ecmaVersion: "latest",
-      sourceType: "module",
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
     },
     rules: {
-      "no-unused-vars": "off",
+      // tsc already catches these
       "no-undef": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
     },
-  },
-
-  // Global ignores
-  {
-    ignores: ["dist/", ".astro/", "node_modules/", "*.config.*"],
   },
 ];
