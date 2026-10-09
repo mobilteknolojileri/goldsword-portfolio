@@ -1,0 +1,167 @@
+---
+import Counter from "@/components/ui/Counter.astro";
+import LinkTile from "@/components/ui/LinkTile.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+
+// md+: the cards are subgrids, so their rows line up across all three
+const card =
+  "card-interactive group flex flex-col overflow-hidden md:row-span-4 md:grid md:grid-rows-subgrid";
+const media =
+  "relative flex h-36 items-center justify-center overflow-hidden border-b border-gray-100 dark:border-dark-700";
+const plate =
+  "rounded-2xl bg-white shadow-[0_14px_30px_-18px_rgb(15_17_21/0.45)] ring-1 ring-gray-200 transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:scale-105 dark:ring-dark-600";
+const bar =
+  "absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-linear-to-r from-gold-300 via-gold-400 to-gold-600 shadow-[0_0_10px_rgb(246_205_102/0.8)] transition-transform duration-500 ease-out group-hover:scale-x-100";
+const label = "text-xs font-semibold tracking-wider uppercase";
+---
+
+<section id="about" class="section">
+  <div class="section-container section-padding">
+    <SectionHeader
+      eyebrow="Geçmiş"
+      title="Nereden geliyorum"
+      lead="Okul, staj ve bir bilimsel yayın. Üçünü de dışarıdan doğrulayabilirsiniz; bağlantıları kartların içinde."
+    />
+
+    <div class="mt-14 grid gap-6 md:grid-cols-3 md:gap-y-0">
+      <article class={card} data-reveal>
+        <div
+          class:list={[
+            media,
+            "bg-linear-to-br from-amber-50 via-white to-amber-100/70 dark:from-gold-500/15 dark:via-dark-800 dark:to-gold-500/5",
+          ]}
+        >
+          <span class:list={[plate, "rounded-full p-1.5"]}>
+            <img
+              src="/assets/brands/trakya-universitesi.webp"
+              alt="Trakya Üniversitesi"
+              width="144"
+              height="144"
+              loading="lazy"
+              decoding="async"
+              class="size-20"
+            />
+          </span>
+          <span aria-hidden="true" class={bar}></span>
+        </div>
+        <div class="px-7 pt-6">
+          <p class:list={[label, "text-gold-700 dark:text-gold-300"]}>Eğitim</p>
+          <h3 class="text-heading mt-2 text-lg leading-snug font-bold">Mobil Teknolojileri</h3>
+        </div>
+        <p class="text-muted px-7 pt-1 text-sm">Trakya Üniversitesi · 2023–2025</p>
+        <div class="px-7 pt-5 pb-7">
+          <dl class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col-reverse justify-end rounded-xl bg-slate-50 p-4 ring-1 ring-gray-100 dark:bg-dark-900/60 dark:ring-dark-700">
+              <dt class="text-muted mt-1 text-xs leading-snug">Mezuniyet notu, 4 üzerinden</dt>
+              <dd class="text-heading text-2xl font-bold tabular-nums">
+                <Counter value="3,79" />
+              </dd>
+            </div>
+            <div class="flex flex-col-reverse justify-end rounded-xl bg-slate-50 p-4 ring-1 ring-gray-100 dark:bg-dark-900/60 dark:ring-dark-700">
+              <dt class="text-muted mt-1 text-xs leading-snug">Aynı not, 100 üzerinden</dt>
+              <dd class="text-heading text-2xl font-bold tabular-nums">
+                <Counter value="95,1" />
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+
+      <article class={card} data-reveal>
+        <div
+          class:list={[
+            media,
+            "bg-linear-to-br from-sky-50 via-white to-sky-100/70 dark:from-sky-500/15 dark:via-dark-800 dark:to-sky-500/5",
+          ]}
+        >
+          <span class:list={[plate, "px-5 py-3.5"]}>
+            <img
+              src="/assets/brands/sechard.svg"
+              alt="SecHard"
+              width="160"
+              height="30"
+              loading="lazy"
+              decoding="async"
+              class="h-7 w-auto"
+            />
+          </span>
+          <span aria-hidden="true" class={bar}></span>
+        </div>
+        <div class="px-7 pt-6">
+          <p class:list={[label, "text-sky-700 dark:text-sky-300"]}>Staj</p>
+          <h3 class="text-heading mt-2 text-lg leading-snug font-bold">
+            Stajyer yazılım geliştirici
+          </h3>
+        </div>
+        <p class="text-muted px-7 pt-1 text-sm">
+          SecHard Bilgi Teknolojileri · 2026 bahar dönemi, 16 hafta
+        </p>
+        <div class="flex flex-col px-7 pt-5 pb-7">
+          <p class="text-body text-[0.9375rem] leading-relaxed">
+            Docker ile mikroservis mimarisi, Node.js ile API, Angular ile yönetim paneli ve MongoDB
+            ile veri modeli üzerinde çalıştım.
+          </p>
+          <div class="mt-auto pt-5">
+            <LinkTile
+              href="https://sechard.com"
+              label="SecHard"
+              detail="sechard.com"
+              class="w-full"
+            />
+          </div>
+        </div>
+      </article>
+
+      <article class={card} data-reveal>
+        <div class:list={[media, "bg-white"]}>
+          <img
+            src="/assets/research/willow-quantum-cover.webp"
+            alt="Yayının sunum kapağı: Willow Kuantum Çipi ve Kuantum Sonrası Güvenliği"
+            width="720"
+            height="259"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+          <span aria-hidden="true" class={bar}></span>
+        </div>
+        <div class="px-7 pt-6">
+          <p class:list={[label, "text-rose-700 dark:text-rose-300"]}>Bilimsel yayın</p>
+          <h3 class="text-heading mt-2 text-lg leading-snug font-bold" lang="en">
+            Willow Quantum Chip and Post-Quantum Security
+          </h3>
+        </div>
+        <p class="text-muted px-7 pt-1 text-sm">Mayıs 2025, Tiran</p>
+        <div class="flex flex-col px-7 pt-5 pb-7">
+          <p class="text-body text-[0.9375rem] leading-relaxed">
+            Sunulduğu kongre:{" "}
+            <a
+              href="https://www.iksadeurope.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link font-medium"
+            >
+              12. Uluslararası Avrupa Temel Bilimlerde İleri Araştırmalar Kongresi
+            </a>
+          </p>
+          <div class="mt-auto flex flex-wrap gap-2 pt-5">
+            <LinkTile
+              href="/assets/research/willow-quantum-fulltext.pdf"
+              label="Tam metin"
+              detail="12 sayfa"
+              size="sm"
+              class="min-w-[8.5rem] flex-1"
+            />
+            <LinkTile
+              href="/assets/research/willow-quantum-slides.pdf"
+              label="Sunum"
+              detail="16 slayt"
+              size="sm"
+              class="min-w-[8.5rem] flex-1"
+            />
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

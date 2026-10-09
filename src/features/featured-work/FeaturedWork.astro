@@ -1,0 +1,30 @@
+---
+import ProjectCard from "@/components/ui/ProjectCard.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import { PROJECTS } from "@/lib/constants";
+
+// Client work first
+const featured = PROJECTS.filter((project) => project.featured && project.showcase).sort(
+  (a, b) => Number(b.kind === "client") - Number(a.kind === "client"),
+);
+---
+
+<section id="work" class="section">
+  <div class="section-container section-padding">
+    <SectionHeader
+      eyebrow="Seçili işler"
+      title="Yayındaki uygulamalardan gerçek ekranlar"
+      lead="Her birinin sayfasında ne yaptığımı ve işin nerede zorlaştığını yazdım."
+    >
+      <a href="/portfolio" class="btn-secondary" slot="action">
+        Tüm projeler ({PROJECTS.length})<span aria-hidden="true">→</span>
+      </a>
+    </SectionHeader>
+
+    <div class="mt-14 grid gap-8 md:grid-cols-2">
+      {featured.map((project) => (
+        <ProjectCard project={project} sizes="(min-width: 768px) 600px, 100vw" />
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,226 @@
+---
+import { FaGithub } from "react-icons/fa";
+import { SiAppstore } from "react-icons/si";
+import { GooglePlayIcon } from "@/components/icons/brands";
+import Stars from "@/components/ui/Stars.astro";
+import { SITE_CONFIG } from "@/config/site";
+import { PROJECTS } from "@/lib/constants";
+import { TESTIMONIALS, TESTIMONIAL_COUNT } from "@/lib/testimonials";
+
+const averageRating = (
+  TESTIMONIALS.reduce((sum, item) => sum + item.rating, 0) / TESTIMONIAL_COUNT
+).toLocaleString("tr-TR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+// 23K+ is İngilizceciyiz (13.594 App Store + 10.000+ Google Play).
+// The apps below were checked live on their store pages on 2026-10-08. Own apps come first.
+const LIVE_APPS = [
+  { name: "Kafadar", slug: "kafadar-mobile", icon: "kafadar" },
+  { name: "QuSafe", slug: "qusafe-mobile", icon: "qusafe" },
+  { name: "Aestera", slug: "legends-of-aestera", icon: "legends-of-aestera" },
+  { name: "İngilizceciyiz", slug: "ingilizceciyiz", icon: "ingilizceciyiz" },
+  { name: "Get Yo", slug: "getyo-mobile", icon: "getyo" },
+  { name: "Yanıtla Kazan", slug: "yanitla-kazan", icon: "yanitla-kazan" },
+  { name: "Numeric Wheel", slug: "numeric-wheel", icon: "numeric-wheel" },
+];
+
+// Store links come from the project data, so an app shows up under every store it has a link for
+const STORES = (["Google Play", "App Store"] as const).map((store) => ({
+  name: store,
+  apps: LIVE_APPS.flatMap((app) => {
+    const project = PROJECTS.find((item) => item.slug === app.slug);
+    const href = project?.links.find((link) => link.label === store)?.url;
+    return href ? [{ ...app, href }] : [];
+  }),
+}));
+
+const rowClass = "flex items-center justify-between gap-4 px-6 py-3.5";
+const labelClass = "text-muted flex items-center gap-3 text-sm";
+const valueClass = "text-heading text-right text-lg font-bold tabular-nums";
+---
+
+<section class="relative isolate overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+    <div class="bg-grid absolute inset-0"></div>
+    <div class="absolute -top-48 right-[-12%] h-[34rem] w-[34rem] animate-drift rounded-full bg-primary-500/20 glow dark:bg-primary-500/20"></div>
+    <div class="absolute top-56 -left-48 h-[26rem] w-[26rem] animate-drift rounded-full bg-gold-400/20 glow [animation-delay:-11s] dark:bg-gold-400/10"></div>
+  </div>
+
+  <div class="section-container section-padding grid items-start gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
+    <div class="lg:pt-8">
+      <h1
+        class="text-heading animate-rise-in text-[2.5rem] leading-[1.05] font-extrabold tracking-tight sm:text-6xl lg:text-[3.6rem]"
+        style="text-wrap: balance"
+      >
+        Uygulamanızı da yazarım,{" "}
+        <span class="gradient-text">açılmayan telefonunuza da bakarım.</span>
+      </h1>
+
+      <p class="text-body mt-6 max-w-xl animate-fade-up text-lg leading-relaxed [animation-delay:120ms] sm:text-xl sm:leading-relaxed">
+        Mobil uygulama ve web sitesi yapıyorum, Android telefonlardaki yazılım sorunlarına da
+        bakıyorum. Sizinle konuşan da işi yapan da benim.
+      </p>
+
+      <div class="mt-9 flex animate-fade-up flex-col gap-3 [animation-delay:200ms] sm:flex-row">
+        <a href="/#contact" class="btn-primary btn-lg">
+          Projenizi anlatın
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+        <a href="/#work" class="btn-secondary btn-lg">
+          Yaptığım işlere bakın
+        </a>
+      </div>
+
+      <p class="mt-8 flex animate-fade-up items-center gap-3 text-sm [animation-delay:260ms]">
+        <Stars label={`Ortalama puan ${averageRating}`} class="text-[0.95rem]" />
+        <a
+          href="/#testimonials"
+          class="text-muted underline-offset-4 hover:text-gray-900 hover:underline dark:hover:text-white"
+        >
+          Bionluk'ta {TESTIMONIAL_COUNT} yorum
+        </a>
+      </p>
+    </div>
+
+    <div class="animate-fade-up [animation-delay:160ms]">
+      <div class="relative">
+        <div
+          aria-hidden="true"
+          class="absolute -inset-px rounded-[1.375rem] bg-linear-to-br from-primary-400/60 via-gray-200/40 to-gold-400/60 dark:from-primary-400/40 dark:via-dark-700 dark:to-gold-400/40"
+        ></div>
+        <div class="relative overflow-hidden rounded-[1.3rem] bg-white shadow-[0_30px_60px_-30px_rgb(15_17_21/0.35)] dark:bg-dark-800">
+          <div class="flex items-center gap-4 p-6">
+            <img
+              src="/assets/images/profile.webp"
+              alt="Mehmet"
+              width="128"
+              height="128"
+              class="h-16 w-16 rounded-2xl object-cover ring-1 ring-black/5 dark:ring-white/10"
+            />
+            <div class="min-w-0 flex-1">
+              <p class="text-heading text-lg font-bold">
+                Mehmet <span class="text-muted text-sm font-medium">· goldsword</span>
+              </p>
+              <p class="text-muted text-sm">Full-stack ve mobil geliştirici</p>
+            </div>
+            <a
+              href={SITE_CONFIG.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub profilim"
+              class="logo-tile size-10 rounded-xl text-gray-900 transition hover:-translate-y-px dark:text-white"
+            >
+              <FaGithub size={20} aria-hidden="true" />
+            </a>
+          </div>
+
+          <dl class="divide-y divide-gray-100 border-y border-gray-100 dark:divide-dark-700 dark:border-dark-700">
+            <div class={rowClass}>
+              <dt class={labelClass}>
+                <img
+                  src="/assets/icons/3d/package.webp"
+                  alt=""
+                  width="96"
+                  height="96"
+                  class="size-8 flex-none"
+                />
+                Teslim ettiğim proje
+              </dt>
+              <dd class={valueClass}>30+</dd>
+            </div>
+            <div class={rowClass}>
+              <dt class={labelClass}>
+                <img
+                  src="/assets/apps/ingilizceciyiz.webp"
+                  alt=""
+                  width="96"
+                  height="96"
+                  class="size-8 flex-none rounded-[0.625rem] shadow-[0_6px_16px_-10px_rgb(15_17_21/0.35)] ring-1 ring-gray-200 dark:ring-dark-600"
+                />
+                Müşteri uygulamalarında indirme
+              </dt>
+              <dd class={valueClass}>23K+</dd>
+            </div>
+            <div class={rowClass}>
+              <dt class={labelClass}>
+                <span class="logo-tile size-8 rounded-[0.625rem] text-gray-900 dark:text-white">
+                  <FaGithub size={17} aria-hidden="true" />
+                </span>
+                Birleştirilen açık kaynak katkı
+              </dt>
+              <dd class={valueClass}>2</dd>
+            </div>
+            <div class="px-6 py-4">
+              <dt class="flex items-center justify-between gap-4">
+                <span class={labelClass}>
+                  <img
+                    src="/assets/icons/3d/shopping-bags.webp"
+                    alt=""
+                    width="96"
+                    height="96"
+                    class="size-8 flex-none"
+                  />
+                  Mağazalarda yayında
+                </span>
+                <span class={valueClass}>{LIVE_APPS.length}</span>
+              </dt>
+              <dd class="mt-3 space-y-2">
+                {STORES.map((store) => (
+                  <div class="rounded-2xl bg-slate-50 p-2 ring-1 ring-gray-100 dark:bg-dark-900/50 dark:ring-dark-700">
+                    <p class="text-heading flex items-center gap-2 px-1.5 pt-0.5 text-xs font-semibold">
+                      <span class="logo-tile size-6 rounded-md">
+                        {store.name === "Google Play" ? (
+                          <GooglePlayIcon size={12} />
+                        ) : (
+                          <SiAppstore size={13} className="text-[#0d96f6]" aria-hidden="true" />
+                        )}
+                      </span>
+                      {store.name}
+                    </p>
+                    <ul class="mt-1.5 grid grid-cols-4 gap-1">
+                      {store.apps.map((app) => (
+                        <li>
+                          <a
+                            href={app.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="group/app flex h-full flex-col items-center gap-1.5 rounded-xl p-1.5 text-center transition hover:bg-white hover:shadow-sm active:scale-95 dark:hover:bg-dark-800"
+                          >
+                            <img
+                              src={`/assets/apps/${app.icon}.webp`}
+                              alt=""
+                              width="96"
+                              height="96"
+                              class="size-10 rounded-[0.7rem] shadow-sm ring-1 ring-black/5 transition duration-300 group-hover/app:-translate-y-0.5 group-hover/app:ring-gold-400 dark:ring-white/10"
+                            />
+                            <span class="text-heading text-[0.6875rem] leading-tight font-semibold">
+                              {app.name}
+                              <span class="sr-only">, {store.name}</span>
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </dd>
+            </div>
+          </dl>
+
+          <p class="text-body bg-slate-50 px-6 py-5 text-sm leading-relaxed dark:bg-dark-900/50">
+            Ekibim ya da taşeronum yok. Donanım tamiri yapmıyorum, sahibi belli olmayan cihazlara da
+            bakmıyorum.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

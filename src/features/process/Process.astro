@@ -1,0 +1,30 @@
+---
+import Steps from "@/components/ui/Steps.astro";
+
+const STEPS = [
+  {
+    title: "Anlatın",
+    body: "Formu doldurun ya da e-posta atın. Yazılım projesi mi, Android desteği mi, baştan belirtmeniz yeterli.",
+  },
+  {
+    title: "Kapsam ve fiyat",
+    body: "Kapsam netleşince fiyatı söylerim. Siz onaylamadan işe başlamam.",
+  },
+  {
+    title: "Parça parça teslim",
+    body: "Çalışan sürümü adım adım görürsünüz; her şeyi en sonda tek seferde teslim etmem.",
+  },
+  {
+    title: "Sürpriz ücret yok",
+    body: "Kapsam büyürse önce konuşuruz. Dolayısıyla sonradan habersiz ücret eklenmez.",
+  },
+];
+---
+
+<Steps
+  id="process"
+  tinted
+  title="Nereden başlıyoruz"
+  lead="İlk yanıtım fiyat teklifi olmaz, birkaç soru olur. Ne istediğinizi iyi anlamadan teklif vermem."
+  steps={STEPS}
+/>

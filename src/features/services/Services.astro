@@ -1,0 +1,273 @@
+---
+import { BionlukIcon } from "@/components/icons/brands";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import Stars from "@/components/ui/Stars.astro";
+import { SITE_CONFIG } from "@/config/site";
+
+const BIONLUK = SITE_CONFIG.links.bionluk;
+
+// Ratings are from each Bionluk listing. 3D icons: Fluent Emoji (MIT, see public/assets/icons/3d).
+const SERVICES = [
+  {
+    icon: "/assets/icons/3d/rocket.webp",
+    glow: "139 92 246",
+    check: "text-violet-600 dark:text-violet-300",
+    title: "Mobil uygulama",
+    lead: "Önce neyin yapılacağını birlikte yazıya dökeriz. Tasarım, geliştirme, mağazaya yükleme ve yayından sonraki güncellemeler bende.",
+    rows: [
+      {
+        label: "Teknoloji",
+        value: "React Native ve Expo ya da Flutter; App Store ve Google Play.",
+      },
+      {
+        label: "Mağaza işleri",
+        value:
+          "Geliştirici hesabı, sürüm imzası, mağaza metinleri, veri güvenliği formu ve yasal sayfalar.",
+      },
+    ],
+    href: "/mobil-uygulama-gelistirme",
+    linkLabel: "Mobil uygulama geliştirme",
+    gig: {
+      href: `${BIONLUK}/istediginiz-mobil-uygulamayi-gelistirebilirim-785789`,
+      reviews: 12,
+    },
+  },
+  {
+    icon: "/assets/icons/3d/globe.webp",
+    glow: "14 165 233",
+    check: "text-sky-600 dark:text-sky-300",
+    title: "Web sitesi ve web uygulaması",
+    lead: "Tanıtım sitesi de yaparım, giriş ekranı ve paneli olan bir web uygulaması da. Hız ve teknik SEO işin baştan parçası.",
+    rows: [
+      {
+        label: "Hız",
+        value: "Son teslim ettiğim sitelerde mobil PageSpeed performans puanı 100.",
+      },
+      {
+        label: "Arama",
+        value: "Teknik SEO, yapılandırılmış veri ve Google Business Profile kurulumu.",
+      },
+    ],
+    href: "/web-site-yapimi-gaziantep",
+    linkLabel: "Web sitesi yapımı",
+    gig: {
+      href: `${BIONLUK}/size-veya-isletmenize-ozel-websitesi-hazirlarim-785777`,
+      reviews: 3,
+    },
+  },
+  {
+    icon: "/assets/icons/3d/robot.webp",
+    glow: "16 185 129",
+    check: "text-emerald-600 dark:text-emerald-300",
+    title: "Android yazılım desteği",
+    lead: "Telefonun donanımı çoğu zaman sağlamdır, sorun yazılımdadır. Ben yazılım tarafına bakarım; çözemeyeceğim bir şeyse bunu en başta söylerim.",
+    rows: [
+      {
+        label: "Açılmayan telefon",
+        value:
+          "Logoda kalıyor, kendi kendine yeniden başlıyor ya da fastboot veya kurtarma ekranından çıkmıyor.",
+      },
+      {
+        label: "Veri",
+        value: "Silinen fotoğraf ve mesajların izini sürmek, yeni telefona geçerken veri taşımak.",
+      },
+    ],
+    href: "/android-destek",
+    linkLabel: "Android teknik destek",
+    gig: {
+      href: `${BIONLUK}/uzaktan-telefon-yazilim-sorunlarini-gideririm-786428`,
+      reviews: 2,
+    },
+  },
+];
+
+// Other Bionluk listings. A card opens the contact form with its title as the subject.
+const OTHER_GIGS = [
+  {
+    label: "Build ve çalışma hataları",
+    image: "build-hatalari",
+    slug: "mobil-uygulamanizdaki-build-ve-calisma-hatalarini-gideririm-785733",
+  },
+  {
+    label: "Siteyi mobil uygulamaya dönüştürme",
+    image: "siteden-mobil-uygulama",
+    slug: "web-sitenizi-profesyonel-bir-mobil-uygulamaya-donustururum-774332",
+  },
+  {
+    label: "Masaüstü uygulama",
+    image: "masaustu-uygulama",
+    slug: "ihtiyaciniza-ozel-masaustu-uygulamalar-gelistiririm-785804",
+  },
+  {
+    label: "Lisans ve aktivasyon sistemi",
+    image: "lisans-aktivasyon",
+    slug: "yaziliminiza-lisans-ve-aktivasyon-sistemi-entegre-ederim-789604",
+  },
+  {
+    label: "İş süreci otomasyonu",
+    image: "surec-otomasyonu",
+    slug: "dijital-is-sureclerinizi-otomatiklestiririm-871618",
+  },
+  {
+    label: "Excel ve veri aktarımı otomasyonu",
+    image: "excel-otomasyonu",
+    slug: "Excel-islemlerinizi-ve-veri-aktarimini-otomatiklestiririm-785807",
+  },
+  {
+    label: "YOLO ile görüntü işleme",
+    image: "yolo-goruntu-isleme",
+    slug: "YOLO-tabanli-goruntu-isleme-projelerinizi-gelistiririm-789609",
+  },
+  {
+    label: "Jetson Nano ve Arduino",
+    image: "jetson-arduino",
+    slug: "Jetson-Nano-ve-Arduino-projelerinizi-kodlarim-789615",
+  },
+  {
+    label: "SEO ve GEO",
+    image: "seo-geo",
+    slug: "SEO-ve-GEO-optimizasyonu-yapiyorum-799949",
+  },
+];
+---
+
+<section id="services" class="section section-tint">
+  <div class="section-container section-padding">
+    <SectionHeader
+      eyebrow="Hizmetler"
+      title="Neler yapıyorum"
+      lead="Üç alanda çalışıyorum. Her birinin ayrıntısı ve örnek işleri kendi sayfasında."
+    />
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+      {SERVICES.map(({ icon, glow, check, title, lead, rows, href, linkLabel, gig }) => (
+        <article class="card-interactive group flex flex-col p-7 sm:p-8" data-reveal>
+          <div class="text-center">
+            <div class="relative mx-auto size-20">
+              <span
+                aria-hidden="true"
+                class="absolute -inset-5 rounded-full opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+                style={`background: radial-gradient(closest-side, rgb(${glow} / 0.38), transparent)`}
+              />
+              <img
+                src={icon}
+                alt=""
+                width="160"
+                height="160"
+                loading="lazy"
+                decoding="async"
+                class="relative size-20 transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:-rotate-3 group-hover:scale-110"
+              />
+            </div>
+            <h3 class="text-heading mt-5 text-xl font-bold tracking-tight">{title}</h3>
+            <p class="text-body mt-3 leading-relaxed">{lead}</p>
+          </div>
+          <dl class="mt-6 space-y-4 border-t border-gray-100 pt-6 dark:border-dark-700">
+            {rows.map((row) => (
+              <div>
+                <dt class="text-heading flex items-center gap-2.5 text-sm font-semibold">
+                  <svg
+                    class:list={["h-4 w-4 flex-none", check]}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  {row.label}
+                </dt>
+                <dd class="text-muted mt-1 pl-6.5 text-sm leading-relaxed">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <div class="mt-auto flex flex-col items-center gap-3 pt-7 text-center">
+            <a href={href} class="link inline-flex items-center gap-1.5 text-sm">
+              {linkLabel}
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href={gig.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-muted inline-flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-gray-900 dark:hover:text-white"
+            >
+              <BionlukIcon size={13} className="flex-none" />
+              <span class="text-heading font-semibold">5,0</span>
+              <Stars count={1} class="-ml-0.5 text-[0.8rem]" />· Bionluk ilanında {gig.reviews}{" "}
+              değerlendirme
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-16">
+      <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2" data-reveal>
+        <h3 class="text-heading flex items-center gap-2.5 text-lg font-bold tracking-tight">
+          <BionlukIcon size={17} />
+          Bionluk'taki diğer ilanlarım
+        </h3>
+        <a href={BIONLUK} target="_blank" rel="noopener noreferrer" class="link text-sm">
+          Bionluk profilim <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <!-- Swipeable row on phones, grid from sm up -->
+      <ul class="no-scrollbar -mx-5 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
+        {OTHER_GIGS.map((item) => (
+          <li class="w-[72%] flex-none snap-start sm:w-auto" data-reveal>
+            <a
+              href="/#contact"
+              data-contact-subject={item.label}
+              class="card-interactive group flex h-full flex-col overflow-hidden"
+            >
+              <span class="block aspect-video overflow-hidden bg-slate-100 dark:bg-dark-900">
+                <img
+                  src={`/assets/bionluk/${item.image}.webp`}
+                  alt=""
+                  width="640"
+                  height="360"
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+                />
+              </span>
+              <span class="flex flex-1 items-center justify-between gap-3 px-4 py-3.5">
+                <span class="text-heading text-sm font-semibold">{item.label}</span>
+                <span
+                  aria-hidden="true"
+                  class="text-gray-400 transition duration-300 group-hover:translate-x-1 group-hover:text-gold-600 dark:group-hover:text-gold-300"
+                >
+                  →
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="text-body mt-8 text-sm" data-reveal>
+        Gaziantep'teyseniz yüz yüze de görüşebiliriz:{" "}
+        <a href="/gaziantep-freelancer" class="link">
+          Gaziantep'te freelancer
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Hand the card title to the contact form. sessionStorage covers a form that isn't hydrated yet.
+  document.addEventListener("click", (event) => {
+    const card = (event.target as Element | null)?.closest<HTMLElement>("[data-contact-subject]");
+    const subject = card?.dataset.contactSubject;
+    if (!subject) return;
+    try {
+      sessionStorage.setItem("contact-subject", subject);
+    } catch {
+      // Private mode
+    }
+    window.dispatchEvent(new CustomEvent("contact:subject", { detail: subject }));
+  });
+</script>

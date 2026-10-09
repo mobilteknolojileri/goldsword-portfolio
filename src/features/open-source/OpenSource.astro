@@ -1,0 +1,55 @@
+---
+import { FaGithub } from "react-icons/fa";
+import { OPEN_SOURCE } from "@/lib/open-source";
+import LinkTile from "@/components/ui/LinkTile.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+---
+
+<section id="open-source" class="section">
+  <div class="section-container section-padding">
+    <SectionHeader
+      eyebrow="Açık kaynak"
+      title="Kodu herkese açık işler"
+      lead="Üç kendi projem ve başka projelere gönderdiğim iki katkı. İki katkıyı da projelerin bakımcıları inceleyip birleştirdi."
+    >
+      <a
+        href="https://github.com/mobilteknolojileri"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-secondary"
+        slot="action"
+      >
+        <FaGithub size={16} aria-hidden="true" />
+        GitHub profilim <span aria-hidden="true">↗</span>
+      </a>
+    </SectionHeader>
+
+    <ul class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {OPEN_SOURCE.map((item, index) => (
+        <li
+          class:list={["card-interactive flex flex-col p-6 sm:p-7", index === 0 && "md:col-span-2"]}
+          data-reveal
+        >
+          <div class="flex flex-wrap items-center gap-2">
+            <span class={index === 0 ? "badge-gold" : "badge"}>{item.kind}</span>
+            {item.meta && <span class="text-muted font-mono text-xs">{item.meta}</span>}
+          </div>
+          <h3
+            class:list={[
+              "text-heading mt-4 font-bold tracking-tight",
+              index === 0 ? "text-2xl" : "text-lg",
+            ]}
+          >
+            {item.title}
+          </h3>
+          <p class="text-body mt-2 text-[0.9375rem] leading-relaxed">{item.body}</p>
+          <div class="mt-auto flex flex-wrap gap-2 pt-6">
+            {item.links.map((link) => (
+              <LinkTile href={link.href} label={link.label} />
+            ))}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
