@@ -4,8 +4,9 @@ import ProjectCard from "@/components/ui/ProjectCard.astro";
 import LinkTile from "@/components/ui/LinkTile.astro";
 import Counter from "@/components/ui/Counter.astro";
 import SectionHeader from "@/components/ui/SectionHeader.astro";
+import SwipeRow from "@/components/ui/SwipeRow.astro";
 import { PROJECTS } from "@/lib/constants";
-import { smallImageSrcset } from "@/lib/images";
+import { smallImageSrcset, webpSize } from "@/lib/images";
 import { CATEGORY_LABELS, KIND_BADGE, KIND_LABELS, STATUS_LABELS } from "@/config/portfolio";
 import { SITE_CONFIG } from "@/config/site";
 import { generateMetadata } from "@/lib/seo/metadata";
@@ -101,7 +102,7 @@ const related = (
         {project.metrics && project.metrics.length > 0 && (
           <dl class="grid grid-cols-2 gap-3">
             {project.metrics.map((metric) => (
-              <div class="card flex flex-col-reverse justify-end p-4" data-reveal>
+              <div class="card flex flex-col-reverse justify-end p-4">
                 <dt class="text-muted mt-1 text-xs leading-snug">{metric.label}</dt>
                 <dd class="text-heading text-2xl font-extrabold tabular-nums">
                   <Counter value={metric.value} />
@@ -218,9 +219,11 @@ const related = (
               <div class="overflow-hidden rounded-3xl border border-gray-200 bg-gray-50 dark:border-dark-700 dark:bg-dark-800">
                 <img
                   src={item.image}
+                  srcset={smallImageSrcset(item.image, webpSize(item.image)?.width)}
+                  sizes="(min-width: 1024px) 700px, 100vw"
                   alt={item.alt}
-                  width="1200"
-                  height="840"
+                  width={webpSize(item.image)?.width ?? 1200}
+                  height={webpSize(item.image)?.height ?? 840}
                   loading="lazy"
                   decoding="async"
                   class="h-auto w-full"
@@ -237,19 +240,26 @@ const related = (
               <h2 id="screens-heading" class="text-heading text-2xl font-extrabold tracking-tight">
                 Ekran görüntüleri
               </h2>
-              <ul class="mt-6 columns-2 gap-4 sm:columns-3">
+              <SwipeRow
+                label="Ekran görüntüleri"
+                count={inlineShots.length}
+                until="sm"
+                class="mt-6 items-start sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0"
+              >
                 {inlineShots.map((src, index) => (
-                  <li class="mb-4 break-inside-avoid">
+                  <li class="w-[62%] flex-none snap-start sm:w-auto">
                     <img
                       src={src}
                       alt={`${project.title} ekran görüntüsü ${index + 1}`}
+                      width={webpSize(src)?.width}
+                      height={webpSize(src)?.height}
                       loading="lazy"
                       decoding="async"
                       class="h-auto w-full rounded-2xl border border-gray-200 dark:border-dark-700"
                     />
                   </li>
                 ))}
-              </ul>
+              </SwipeRow>
               {moreShots.length > 0 && (
                 <details class="group mt-2">
                   <summary class="btn-secondary w-fit cursor-pointer list-none [&::-webkit-details-marker]:hidden">
@@ -258,12 +268,14 @@ const related = (
                     </span>
                     <span class="hidden group-open:inline">Daha az göster</span>
                   </summary>
-                  <ul class="mt-6 columns-2 gap-4 sm:columns-3">
+                  <ul class="mt-6 grid grid-cols-2 items-start gap-4 sm:grid-cols-3">
                     {moreShots.map((src, index) => (
-                      <li class="mb-4 break-inside-avoid">
+                      <li>
                         <img
                           src={src}
                           alt={`${project.title} ekran görüntüsü ${INLINE_SCREENSHOTS + index + 1}`}
+                          width={webpSize(src)?.width}
+                          height={webpSize(src)?.height}
                           loading="lazy"
                           decoding="async"
                           class="h-auto w-full rounded-2xl border border-gray-200 dark:border-dark-700"

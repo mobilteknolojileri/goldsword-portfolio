@@ -33,7 +33,7 @@ const projects = [...PROJECTS].sort(
 );
 
 const FILTER_CLASS =
-  "inline-flex min-h-10 items-center rounded-full border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition hover:border-primary-400 hover:text-primary-700 aria-pressed:border-primary-600 aria-pressed:bg-primary-600 aria-pressed:text-white dark:border-dark-600 dark:bg-dark-800 dark:text-gray-200 dark:hover:text-primary-200 dark:aria-pressed:border-primary-500 dark:aria-pressed:bg-primary-500 dark:aria-pressed:text-white";
+  "inline-flex min-h-10 flex-none items-center rounded-full border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition hover:border-primary-400 hover:text-primary-700 aria-pressed:border-primary-600 aria-pressed:bg-primary-600 aria-pressed:text-white dark:border-dark-600 dark:bg-dark-800 dark:text-gray-200 dark:hover:text-primary-200 dark:aria-pressed:border-primary-500 dark:aria-pressed:bg-primary-500 dark:aria-pressed:text-white";
 
 const categories = CATEGORY_ORDER.map((category) => ({
   category,
@@ -60,7 +60,7 @@ const categories = CATEGORY_ORDER.map((category) => ({
         data-filter-bar
         role="group"
         aria-label="Kategoriye göre süz"
-        class="mt-10 hidden flex-wrap gap-2 js:flex"
+        class="no-scrollbar -mx-5 mt-8 hidden gap-2 overflow-x-auto px-5 py-1 [mask-image:linear-gradient(to_right,transparent,#000_1.25rem,#000_calc(100%-1.25rem),transparent)] js:flex sm:mx-0 sm:mt-10 sm:flex-wrap sm:overflow-visible sm:px-0 sm:[mask-image:none]"
       >
         <button type="button" data-filter="all" aria-pressed="true" class={FILTER_CLASS}>
           Hepsi ({PROJECTS.length})
