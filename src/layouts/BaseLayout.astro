@@ -2,8 +2,9 @@
 import { defaultMetadata } from "@/lib/seo/metadata";
 import { getPersonSchema, getOrganizationSchema } from "@/lib/seo/schema";
 import "@/styles/globals.css";
-import { ClientRouter } from "astro:transitions";
 import Analytics from "@vercel/analytics/astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import Footer from "@/components/layout/Footer.astro";
 
 import type { Metadata } from "@/lib/seo/metadata";
 
@@ -14,54 +15,87 @@ interface Props extends Metadata {
 
 const props = Astro.props;
 
-// Fallback to defaultMetadata for any missing fields
 const titleRaw = props.title || defaultMetadata.title;
 const displayTitle = typeof titleRaw === "object" ? titleRaw.default : (titleRaw as string);
 const description = (props.description || defaultMetadata.description) as string;
-const image = props.image || "/logo.png";
+const image = props.image || "/og.png";
 const canonicalURL =
   props.canonicalURL ||
   props.alternates?.canonical ||
   new URL(Astro.url.pathname, Astro.site).toString();
 const extraSchemas = props.extraSchemas || [];
 
-// Use provided SEO data or fallback to defaults
 const keywords = props.keywords || defaultMetadata.keywords;
 const robots = props.robots || defaultMetadata.robots;
-const openGraph = props.openGraph || defaultMetadata.openGraph;
-const twitter = props.twitter || defaultMetadata.twitter;
 const verification = props.verification || defaultMetadata.verification;
+
+// Pages without openGraph still get social tags from their own title and description
+const imageURL = new URL(image, Astro.site).toString();
+const openGraph = props.openGraph || {
+  ...defaultMetadata.openGraph,
+  url: canonicalURL,
+  title: displayTitle,
+  description,
+  images: [{ url: imageURL, width: 1200, height: 630, alt: displayTitle }],
+};
+const twitter = props.twitter || {
+  ...defaultMetadata.twitter,
+  title: displayTitle,
+  description,
+  images: [imageURL],
+};
 
 const personSchema = getPersonSchema("tr");
 const orgSchema = getOrganizationSchema("tr");
+
+// The analytics script only exists on Vercel; anywhere else it is a 404 in the console
+const onVercel = import.meta.env.PROD && Boolean(process.env.VERCEL);
+
+// Chromium fetches a page while the pointer rests on its link. PDFs are left out.
+const SPECULATION_RULES = {
+  prefetch: [
+    {
+      where: { and: [{ href_matches: "/*" }, { not: { href_matches: "/*.pdf" } }] },
+      eagerness: "moderate",
+    },
+  ],
+};
 ---
 
 <!doctype html>
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="preload"
+      href="/fonts/Geist-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
     <meta name="generator" content={Astro.generator} />
-    <ClientRouter />
-
-    <!-- SEO Meta Tags -->
+    <script is:inline type="speculationrules" set:html={JSON.stringify(SPECULATION_RULES)} />
     <title>{displayTitle}</title>
     <meta name="description" content={description} />
     {keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(", ")} />}
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" type="application/rss+xml" title="goldsword blog" href="/rss.xml" />
 
     <meta
       name="robots"
       content={`${robots?.index ? "index" : "noindex"}, ${robots?.follow ? "follow" : "nofollow"}`}
     />
-    <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1013" media="(prefers-color-scheme: dark)" />
     {verification?.google && <meta name="google-site-verification" content={verification.google} />}
     {verification?.yandex && <meta name="yandex-verification" content={verification.yandex} />}
     {verification?.bing && <meta name="msvalidate.01" content={verification.bing} />}
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content={openGraph?.type || "website"} />
     <meta property="og:url" content={openGraph?.url || Astro.url} />
     <meta property="og:title" content={openGraph?.title || displayTitle} />
@@ -69,21 +103,17 @@ const orgSchema = getOrganizationSchema("tr");
     <meta property="og:image" content={openGraph?.images?.[0]?.url || new URL(image, Astro.url)} />
     {openGraph?.siteName && <meta property="og:site_name" content={openGraph.siteName} />}
 
-    <!-- Twitter -->
     <meta property="twitter:card" content={twitter?.card || "summary_large_image"} />
     <meta property="twitter:url" content={twitter?.url || Astro.url} />
     <meta property="twitter:title" content={twitter?.title || displayTitle} />
     <meta property="twitter:description" content={twitter?.description || description} />
     <meta property="twitter:image" content={twitter?.images?.[0] || new URL(image, Astro.url)} />
 
-    <!-- Structured Data -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
-    {
-      extraSchemas.map((schema) => (
-        <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
-      ))
-    }
+    {extraSchemas.map((schema) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
 
     <script is:inline>
       const getThemePreference = () => {
@@ -93,53 +123,58 @@ const orgSchema = getOrganizationSchema("tr");
         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       };
 
-      const applyTheme = () => {
-        const theme = getThemePreference();
-        if (theme === "light") {
-          document.documentElement.classList.remove("dark");
-        } else {
-          document.documentElement.classList.add("dark");
-        }
-      };
-
-      // Initial apply
-      applyTheme();
-
-      // Ensure theme is applied after page swaps in View Transitions
-      document.addEventListener("astro:after-swap", applyTheme);
+      // js-reveal hides [data-reveal] until motion.ts shows it. If motion.ts never loads, drop it.
+      const prefersDark = getThemePreference() !== "light";
+      document.documentElement.classList.toggle("dark", prefersDark);
+      document.documentElement.classList.add("js", "js-reveal");
+      // The browser bar follows the chosen theme, not only the system one
+      document
+        .querySelectorAll('meta[name="theme-color"]')
+        .forEach((meta) => meta.setAttribute("content", prefersDark ? "#0f1013" : "#ffffff"));
+      setTimeout(() => {
+        if (!window.__motionReady) document.documentElement.classList.remove("js-reveal");
+      }, 2500);
     </script>
-
-    <!-- Google Fonts (Inter) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-      media="print"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
   </head>
-  <body class="bg-white transition-colors duration-300 dark:bg-dark-900">
-    <main id="main-content">
+  <body class="flex min-h-screen flex-col bg-white dark:bg-dark-900">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:font-semibold focus:text-primary-700 focus:shadow-lg"
+    >
+      İçeriğe geç
+    </a>
+    <Navbar />
+    <main id="main-content" class="flex-1 focus:outline-none" tabindex="-1">
       <slot />
     </main>
+    <Footer />
 
-    {import.meta.env.PROD && <Analytics />}
+    <button
+      type="button"
+      data-back-to-top
+      data-visible="false"
+      tabindex="-1"
+      aria-hidden="true"
+      aria-label="Sayfanın başına dön"
+      class="pointer-events-none fixed right-5 bottom-5 z-30 inline-flex h-11 w-11 translate-y-3 items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-700 opacity-0 shadow-lg backdrop-blur transition duration-300 hover:border-primary-300 hover:text-primary-700 data-[visible=true]:pointer-events-auto data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 dark:border-dark-700 dark:bg-dark-800/90 dark:text-gray-200 dark:hover:text-primary-300 print:hidden"
+    >
+      <svg
+        class="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 19V5M5 12l7-7 7 7"></path>
+      </svg>
+    </button>
+
+    <script>
+      import "@/scripts/motion";
+    </script>
+    {onVercel && <Analytics />}
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --primary-rgb: 79, 70, 229;
-  }
-</style>

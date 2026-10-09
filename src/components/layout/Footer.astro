@@ -1,0 +1,57 @@
+---
+import BrandGlyph from "@/components/icons/BrandGlyph.astro";
+import BrandLogo from "@/components/ui/BrandLogo.astro";
+import { FOOTER_GROUPS } from "@/config/navigation";
+import { SITE_CONFIG } from "@/config/site";
+import { linkBrand } from "@/lib/link-brand";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-gray-200 bg-white dark:border-dark-800 dark:bg-dark-950 print:hidden">
+  <div class="section-container section-padding py-14 sm:py-16">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[1.5fr_repeat(4,minmax(0,1fr))]">
+      <div class="col-span-2 lg:col-span-1">
+        <a href="/" class="inline-flex" aria-label="goldsword ana sayfa">
+          <BrandLogo class="h-8" alt="" />
+        </a>
+        <p class="text-body mt-4 max-w-xs text-sm leading-relaxed">Tek kişi, tüm proje.</p>
+        <a href={`mailto:${SITE_CONFIG.links.email}`} class="link mt-4 inline-block text-sm">
+          {SITE_CONFIG.links.email}
+        </a>
+      </div>
+
+      {FOOTER_GROUPS.map((group) => (
+        <nav aria-label={group.title}>
+          <h2 class="text-heading mb-4 text-sm font-semibold">{group.title}</h2>
+          <ul class="space-y-1 text-sm">
+            {group.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-body inline-flex items-center gap-2 py-1 transition-colors hover:text-primary-700 dark:hover:text-primary-300"
+                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
+                  {link.external && <BrandGlyph brand={linkBrand(link.href)} size={14} />}
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+
+    <div class="text-muted mt-12 flex flex-col gap-3 border-t border-gray-200 pt-6 text-sm dark:border-dark-800 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} goldsword. Tüm hakları saklıdır.</p>
+      <p class="flex gap-4">
+        <a href="/rss.xml" class="hover:text-primary-700 dark:hover:text-primary-300">
+          RSS
+        </a>
+        <a href="/llms.txt" class="hover:text-primary-700 dark:hover:text-primary-300">
+          llms.txt
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,289 @@
+---
+import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
+import BrandLogo from "@/components/ui/BrandLogo.astro";
+import { NAV_CTA, NAV_ITEMS, type NavItem } from "@/config/navigation";
+
+// Plain Astro on purpose: no framework JS just for the nav
+const currentPath = Astro.url.pathname;
+const isUnder = (path: string) => currentPath === path || currentPath.startsWith(`${path}/`);
+const isActive = (item: NavItem) =>
+  (!item.href.includes("#") && isUnder(item.href)) || (item.match ?? []).some(isUnder);
+
+const themeButtonClass =
+  "inline-flex h-10 w-10 items-center justify-center rounded-xl text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-dark-800 dark:hover:text-white";
+---
+
+<!-- data-scrolled is toggled by motion.ts -->
+<header
+  id="navbar"
+  data-scrolled="false"
+  class="fixed inset-x-0 top-0 z-40 border-b border-transparent bg-white/70 backdrop-blur-xl transition-[background-color,border-color,box-shadow] duration-300 data-[scrolled=true]:border-gray-200/80 data-[scrolled=true]:bg-white/90 data-[scrolled=true]:shadow-[0_10px_30px_-18px_rgb(15_17_21/0.35)] dark:bg-dark-900/60 dark:data-[scrolled=true]:border-dark-800 dark:data-[scrolled=true]:bg-dark-900/90 dark:data-[scrolled=true]:shadow-[0_10px_30px_-18px_rgb(0_0_0/0.9)] print:hidden"
+>
+  <nav
+    aria-label="Ana menü"
+    class="section-container section-padding flex h-16 items-center justify-between gap-6"
+  >
+    <a href="/" class="flex items-center" aria-label="goldsword ana sayfa">
+      <BrandLogo class="h-8" alt="" />
+    </a>
+
+    <div class="hidden items-center md:flex">
+      <!-- motion.ts moves the pill under the active link -->
+      <div class="relative" data-nav-spy>
+        <span
+          data-nav-indicator
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-y-0 left-0 w-0 rounded-full bg-primary-50 opacity-0 shadow-[0_8px_22px_-10px_rgb(79_70_229/0.6)] ring-1 ring-primary-200/80 transition-[transform,width,opacity] duration-300 ease-out dark:bg-primary-400/15 dark:shadow-[0_8px_24px_-10px_rgb(129_140_248/0.55)] dark:ring-primary-400/30"
+        >
+          <span class="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-linear-to-r from-transparent via-gold-400 to-transparent shadow-[0_0_10px_rgb(246_205_102/0.9)] dark:via-gold-300"></span>
+        </span>
+        <ul class="relative flex items-center gap-1">
+          {NAV_ITEMS.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="nav-link"
+                data-nav-link
+                data-sections={item.sections?.join(" ")}
+                data-active={String(isActive(item))}
+                aria-current={isActive(item) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button
+        type="button"
+        data-theme-toggle
+        aria-label="Koyu tema"
+        aria-pressed="false"
+        class:list={[themeButtonClass, "ml-2"]}
+      >
+        <FaMoon size={18} className="dark:hidden" aria-hidden="true" />
+        <FaSun size={18} className="hidden dark:block" aria-hidden="true" />
+      </button>
+      <a
+        href={NAV_CTA.href}
+        class="btn-primary ml-3 min-h-10 px-4 data-[active=true]:shadow-[0_0_0_3px_rgb(246_205_102/0.6),0_12px_28px_-10px_rgb(217_168_74/0.85)]"
+        data-nav-link
+        data-sections={NAV_CTA.sections?.join(" ")}
+        data-active="false"
+      >
+        {NAV_CTA.label}
+      </a>
+    </div>
+
+    <div class="flex items-center gap-1 md:hidden">
+      <button
+        type="button"
+        data-theme-toggle
+        aria-label="Koyu tema"
+        aria-pressed="false"
+        class={themeButtonClass}
+      >
+        <FaMoon size={18} className="dark:hidden" aria-hidden="true" />
+        <FaSun size={18} className="hidden dark:block" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        data-menu-open
+        aria-label="Menüyü aç"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-gray-800 transition-colors hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-dark-800"
+      >
+        <FaBars size={20} aria-hidden="true" />
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div
+  data-menu-root
+  data-open="false"
+  class="group/menu pointer-events-none fixed inset-0 z-[100] md:hidden print:hidden"
+>
+  <div
+    data-menu-backdrop
+    aria-hidden="true"
+    class="absolute inset-0 bg-black/60 opacity-0 backdrop-blur-xs transition-opacity duration-200 group-data-[open=true]/menu:pointer-events-auto group-data-[open=true]/menu:opacity-100"
+  ></div>
+
+  <div
+    id="mobile-menu"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menü"
+    inert
+    class="absolute inset-y-0 right-0 flex w-[85%] max-w-sm translate-x-full flex-col bg-white shadow-2xl transition-transform duration-300 ease-out group-data-[open=true]/menu:pointer-events-auto group-data-[open=true]/menu:translate-x-0 dark:bg-dark-900"
+  >
+    <div class="flex h-16 items-center justify-between border-b border-gray-100 px-5 dark:border-dark-800">
+      <span class="flex items-center">
+        <BrandLogo class="h-7" />
+      </span>
+      <button
+        type="button"
+        data-menu-close
+        aria-label="Menüyü kapat"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gray-50 text-gray-800 transition-colors hover:bg-gray-100 dark:bg-dark-800 dark:text-gray-100 dark:hover:bg-dark-700"
+      >
+        <FaTimes size={18} aria-hidden="true" />
+      </button>
+    </div>
+
+    <!-- Links slide in one after another once the drawer is open (--i sets the delay) -->
+    <ul class="flex-1 space-y-1 overflow-y-auto overscroll-contain px-3 py-6">
+      {NAV_ITEMS.map((item, index) => (
+        <li
+          style={`--i: ${index}`}
+          class="translate-x-6 opacity-0 transition duration-300 ease-out group-data-[open=true]/menu:translate-x-0 group-data-[open=true]/menu:opacity-100 group-data-[open=true]/menu:delay-[calc(var(--i)*50ms_+_120ms)]"
+        >
+          <a
+            href={item.href}
+            data-nav-link
+            data-sections={item.sections?.join(" ")}
+            data-active={String(isActive(item))}
+            aria-current={isActive(item) ? "page" : undefined}
+            class="text-heading flex w-full items-center rounded-xl px-4 py-3.5 text-lg font-semibold transition-colors hover:bg-primary-50 data-[active=true]:text-primary-700 dark:hover:bg-dark-800 dark:data-[active=true]:text-primary-300"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div
+      style={`--i: ${NAV_ITEMS.length}`}
+      class="translate-y-3 border-t border-gray-100 p-5 opacity-0 transition duration-300 ease-out group-data-[open=true]/menu:translate-y-0 group-data-[open=true]/menu:opacity-100 group-data-[open=true]/menu:delay-[calc(var(--i)*50ms_+_120ms)] dark:border-dark-800"
+    >
+      <a href={NAV_CTA.href} class="btn-primary btn-lg w-full">
+        {NAV_CTA.label}
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // The initial theme class comes from the inline script in BaseLayout
+  const applyTheme = (theme: "light" | "dark") => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    // The phone's browser bar takes the page colour too
+    document
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((meta) => meta.setAttribute("content", theme === "dark" ? "#0f1013" : "#ffffff"));
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      // localStorage can be blocked in private mode
+    }
+    syncThemeButtons();
+  };
+
+  const syncThemeButtons = () => {
+    const isDark = document.documentElement.classList.contains("dark");
+    document
+      .querySelectorAll("[data-theme-toggle]")
+      .forEach((button) => button.setAttribute("aria-pressed", String(isDark)));
+  };
+
+  const toggleTheme = (event: MouseEvent, button: HTMLElement) => {
+    const root = document.documentElement;
+    const nextTheme = root.classList.contains("dark") ? "light" : "dark";
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Hundreds of colour transitions starting at once make the switch stutter, so they stay
+    // off until the new colours are in place
+    root.classList.add("theme-switching");
+    const done = () => root.classList.remove("theme-switching");
+    if (!document.startViewTransition || reduceMotion) {
+      applyTheme(nextTheme);
+      void getComputedStyle(root).color;
+      requestAnimationFrame(done);
+      return;
+    }
+
+    // Keyboard clicks report 0,0, so start from the button centre instead
+    const rect = button.getBoundingClientRect();
+    const x = event.clientX || rect.left + rect.width / 2;
+    const y = event.clientY || rect.top + rect.height / 2;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    );
+    const transition = document.startViewTransition(() => applyTheme(nextTheme));
+    transition.ready
+      .then(() => {
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] },
+          { duration: 500, easing: "ease-in-out", pseudoElement: "::view-transition-new(root)" },
+        );
+      })
+      // A second click before the first reveal ends skips it, which rejects ready
+      .catch(() => {});
+    transition.finished.finally(done);
+  };
+
+  let closeMenu: (restoreFocus?: boolean) => void = () => {};
+
+  const setupNavbar = () => {
+    syncThemeButtons();
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")
+      .forEach((button) => button.addEventListener("click", (event) => toggleTheme(event, button)));
+
+    const root = document.querySelector<HTMLElement>("[data-menu-root]");
+    const dialog = document.getElementById("mobile-menu");
+    const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+    if (!root || !dialog || !openButton) return;
+
+    const focusables = () => Array.from(dialog.querySelectorAll<HTMLElement>("a[href], button"));
+
+    // Keep focus inside the drawer while it's open
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeMenu();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = focusables();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    const openMenu = () => {
+      root.dataset.open = "true";
+      dialog.inert = false;
+      openButton.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", onKeyDown);
+      focusables()[0]?.focus();
+    };
+
+    closeMenu = (restoreFocus = true) => {
+      root.dataset.open = "false";
+      dialog.inert = true;
+      openButton.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKeyDown);
+      if (restoreFocus) openButton.focus();
+    };
+
+    openButton.addEventListener("click", openMenu);
+    root.querySelector("[data-menu-close]")?.addEventListener("click", () => closeMenu());
+    root.querySelector("[data-menu-backdrop]")?.addEventListener("click", () => closeMenu());
+    dialog
+      .querySelectorAll("a[href]")
+      .forEach((link) => link.addEventListener("click", () => closeMenu(false)));
+  };
+
+  setupNavbar();
+</script>
