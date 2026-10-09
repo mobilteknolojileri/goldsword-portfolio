@@ -205,58 +205,28 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
     }));
   };
 
+  // The keyboard's "next" key moves to the next field instead of submitting a half-filled form
+  const focusNext = (e: React.KeyboardEvent<HTMLInputElement>, nextId: string) => {
+    if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
+    e.preventDefault();
+    document.getElementById(nextId)?.focus();
+  };
+
   return (
     <section id="contact" className="section-tint section">
       <Toaster position="top-right" />
-      <div className="section-container grid gap-12 section-padding lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
-        <div>
+      {/* Phones: intro, form, then the other channels. From lg the form takes the right column. */}
+      <div className="section-container grid gap-10 section-padding lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:grid-rows-[auto_1fr] lg:gap-x-16">
+        <div className="lg:col-start-1 lg:row-start-1">
           <p className="mb-4 eyebrow">İletişim</p>
           <h2 className="section-title">Projenizi ya da sorununuzu anlatın</h2>
           <p className="section-lead">
             İlk yanıtım fiyat teklifi olmaz, birkaç soru olur. Ne kadar ayrıntı verirseniz sorularım
             da o kadar azalır.
           </p>
-
-          <ul className="mt-10 space-y-3">
-            {DIRECT_LINKS.map(({ logo, label, detail, href, external }) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-[0_12px_30px_-16px_rgb(79_70_229/0.4)] dark:border-dark-700 dark:bg-dark-800 dark:hover:border-primary-400/50"
-                >
-                  <span className="logo-tile size-11 rounded-xl">{logo}</span>
-                  <span className="min-w-0">
-                    <span className="block text-sm font-semibold text-heading">{label}</span>
-                    <span className="block truncate text-sm text-muted">{detail}</span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-8 rounded-2xl border border-dashed border-gray-300 p-5 dark:border-dark-600">
-            <p className="flex items-center gap-2 text-sm font-semibold text-heading">
-              <FaRegLightbulb
-                className="h-4 w-4 text-gold-600 dark:text-gold-400"
-                aria-hidden="true"
-              />
-              Neler yazabilirsiniz?
-            </p>
-            <ul className="mt-3 space-y-2 text-sm text-body">
-              <li>
-                <span className="font-semibold text-heading">Yazılım projesi:</span> ne yapmak
-                istediğiniz, benzer bir uygulama ya da site örneği ve aklınızdaki takvim.
-              </li>
-              <li>
-                <span className="font-semibold text-heading">Android destek:</span> cihaz modeli,
-                Android sürümü ve sorunun ne zaman, neyin ardından başladığı.
-              </li>
-            </ul>
-          </div>
         </div>
 
-        <div className="card p-6 sm:p-8">
+        <div className="card p-6 sm:p-8 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <form className="space-y-5" onSubmit={handleSubmit}>
             <fieldset>
               <legend className="mb-2 text-sm font-semibold text-heading">
@@ -299,6 +269,9 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
                   type="text"
                   name="name"
                   autoComplete="name"
+                  autoCapitalize="words"
+                  enterKeyHint="next"
+                  onKeyDown={(e) => focusNext(e, "contact-email")}
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -320,6 +293,8 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
                   type="email"
                   name="email"
                   autoComplete="email"
+                  enterKeyHint="next"
+                  onKeyDown={(e) => focusNext(e, "contact-message")}
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -381,6 +356,46 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
               {isSubmitting ? "Gönderiliyor…" : "Gönder"}
             </Button>
           </form>
+        </div>
+
+        <div className="lg:col-start-1 lg:row-start-2">
+          <ul className="space-y-3">
+            {DIRECT_LINKS.map(({ logo, label, detail, href, external }) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="group flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-[0_12px_30px_-16px_rgb(79_70_229/0.4)] dark:border-dark-700 dark:bg-dark-800 dark:hover:border-primary-400/50"
+                >
+                  <span className="logo-tile size-11 rounded-xl">{logo}</span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold text-heading">{label}</span>
+                    <span className="block truncate text-sm text-muted">{detail}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8 rounded-2xl border border-dashed border-gray-300 p-5 dark:border-dark-600">
+            <p className="flex items-center gap-2 text-sm font-semibold text-heading">
+              <FaRegLightbulb
+                className="h-4 w-4 text-gold-600 dark:text-gold-400"
+                aria-hidden="true"
+              />
+              Neler yazabilirsiniz?
+            </p>
+            <ul className="mt-3 space-y-2 text-sm text-body">
+              <li>
+                <span className="font-semibold text-heading">Yazılım projesi:</span> ne yapmak
+                istediğiniz, benzer bir uygulama ya da site örneği ve aklınızdaki takvim.
+              </li>
+              <li>
+                <span className="font-semibold text-heading">Android destek:</span> cihaz modeli,
+                Android sürümü ve sorunun ne zaman, neyin ardından başladığı.
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
