@@ -66,12 +66,16 @@ function runCount(el: HTMLElement) {
 }
 
 // The real value is already in the HTML. Only counters still below the fold restart from zero.
-function setupCounters() {
+function measureCounters() {
   const counters = document.querySelectorAll<HTMLElement>("[data-count-to]");
   if (counters.length === 0 || prefersReducedMotion() || !("IntersectionObserver" in window)) {
-    return;
+    return [];
   }
+  return Array.from(counters).filter((el) => el.getBoundingClientRect().top >= window.innerHeight);
+}
 
+function setupCounters(below: HTMLElement[]) {
+  if (below.length === 0) return;
   countObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -83,10 +87,6 @@ function setupCounters() {
     { threshold: 0.5 },
   );
 
-  // All reads before any write, so one layout serves every counter
-  const below = Array.from(counters).filter(
-    (el) => el.getBoundingClientRect().top >= window.innerHeight,
-  );
   for (const el of below) {
     el.dataset.countFinal = el.textContent ?? "";
     el.textContent = formatCount(el, 0);
@@ -259,22 +259,36 @@ function setupTouch() {
 // counter which card leads. On touch screens the leading card lights up while the row crosses
 // the middle of the screen, as cards in a column do. A row nudges once when it first comes into
 // view, so it reads as swipeable.
-function setupCarousels() {
+interface SwipeRow {
+  root: HTMLElement;
+  track: HTMLElement;
+  items: HTMLElement[];
+  // Past the right edge: they never cross the viewport, so the scroll reveal would keep them
+  // hidden until they are swiped in
+  offscreen: HTMLElement[];
+}
+
+// Reads only; rows that aren't wider than the screen are showing their grid layout
+function measureRows() {
+  const rows: SwipeRow[] = [];
   document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
     const track = root.querySelector<HTMLElement>("[data-carousel-track]");
-    // Not wider than the screen: the grid layout is showing
     if (!track || track.scrollWidth - track.clientWidth <= 1) return;
+    const items = Array.from(track.children) as HTMLElement[];
+    const offscreen = items.filter(
+      (item) => item.offsetLeft - track.scrollLeft >= track.clientWidth,
+    );
+    rows.push({ root, track, items, offscreen });
+  });
+  return rows;
+}
+
+function setupCarousels(rows: SwipeRow[]) {
+  rows.forEach(({ root, track, items, offscreen }) => {
     root.dataset.scrollable = "true";
+    offscreen.forEach((item) => item.classList.add("is-revealed"));
     const thumb = root.querySelector<HTMLElement>("[data-carousel-thumb]");
     const count = root.querySelector<HTMLElement>("[data-carousel-count]");
-    const items = Array.from(track.children) as HTMLElement[];
-
-    // Cards past the right edge never cross the viewport, so the scroll reveal would keep them
-    // hidden until they are swiped in
-    items.forEach((item) => {
-      if (item.offsetLeft - track.scrollLeft >= track.clientWidth)
-        item.classList.add("is-revealed");
-    });
 
     let lead = -1;
     let inMiddle = false;
@@ -474,6 +488,16 @@ function setupContactBar() {
   document.addEventListener("focusout", onFocusChange);
 }
 
+// The eyebrow sword's glint repaints, so it only runs while the eyebrow is on screen
+// (data-glint, see globals.css)
+function setupGlints() {
+  if (prefersReducedMotion() || !("IntersectionObserver" in window)) return;
+  const glintObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) entry.target.toggleAttribute("data-glint", entry.isIntersecting);
+  });
+  document.querySelectorAll(".eyebrow").forEach((eyebrow) => glintObserver.observe(eyebrow));
+}
+
 window.addEventListener("scroll", onScroll, { passive: true });
 window.addEventListener("resize", onScroll, { passive: true });
 window.addEventListener("resize", () => placeIndicator(true), { passive: true });
@@ -502,13 +526,18 @@ else window.addEventListener("load", loadMonoFont, { once: true });
 // this script and hold back the first paint
 requestAnimationFrame(() =>
   setTimeout(() => {
-    // Before the reveal and the touch setup: it marks rows that scroll and cards to show at once
-    setupCarousels();
+    // Measure before writing anything, so one layout serves every measurement. The rows go
+    // before the reveal and the touch setup: they mark the cards to show at once and the rows
+    // that light their own cards.
+    const rows = measureRows();
+    const counters = measureCounters();
+    setupCarousels(rows);
     setupReveal();
-    setupCounters();
+    setupCounters(counters);
     setupTouch();
     setupScrollState();
     setupContactBar();
+    setupGlints();
     setupSpy();
   }),
 );
