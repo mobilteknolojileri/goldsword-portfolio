@@ -1,0 +1,118 @@
+---
+title: QuSafe
+seoTitle: "QuSafe: anahtarı cihazda türetilen şifreli parola kasası"
+description: "QuSafe'te anahtar cihazda Argon2id ile türetiliyor, kasa AES-256-GCM ile şifreleniyor, sunucu yalnızca şifreli veri görüyor. Kararları ve bedellerini anlattım."
+summary: "Anahtarın cihazda türetildiği bir parola ve not kasası; bu yüzden sunucunun elinde hiçbir zaman şifreli veriden başka bir şey olmuyor."
+lead: "Parolalar ve notlar için şifreli bir kasa: Anahtar cihazda türetilip orada kalıyor, sunucu ise okuyamadığı bir bloktan başka hiçbir şey tutmuyor."
+project: qusafe-mobile
+order: 3
+date: 2026-10-08
+role: "Tek geliştirici"
+timeline: "10 Aralık 2025 – 27 Ocak 2026 · 49 günde 636 commit"
+status: "Google Play'de 1.4.0 sürümüyle yayında · yalnızca Android · Ocak 2026'dan beri commit yok"
+links:
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.schwerttr.qusafe
+stack: [Expo, Supabase, Argon2id, AES-256-GCM]
+outcome: "42 şifreli kasa, son commit'ten yedi ay sonra hâlâ eşitleniyor"
+cover:
+  src: /assets/projects/qusafe-mobile/showcase.webp
+  alt: "QuSafe: ana ekran, parola listesi ve güvenlik ayarları"
+  caption: "Soldan sağa: ana ekran · burada örnek verilerle gösterilen parola listesi · biyometrik kilit düğmesinin ve otomatik kilit süresinin bulunduğu güvenlik ayarları. Bugün yayında olan iki modül Parolalar ve Notlar; diğer dört kare, henüz yazmadığım modüllerin yer tutucuları."
+  width: 1200
+  height: 889
+original: https://github.com/mobilteknolojileri/case-studies/blob/main/qusafe.md
+---
+
+## Sorun
+
+Piyasada bir parola yöneticisinin daha dolduracağı bir boşluk yok. 1Password ve Bitwarden zaten var; ikisi de güvenlik denetiminden geçiyor ve tek başıma yazabileceğim her şeyden daha iyi finanse ediliyor.
+
+Yine de bir tane yazmamın nedeni, kriptografik kararları önceden vermiş bir kütüphaneyi çağırmak yerine bu kararları kendim vermek istemem oldu. Hangi anahtar türetme fonksiyonunun (KDF), hangi maliyet parametreleriyle ve kimin önerisine dayanılarak kullanılacağı. Ek doğrulanmış verinin (AAD) neye bağlanacağı. Uygulama açıkken ana anahtarın nerede duracağı ve uygulama kilitlendiğinde o baytlara ne olacağı. Sunucunun yardım etmesine izin yokken bir cihazın, buluttaki eskimiş bir kopyayı başka bir parolayla şifrelenmiş bir bulut kopyasından nasıl ayırt edeceği.
+
+Bu soruların somut cevapları var ve bunlarda yanılmak, kod incelemesinde yakalanan türden bir hata değil: Dışarıdan bakınca doğrusundan farksız görünen ama hiçbir şeyi korumayan bir ürün demek. Dolayısıyla bu projenin dürüst bir tarifi şu: Uygulama işin çıktısı, işin kendisi ise kararlar.
+
+## Ne yaptım
+
+**Cihazda türetilen ve cihazdan hiç çıkmayan bir anahtar.** Ana parola önce NFKC ile normalleştiriliyor; böylece iki farklı platformda yazılan aynı parola aynı baytları üretiyor. Argon2id bu paroladan 64 MiB bellek, üç geçiş ve dört şerit (lane) ile 256 bitlik bir anahtar türetiyor. RFC 9106'nın önerdiği ikinci seçenek bu; belleği kısıtlı ortamlar için yazılmış, telefon da tam olarak böyle bir ortam. Bu ayar, OWASP Password Storage Cheat Sheet'in bugünkü alt sınırının (19 MiB, iki geçiş) birkaç katı; üstelik bu maliyet her işlemde değil, kilit her açıldığında bir kez ödeniyor. Doğrulama, türetilen anahtarın SHA-256 özetini saklanan özetle `===` ile değil, sabit zamanlı bir karşılaştırmayla kıyaslıyor. Ardından kasadaki her şey AES-256-GCM ile şifreleniyor: her şifrelemede yeni bir 12 baytlık IV, 16 baytlık bir doğrulama etiketi (auth tag) ve buluta giden her şey için ek doğrulanmış veri olarak `v1|uid=<user_id>`. Böylece bir hesaptan alınan blok, başka bir hesapta doğrulamadan geçemiyor. Kasa kilitlendiğinde referans bırakılmadan önce `cachedMasterKey.fill(0)` çalışıyor.
+
+<Diagram id="qusafe-crypto">
+  Zincirin, devamındaki her şeyi belirleyen bir özelliği var: Ana anahtardan sonraki hiçbir şey, o
+  anahtar olmadan kurtarılamaz. Ana parolayı unutmak bir sıfırlama bağlantısı demek değil, kasanın
+  kaybolması demek; uygulama da aksini ima etmek yerine bunu açıkça söylüyor.
+</Diagram>
+
+**Ana anahtarı hiç saklamadan biyometrik kilit açma.** Anahtarı biyometri tutmuyor. Ana anahtarı, rastgele üretilmiş 256 bitlik bir anahtar şifreleme anahtarı (key-encryption key, KEK) sarıyor ve `requireAuthentication: true` ayarıyla `SecureStore` deposuna yalnızca bu KEK yazılıyor; böylece onu ancak işletim sisteminin doğrulama penceresi serbest bırakabiliyor. Sarılmış anahtarı cihazdan çıkarmak KEK olmadan hiçbir şey kazandırmıyor, KEK'i okumak ise biyometrik doğrulama gerektiriyor.
+
+Bütün bunların altında, ikinci ve bağımsız bir katman olarak yerel depolama duruyor. Kasa store'unun diske yazdığı şey zaten şifreli veri, çünkü depolamaya dokunulmadan önce `encrypt(vaultJson, masterKey)` çalışıyor. Bu veri ardından şifreli bir MMKV örneğine veriliyor; bu örneğin anahtarı ilk çalıştırmada 32 rastgele bayttan üretiliyor ve platformun anahtar deposunda (keystore) tutuluyor. Bu katmanın ne olduğunu ve ne olmadığını net söylemekte fayda var: MMKV, belgelerinde şifreleme anahtarı için en fazla 16 bayt uzunluk belirtiyor. Yani 32 baytın tamamı şifreleme anahtarı olarak kullanılmıyor ve yerel dosyanın, içindeki kasayla aynı güçte korunduğunu iddia etmem. Buna gerek de yok. Kasanın gizliliği ana parolaya ve ondan türetilen anahtara dayanıyor; MMKV katmanı ise zaten şifrelenmiş veri üzerinde derinlemesine savunma sağlıyor.
+
+**Canlıya çıkamayan, daha zayıf bir yedek yol.** Argon2id native bir modül gerektiriyor ve Expo Go'da bu modül yok; dolayısıyla KDF'nin, geliştirme sırasında kullanılan ve yinelemeli SHA-256'ya dayanan bir yedek yolu var. Bunun yanlışlıkla yayımlanması, bu uygulamanın başına gelebilecek en kötü hata olurdu: şifreli görünen ama çok kolay kırılan bir kasa. Bu yüzden yedek yolun önünde bir uyarı değil, hata fırlatan bir kontrol duruyor:
+
+```ts
+if (!__DEV__) {
+  throw new Error("Native Argon2 required in production - use a development build");
+}
+```
+
+Native modülü bir şekilde kaybetmiş bir production build, anahtar türetmeyi baştan reddediyor. Açılamamak telafi edilebilir; zayıf bir anahtarla açılmak edilemez.
+
+**Şema, taşınacak bir şey yokken kriptografiyi sürümlüyor.** `vault_sync` satırı, şifreli verinin ve salt değerinin yanında `kdf_algorithm`, `kdf_iterations`, `kdf_version`, JSONB olarak `kdf_params`, `cipher_version` ve `key_version` alanlarını taşıyor. Bugün bütün satırlar aynı şeyi söylüyor: Argon2id, üç geçiş, 64 MiB, sürüm 1. Asıl mesele, bu parametrelerin yetmez hâle geldiği gün ne olacağı. Parametreler istemcide sabit olarak durmak yerine blokla birlikte taşındığı için eski bir kasa, yazıldığı parametrelerle açılıp yenileriyle yeniden şifrelenebiliyor ve sürümü artırılabiliyor. Aksi hâlde bir uygulama güncellemesi, mevcut kullanıcıların hepsini kasalarının dışında bırakırdı. `docs/security/kdf-versions.md` sürüm 2'yi şimdiden ayırıyor ve bu taşıma yolunu, henüz varsayımsalken yazıya döküyor.
+
+**Şifreyi çözemeyen bir sunucunun bir bedeli var ve bu bedel eşitlemede ortaya çıkıyor.** Sunucu `encrypted_data`, `key_salt` ve KDF parametrelerini saklıyor. Buluttaki kopyanın aynı ana parolaya ait olup olmadığını istemciye söyleyemiyor, çünkü ikisini de okuyamıyor. Bu yüzden istemci bunu mümkün olan tek yoldan öğreniyor: Bloğu indirip çözmeyi deniyor. Başarılı olursa kopyalar karşılaştırılabilir demektir ve birleştirme önerilebilir. Çözme hatası ise loglanacak bir hata değil, cevabın _ta kendisi_: Buluttaki kasanın başka bir ana parolayla yazıldığı anlamına geliyor.
+
+<Diagram id="qusafe-sync">
+  Tespit mekanizmasının tamamı, çözme çağrısını saran `catch` bloğundan ibaret. Sunucunun veriyi
+  okuyabildiği bir sistemde bu bir sütun karşılaştırmasıdır; burada ise bir istisna ve bu istisna
+  bilgi taşıyor.
+</Diagram>
+
+**Yazma önce yerelde yapılıyor, hakem ise bulut.** Düzenlemeler hemen şifreli yerel depoya yazılıyor; eşitleme ise debounce ile arkalarından geliyor. İstemci göndermeden önce buluttaki `sync_version` değerini okuyor; bu sürüm yereldekinin gerisinde değilse gönderimden vazgeçiliyor ve bunun yerine bulut kopyası indirilip yerel kopyanın üzerine yazılıyor. `vaultStore.ts` içindeki yorum kuralı süslemeden söylüyor: `STRATEGY: Cloud always wins - auto download and replace local`. Daha yumuşak yol ise ayrı olarak kilit açılırken devreye giriyor: İki tarafta da içerik varsa ve bulut kopyası çözülebiliyorsa kullanıcıya, her öğe için `updatedAt` değerine bakarak karar veren bir birleştirme öneriliyor. Silmeler kaydı ortadan kaldırmıyor, bir mezar taşı (tombstone) bırakıyor: Öğeyle birlikte bir `deletedAt` işareti taşınıyor; böylece bir cihazda yapılan silme, onu hiç görmemiş başka bir cihazdan gelen eşitlemeyle geri alınmıyor. Uygulamanın gösterdiği bütün sayılar mezar taşlarını yeniden dışarıda bırakıyor.
+
+**Uygulamanın onda dokuzu iki modülden ibaret.** Parolalar ve Notlar modülleri birlikte yaklaşık 5.500 satır; geri kalanını ana ekran, ayarlar, güvenlik puanlaması, eşitleme ve ilk kullanım akışı (onboarding) oluşturuyor. Dört modül dizini (`cards`, `files`, `authenticator`, `identity`) boş, ana ekrandaki kareleri de yalnızca yer tutucu. Bütün bunların arkasında beş tablo var (`user_profiles`, `vault_sync`, `qr_shares`, `revenuecat_webhooks`, `app_config`); hepsinde Row Level Security (RLS) açık, webhook tablosuna ise yalnızca `service_role` erişebiliyor. Tek bir edge function var, o da RevenueCat webhook'u için. Başka hiçbir şeyin sunucuya ihtiyacı yok, çünkü başka hiçbir şeyin şifrelenmemiş veriyi görmesine izin verilmiyor.
+
+**Ücretsiz ve reklamlı, bir de Pro planı var.** Ödüllü video, ücretsiz sınırın üstüne ek kayıt hakkı kazandırıyor; geçiş reklamlarının sıklığı ise kodda üç dakikada bir ile sınırlı. Abonelikler RevenueCat üzerinden yürüyor ve premium durumunu yazan tek şey onun webhook'u. Bunun mühendislik açısından önemi şu: Reklam SDK'sı ile kilit davranışı sonunda birbiriyle çatıştı (ayrıntısı aşağıda).
+
+**On dile çevrildi, elli dokuz dilde sunuluyor.** `languages.ts` 59 dil listeliyor; `locales/` klasöründe ise on JSON dosyası var: Arapça, Almanca, İngilizce, İspanyolca, Fransızca, İbranice, İtalyanca, Portekizce, Rusça ve Türkçe. Aradaki farkı gizlemek yerine `supportedLngs` gerçekten var olan dosyalardan türetiliyor, dil seçici de listeyi etkin diller ve yakında gelecekler olarak ikiye ayırıyor. Uygulamada sağdan sola (RTL) yazım desteği olmasının nedeni İbranice; bir sonraki bölümdeki çökmenin nedeni de o.
+
+## Teknolojiler
+
+| Katman          | Tercih                                            | Neden                                                                                                                                        |
+| :-------------- | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| Uygulama        | Expo SDK 54 · React Native 0.81 · Expo Router     | Tek kod tabanı; OTA güncellemeleri uygulama sürümüne sabitlendiği için bir runtime hiçbir zaman yanlış native build ile karşılaşmıyor        |
+| Mimari          | Feature-Sliced Design                             | `app/` rotalar, `src/modules/` özellikler, `src/shared/` çekirdek; şifreleme kodu ve i18n her ekranda ayrı ayrı değil, tek bir yerde duruyor |
+| Anahtar türetme | `react-native-argon2`                             | Argon2id, Password Hashing Competition'ın (PHC) kazananı ve memory-hard; bcrypt ve PBKDF2 öyle değil                                         |
+| Şifreleme       | `react-native-quick-crypto` üzerinden AES-256-GCM | Kimlik doğrulamalı şifreleme ve şifreli veriyi bir hesaba bağlayan AAD                                                                       |
+| Yerel depo      | Şifreli MMKV                                      | Kilit açılırken senkron okuma, platformun anahtar deposundan (keystore) gelen bir cihaz anahtarıyla                                          |
+| Durum yönetimi  | Zustand                                           | Arayüz ve kasa için ayrı store'lar; böylece kilitleme birini temizlerken diğerine dokunmuyor                                                 |
+| Sunucu tarafı   | Supabase                                          | Kimlik doğrulama ve şifreli veri tutan tek bir tablo; yetkilendirme modelinin tamamı Row Level Security (RLS)                                |
+| Ödeme           | RevenueCat                                        | Premium durumunu yazan tek şey bir webhook                                                                                                   |
+| Reklam          | AdMob                                             | Ek limit için ödüllü video, sıklığı kodda sınırlanan geçiş reklamları                                                                        |
+| İzleme          | Sentry                                            | `beforeSend` içinde kişisel veri (PII) maskeleme, oturum kaydı (session replay) yok, `sendDefaultPii: false`                                 |
+
+## Sonuç
+
+- **20 Ocak 2026'dan beri Google Play'de yayında**, 26 Ocak'ta 1.4.0 sürümüne güncellendi: [`com.schwerttr.qusafe`](https://play.google.com/store/apps/details?id=com.schwerttr.qusafe), **100+ indirme**, Android 7.0 ve üzeri; 26 Ağustos 2026'da doğrulandı
+- `vault_sync` tablosunda **42 şifreli kasa** var: İlki 27 Ocak 2026'da, yani o son güncellemenin ertesi günü yazıldı; en son güncellenenin tarihi ise **25 Ağustos 2026**, son commit'ten yedi ay sonrası
+- **49 günde 636 commit**, 10 Aralık 2025 ile 27 Ocak 2026 arasında; son sürüm 1.4.0
+- **On dil yayında**, aralarında sağdan sola yazılan bir dil de var
+- App Store'da yok. Nedenleri Apple geliştirici ücreti ve uygulamanın henüz buna hazır olmadığına dair kendi değerlendirmem; önce hâlâ boş kare olarak duran modülleri bitirmeyi tercih ederim
+
+Burada önemli olan sayı, indirme sayısı değil. Önemli olan, ocak ayında yazılmış bir kasanın, ocaktan bu yana tek bir commit almamış bir uygulamada ağustosta hâlâ güncelleniyor olması. Bu sürede hiçbir düzeltme yayımlanmadı; bu da temel yolun (türetme, çözme, eşitleme) bakım görmeden çalışmaya devam ettiğinin kanıtı. Öte yandan geri kalan her şeyin doğru olduğunu kanıtlamıyor; bu sayfanın sonundaki açık bulgu da bunu gösteriyor.
+
+## Ne bozuldu, neyi değiştirdim
+
+**İbraniceye geçmek, gerçek bir cihazda uygulamayı çökertti.** Sentry `2082b1d3`: 1.2.0 sürümünde, Android 15 çalıştıran bir Xiaomi 2407FPN8EG üzerinde, `margelo::nitro::CommonGlobals::Object::defineProperty` içinde bir `SIGSEGV`. Zincir kısaydı ve tamamen benim kodumdan kaynaklanıyordu: Sağdan sola yazılan bir dile dokunmak `I18nManager.forceRTL(true)` çağırıyordu; bu çağrı, düzen ters dönebilsin diye hemen bir yeniden yükleme tetikliyordu ve yeniden yükleme, JSI runtime hâlâ kapatılırken Nitro Modules native katmanını yeniden başlatıyordu. Bir native modül, artık var olmayan bir runtime üzerinde `defineProperty` çağırıyordu.
+
+İlk seçenek listemde yeniden yüklemeyi 300 ms geciktirmek, öncesinde durumu temizlemek ve kullanıcıya uygulamayı kendisinin kapatıp yeniden açmasını söylemek vardı; sonuncusunu en güvenli seçenek olarak işaretlemiştim. Yayımladığım çözüm ne tek başına naif bir gecikmeydi ne de teslimiyet. Dil ayarlayıcı artık hiç yeniden yükleme yapmıyor; RTL bayrağını ayarlıyor, yeniden yükleme gerektiğini söyleyen bir boolean döndürüyor ve orada duruyor. `src/i18n/index.ts` içindeki yorum, düzeltmeyi tek satırda anlatıyor: `Do NOT reload here - let caller handle with confirmation modal`. Yeniden yükleme, çağıran tarafın kullanıcı onay verdikten sonra çağırdığı ayrı bir fonksiyon oldu; bu fonksiyon da native tarafa temizliği bitirmesi için zaman tanımak üzere işe 300 ms bekleyerek başlıyor. Gecikme gerekliydi ama hiçbir zaman yeterli değildi: Yarış durumunu (race condition) ortadan kaldıran şey, kararı ayarlayıcının dışına taşımak oldu.
+
+**Bir güvenlik özelliğiyle iş modeli birbirini tetikledi.** Otomatik kilit _hemen_ olarak ayarlıyken ödüllü video izlemek, ödül alınamadan kilit açma ekranında bitiyordu. Taraflardan hiçbiri tek başına yanlış davranmıyordu. Reklam SDK'sı uygulamanın önüne tam ekran bir activity koyuyor, işletim sistemi bunu uygulamanın arka plana geçmesi olarak bildiriyor; `appStateManager` da arka plana geçiş durumunda kendisinden isteneni doğru biçimde yaptı ve kasayı kilitledi. Ardından ödül callback'i kilitli bir uygulamada tetiklendi.
+
+Düzeltme, “uygulama arka plana geçti” bilgisinin belirsiz olduğunu ve otomatik kilidin bastırıldığı bir zaman aralığı gerektirdiğini kabul etmekti. `appStateManager` modülüne `pauseAutoLock()` ve `resumeAutoLock()` eklendi; durum işleyicisi duraklatılmışken erkenden dönüyor. Reklam hook'larının üçü de (ödüllü, geçiş ve uygulama açılış reklamı) `show()` öncesinde otomatik kilidi duraklatıyor; hem CLOSED hem de ERROR olaylarında, ayrıca `show()` çağrısını saran catch bloğunda yeniden etkinleştiriyor. `resumeAutoLock()` saklanan arka plan zaman damgasını da temizliyor; böylece bir reklamın arkasında geçen süre, uygulamadan uzakta geçirilmiş süre olarak sayılmıyor. Bir düzeltmeyle hatayı zaman aşımı yoluna iten bir düzeltme arasındaki fark, o son satır.
+
+**Altı haneli banka PIN'leri zayıf parola olarak raporlanıyordu.** Bu PIN'ler altı haneli, çünkü banka onları altı haneli yapmış; kullanıcının yapabileceği hiçbir şey bu puanı yükseltemez. Bu yüzden uyarı yalnızca gürültüydü, hem de gürültünün birini o ekranı görmezden gelmeye itme ihtimalinin en yüksek olduğu kategoride. Yazıya döktüğüm plan, güç puanlamasında banka PIN'lerine özel bir kural koymaktı: yalnızca `123456` ya da bir doğum yılı gibi bariz kalıpları işaretlemek, gerisini kabul edilebilir saymak.
+
+Yayımlanan çözüm plandan daha ileri gitti. Parola üreteci altı haneli sayısal bir PIN'i gerçekten de iyi sayıyor; ama güvenlik analizcisi artık `pin` ve `banking` öğelerini puanın tamamen dışında tutuyor ve toplamdan ayrı olarak bir `analyzedCount` raporluyor. Uygularken gerekçem değişti: Kullanıcının bir şey yapabileceği öğelerle yapamayacağı öğeleri karıştıran bir puan katı değil, yanıltıcıdır. Bu öğeleri paydadan çıkarmak, notlarını ayarlamaktan daha dürüsttü.
+
+**Kendi denetimimden çıkan bir bulgu hâlâ açık.** Yayımlamadan önce uygulamayı gözden geçirdim ve kaba kuvvet (brute-force) korumasının tek taraflı olduğunu not ettim. Hâlâ öyle. `keyManager.ts` beş yanlış ana paroladan sonra kasayı on beş dakika kilitliyor, ama `LoginScreen.tsx` içinde hiçbir deneme sayacı yok: Supabase hesap girişini yalnızca Supabase'in kendi sunucu tarafındaki hız sınırlaması koruyor.
+
+Bunu atlamak yerine buraya yazıyorum, çünkü işin ilginç kısmı tehdit modeli. Hesap parolası kasanın anahtarı değil; eşitleme kanalında kimlik doğrulamaktan başka bir işe yaramıyor. Hesabı ele geçiren bir saldırgan `encrypted_data`, `key_salt` ve KDF parametrelerini alır: içeriği değil, bloğu ve ona saldırmanın maliyetini. Deneme kilidi ise kasayı gerçekten açan parolada, yani ana parolada var. Bu, bulgunun önem derecesinin ilk verdiğimden düşük olduğunu savunmak için bir gerekçe. Kapatılması için bir gerekçe değil, hâlâ açık olmasının nedeni de bu değil: Hâlâ açık, çünkü ocaktan beri projeye dönmedim.

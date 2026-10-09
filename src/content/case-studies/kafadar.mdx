@@ -1,0 +1,112 @@
+---
+title: Kafadar
+seoTitle: "Kafadar: derin bağlantı yönlendirmesi ve PageSpeed 100"
+description: "Kafadar'ın paylaşım bağlantısı, uygulama kurulu olsa da olmasa da doğru yere varmalı. Yönlendirmeyi, bozulanları ve PageSpeed'de 84'ten 100'e çıkışı anlattım."
+summary: "Kendi hakkınızda yazıp tek bağlantıyla paylaştığınız bir test. Bağlantı, karşıdaki kişide uygulama kurulu olsa da olmasa da doğru yere varmak zorunda."
+lead: "Kendi hakkınızda sorular yazdığınız, tek bir bağlantı paylaştığınız ve arkadaşlarınızın sizi gerçekte ne kadar tanıdığını gördüğünüz bir test uygulaması."
+project: kafadar-mobile
+order: 4
+date: 2026-10-08
+role: "Tek geliştirici"
+timeline: "12 Şubat – 8 Mart 2026 · uygulamada 108, sitede 24 commit"
+status: "Google Play'de yayında · yalnızca Android · sunucu tarafı Supabase'in ücretsiz planında"
+links:
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.schwerttr.kafadar
+  - label: kafadar-web.vercel.app
+    href: https://kafadar-web.vercel.app/
+stack: [Expo, Astro, Supabase, AdMob]
+outcome: "Mobilde ve masaüstünde PageSpeed'in her kategorisinde 100 (başlangıçta 84)"
+cover:
+  src: /assets/projects/kafadar-mobile/showcase.webp
+  alt: "Kafadar: test hazırlama ekranı, paylaşım düğmeli test listesi ve profil ekranı"
+  caption: "Soldan sağa: bir soruyu yazıp doğru cevabı işaretleme · her testin kendi paylaşma ve kopyalama düğmelerini taşıdığı test listesi · tema ve dilin seçildiği profil ekranı. Üçüncü ekrandaki e-posta bir proje hesabına ait; bir adresi yeniden yayımlamak için bir sebep olmadığından burada bulanıklaştırdım."
+  width: 1200
+  height: 889
+original: https://github.com/mobilteknolojileri/case-studies/blob/main/kafadar.md
+---
+
+## Sorun
+
+Böyle bir uygulamanın tek bir mekanizması var, gerisi süs. Bir test hazırlıyorsunuz, bağlantısını birine gönderiyorsunuz, o da bağlantıyı açıyor. Bağlantı yerine ulaşmazsa ortada bir ürün yok demektir: Uygulamanın içi ne kadar cilalı olursa olsun, çıkmaza giren bir paylaşımı telafi etmez.
+
+Dolayısıyla mühendislik açısından ilginç olan sorun bir yönlendirme sorunu ve ilk bakışta göründüğünden daha geniş. Tek bir URL, her biri başka bir şey isteyen üç ayrı ziyaretçiye hizmet etmek zorunda: uygulaması kurulu olan birine, kurulu olmayan birine ve bağlantı bir sohbete yapıştırıldığında ön izleme oluşturmak için sayfayı tarayan bir bota. Yayımladığım tek istemci Android olduğu için gerçekten çalışan yol o; iOS tarafındaki ilişkilendirme depoda yapılandırılmış olsa da karşılık geldiği istemci hiç yayımlanmadı. Hangi kola düşeceğinize de ben karar vermiyorum: Bunu, benim kodum daha çalışmadan işletim sistemi belirliyor.
+
+Aşağıdaki her şey ya bunu doğru yapmakla ya da yapamadığımda bunun bana neye mal olduğuyla ilgili.
+
+## Ne yaptım
+
+**Uygulama daha görmeden işletim sisteminin çözdüğü tek bağlantı.** Paylaşım adresi `kafadar-web.vercel.app/q/{slug}`. Android'de bir intent filter `/q/` ön ekini sahipleniyor; bu sahipliği de `/.well-known/` altındaki `assetlinks.json` doğruluyor. Yayına çıkan yol bu: Dosya yerindeyse ve uygulama kuruluysa bağlantıya dokunulduğunda web'e hiç uğranmıyor, çünkü işletim sistemi bağlantıyı doğrudan uygulamaya veriyor. Aynı düzen iOS için de var (`app.config.js` içinde `associatedDomains: ['applinks:kafadar-web.vercel.app']` ve sitenin sunduğu bir `apple-app-site-association` dosyası), ama App Store'da bu düzenin işaret edeceği bir iOS istemcisi yok. Hiç yayına çıkmamış bir build'i bekleyen bir yapılandırma bu.
+
+<Diagram id="kafadar-routing">
+  Hangi kolun çalışacağına, benim kodum çalışmadan önce işletim sistemi karar verir. Soldaki yolun
+  var olup olmadığını web sitesindeki tek bir statik dosyanın belirlemesi de bu yüzden. Ön izleme
+  botu bu şemada yer almıyor, çünkü onun için henüz iyi bir cevap yok: Bağlantı ön izlemesi sağdaki
+  yolu izliyor ve bir 404 okuyor.
+</Diagram>
+
+**Yönlendiricinin önünde bir yönlendirici.** Expo Router'ın `+native-intent.tsx` dosyası, daha hiçbir ekran mount edilmeden ham metni alıyor ve esnek davranmak zorunda, çünkü gelen şey her zaman gönderilen şey olmuyor. Gelen değer `kafadar://q/abc`, tam bir `https://` URL'si, yalın bir `/q/abc` ya da bir parola sıfırlama callback'i olabilir. Bu yüzden `redirectSystemPath` önce özel şemayı ayıklıyor, ardından yolu hem ham bir parça olarak hem de `URL` ile ayrıştırılmış bir pathname olarak deniyor; her aşamada `/q/`, `/quiz/` ve `/reset-password` ile eşleştirmeye çalışıyor ve hiçbiri tutmazsa orijinal yolu hiç değiştirmeden geri döndürüyor. Fonksiyonun tamamı, yine orijinal yolu döndüren bir `try/catch` içinde duruyor. Bu dönüş güvenli bir yere yönlendirme değil, olduğu gibi geçirme: Eşleşmeyen yol yönlendiriciye aynen veriliyor ve onu sahiplenen bir rota yoksa `+not-found` ekranına düşüyor. Amaç da tam olarak bu: Uygulamanın ayrıştıramadığı bir derin bağlantı (deep link) zararsız bir yere varmalı ve her şeyden önce, henüz hiçbir ekran yokken çalışan bu işleyicinin içinde hata fırlatmamalı.
+
+**Hiçbir veri tabanıyla konuşmayan yardımcı site.** `kafadar-web` bir Astro sitesi ve içinde bilerek hiçbir Supabase istemcisi yok. Sitenin işi iki `.well-known` dosyasını sunmak, mağazanın istediği gizlilik politikası, kullanım koşulları ve hesap silme sayfalarını barındırmak ve bağlantının ineceği bir yer sağlamak. Veri tabanını dışarıda tutmak, sitenin uygulamanın bağlantı işleyişini de beraberinde götürecek şekilde bozulamayacağı anlamına geliyor; sonradan anlaşıldığı üzere sunucu tarafı ayakta değilken bile sitenin ayakta kalması anlamına da geliyor.
+
+**Dört tablo, fazlası yok.** `profiles`, `quizzes`, `questions`, `responses`. Her testin soruları ona bağlı ve `sort_order` ile sıralanıyor; test, URL için benzersiz bir `slug` taşıyor ve listeler satır saymadan çizilebilsin diye `total_responses` sayısını hazır tutuyor. Her yanıt kaydı puanı, toplamı, yüzdeyi ve JSONB olarak cevapları saklıyor; `respondent_id` alanı ise boş bırakılabiliyor (nullable), çünkü birinin testini cevaplamak için hesap gerekmiyor. Boş bırakılabilen bu tek sütun, bir yabancının açabildiği bağlantı ile ondan önce üye olmasını isteyen bağlantı arasındaki farkın ta kendisi.
+
+**Yalnızca reklam; gerekçesi de yazılı.** Test yayımlamak için bir ödüllü video, test çözüldükten sonra bir geçiş reklamı. Abonelik olmamasının sebebini `docs/04-monetization.md` kayda geçiriyor ve bu dört satır kararın kendisinden daha işe yarar: Kitle genç olduğu için ödeme engeli yüksek, bu tür bir uygulamada reklam geliri daha iyi sonuç veriyor, ürün henüz premium bir katmanı hak edecek kadar derin değil ve RevenueCat entegrasyonu, karşılığında hiçbir şey almadan üstleneceğim bir bakım yükü. Bu değerlendirmenin doğru olup olmadığı tartışılır. Yazıya geçirilmiş olması ise konuyu kurcalamadan bırakabilmemi sağladı.
+
+## Teknolojiler
+
+| Katman        | Tercih                                   | Neden                                                                                                                              |
+| :------------ | :--------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| Uygulama      | Expo SDK 54 · React Native · Expo Router | Sebebi `+native-intent`: yönlendirmeden önce çalışan derin bağlantı işleme                                                         |
+| Veri          | Supabase üzerinde TanStack Query         | Test ve cevap listeleri tam da önbelleklenecek türden veri; verinin bayatlamasını her ekran tek tek değil, sorgu katmanı yönetiyor |
+| Sunucu tarafı | Supabase                                 | Kimlik doğrulama ve dört tablo; ayakta tutmam gereken kendi sunucum yok                                                            |
+| Stil          | NativeWind                               | Astro sitesiyle aynı sınıf dağarcığı; böylece iki yüzey zamanla birbirinden ayrışmıyor                                             |
+| Site          | Astro, tamamen statik                    | Bilerek veri tabanı istemcisi yok; uygulamanın bağlantılarını bozacak şekilde çökemez                                              |
+| Reklam        | AdMob                                    | Yayımlamak için ödüllü video, çözdükten sonra geçiş reklamı                                                                        |
+| i18n          | i18n-js                                  | Sunulan 23 dilin arkasında 25 yerel ayar dosyası; ayrıntısı aşağıda                                                                |
+
+## Sonuç
+
+- **8 Mart 2026'dan beri Google Play'de yayında**, 1.0.0 sürümüyle ve o günden beri hiç güncellenmeden: [`com.schwerttr.kafadar`](https://play.google.com/store/apps/details?id=com.schwerttr.kafadar), **10+ indirme**, Android 7.0 ve üstü; 26 Ağustos 2026'da doğrulandı
+- **Uygulamada 25 günde 108 commit** (12 Şubat – 8 Mart 2026), sitede de 24 commit
+- **Mobilde ve masaüstünde PageSpeed 100 / 100 / 100 / 100** (26 Ağustos 2026 itibarıyla); önceki puanlar 84 / 87 / 100 / 92 idi ve yükselişin tamamı ölçülüp aşağıda bağlantısı verildi
+- Sunucu tarafı, 7 günlük bir süre boyunca az etkinlik gösteren projeleri duraklatan Supabase ücretsiz planında çalışıyor. Bu proje de duraklatılmıştı. 26 Ağustos 2026'da yeniden başlattım; bu sayfadaki herhangi bir şeyi çalışan bir sistem üzerinde doğrulayabilmemin tek sebebi de bu
+
+<Figure
+  src="/assets/case-studies/kafadar/pagespeed.webp"
+  alt="PageSpeed Insights: performans, erişilebilirlik, en iyi uygulamalar ve SEO'da 100"
+  width={1200}
+  height={420}
+>
+  Mobil, kısıtlı 4G'de emüle edilen Moto G Power, ilk yükleme, önbellek boş. First Contentful Paint,
+  Largest Contentful Paint ve Speed Index'in üçü de 1,1 sn'de; kritik yolda hiçbir şey kalmadığında
+  sonuç böyle görünüyor. [Bu raporu
+  açın](https://pagespeed.web.dev/analysis/https-kafadar-web-vercel-app/tl80qtljc0?form_factor=mobile)
+  · [yeniden ölçün](https://pagespeed.web.dev/analysis?url=https://kafadar-web.vercel.app/)
+</Figure>
+
+## Ne bozuldu, neyi değiştirdim
+
+**Reklam ile sonuç ekranı birbiriyle yarıştı.** Test bitince uygulama önce bir geçiş reklamı gösteriyor, ardından puan ekranına geçiyordu. Bazı cihazlarda `Couldn't find a navigation context` hatasıyla çöküyordu. Sebebi, `showQuizFinishInterstitial()` fonksiyonunun reklamın `show()` çağrısını bekleyip reklamın kapanmasını beklememesiydi. Bu yüzden reklam katmanı hâlâ mount edilmiş durumdayken `setStep('score')` tetiklenebiliyor, durum geçişi ile reklamın kaldırılması aynı navigasyon ağacı için yarışıyordu.
+
+Çözüm, fonksiyonun gerçekten önemsediği şeyi, yani `AdEventType.CLOSED` ya da `AdEventType.ERROR` olayını beklemesini sağlamaktı. Bunun yanında, başarısız bir reklam kullanıcıyı bitmiş bir testte sonsuza dek bekletmesin diye yirmi saniyelik bir zaman aşımı, ikinci test birincinin işleyicilerini devralmasın diye de dinleyicilerin her koşulda temizlenmesi var. Ekran tarafında puan güncellemesini bir `isMountedRef` koruyor. `show()` çağrısını beklemek, reklamı beklemek gibi görünüyordu. Gerçekte beklenen, reklamın gösterilmesi isteğiydi.
+
+**Paylaşım bağlantısı 404 dönüyor.** Beni en çok rahatsız eden sorun bu, çünkü tam da ürünün dayandığı mekanizmanın üzerinde duruyor. Sitede `/q/{slug}` diye bir rota yok: ne bir sayfa ne bir rewrite ne de önceden oluşturulmuş bir şey. Paylaşılan bağlantı Vercel'in statik işleyicisine gidiyor ve HTTP 404 alıyor. Onu kurtaran, özel 404 sayfasının içindeki bir betik: Yolda `/q/` ya da `/quiz/` görürse `/deeplink?slug=…` adresine yönlendiriyor.
+
+Tarayıcısında JavaScript çalışan bir kişi için bu işe yarıyor. Geri kalan her şey için yaramıyor: Durum kodu 404 olduğundan bağlantı ön izlemesi oluşturan bir sohbet istemcisi hata sayfası görüyor, arama motoru botu da öyle. Üstelik bu yolun yüzüstü bıraktığı kişiler, paylaşımın tam da hedeflediği kişiler: Uygulaması zaten kurulu olan biri web'e hiç ulaşmıyor, çünkü bağlantıyı önce işletim sistemi yakalıyor. Bu özelliğin tasarım belgesinde bir "web fallback landing page (basit static site)" isteniyordu. Yayına çıkan ise içinde yönlendirme olan bir 404 oldu. Durum hâlâ böyle; marttan beri projeye dönmedim.
+
+**Site yavaştı ve sebebi tek bir dosyaydı.** 26 Ağustos 2026'da ölçtüğümde mobilde 84 puan alıyordu, Largest Contentful Paint de 3,9 sn'ydi; hem de 10,5 KB HTML ve tek bir script etiketi gönderen statik bir Astro sayfasında. Sorun framework değildi. Sorun `logo.png` dosyasıydı: 337 KB ağırlığında, 1024×1024 boyutunda bir PNG; üç yerde 40 px, 160 px ve 64 px olarak kullanılıyordu. Hero bölümündeki kopyası da LCP öğesiydi.
+
+Görseli gerçekte gösterildiği boyutlarda üç WebP varyantı olarak sunmak, LCP görselini 337 KB'tan 6,0 KB'a indirdi ve puanı 91'e çıkardı; LCP 2,6 sn'ye geriledi. Ne var ki First Contentful Paint hiç kıpırdamamıştı, LCP de inip doğrudan onun üstüne oturmuştu. İşe yarar sinyal de buydu: Görsel darboğaz olmaktan çıkmış, ilk boyamanın kendisi darboğaz hâline gelmişti. Bunun sebebi `fonts.googleapis.com` adresine giden, oluşturmayı engelleyen stil dosyası isteğiydi. Kritik yolda duran bu üçüncü taraf origin, ekrana herhangi bir şey çizilmeden önce bir DNS sorgusuna, bir TLS el sıkışmasına ve bir CSS gidiş dönüşüne mal oluyordu. Yazı tipini tek bir variable font dosyası olarak siteye taşımak bu origin'i tamamen ortadan kaldırdı ve FCP 2,6 sn'den 1,1 sn'ye düştü.
+
+Son puanlar, aynı ilkeyi geriye kalanlara uygulamaktan geldi. App Store ve Google Play rozetleri Apple'ın ve Google'ın CDN'lerinden çekiliyordu: iki origin daha ve bunlardan biri, `preconnect` ipucumun adını bile anmadığı üçüncü bir sunucuya yönlendiriyordu. İkisini de siteye taşıyınca bu origin'ler ortadan kalktı. Sitenin 5 KB'lık tek stil dosyası ise sayfanın içine gömüldü (inline); o kadar küçüktü ki onu ayrı ve oluşturmayı engelleyen bir istekle çekmenin maliyeti, kazandırdığı baytlardan fazlaydı. Mobil puan 100'e ulaştı. Bu süreçte bir ara 4,3 sn'ye kadar çıkan ve beni kendi `loading="lazy"` kullanımımdan şüphelendiren Speed Index de 1,1 sn'ye geri döndü. Meğer baştan beri ölçümden ölçüme değişen bir gürültüymüş. Laboratuvar ölçümleri oynar; tek bir ölçüm bir bulgu değil, bir veri noktasıdır.
+
+**Erişilebilirlik puanları birbiriyle ilgisiz üç küçük şeyden geldi.** Dikkati çeken sayı performanstı, ama aynı ölçümde erişilebilirlik 87, SEO 92'ydi ve bunları düzeltmenin ucuz olduğu ortaya çıktı. Footer beyaz zemin üzerinde `text-gray-400` kullanıyordu; bunun kontrastı yaklaşık 2,6:1 ölçülüyor, standart ise 4,5:1 istiyor. Telefon mockup'ı şeklindeki illüstrasyonun içinde yer alan bir başlık, sayfanın `<h1>` öğesinin hemen altında duran bir `<h3>` idi ve bir seviye atlıyordu. Bu bir bölüm değil, dekoratif bir içerik; bu yüzden `<p>` oldu ve başlık hiyerarşisi yeniden `h1 → h2 → h3` düzenine döndü. Bağlantı verilecek bir yer olmadığı için gri gösterilen App Store rozeti de bir `<a href="javascript:void(0)">` idi ve "links are crawlable" denetiminden gayet dürüst bir sebeple kalıyordu: Bir bağlantı değildi. Aslında bir mesaj açan bir düğmeydi; dolayısıyla düğmeye dönüştü. İki kategori de 100'e ulaştı.
+
+**Devraldığım rozet düzeltmesi belirtiyi tedavi ediyordu.** Yukarıdakileri ölçerken iki mağaza rozetinin gözle görülür biçimde farklı boyutlarda olduğunu fark ettim. Sebebi yazmaya değer, çünkü önceki onarım makuldü ama yine de yanlıştı. Google rozetindeki görsel, PNG'nin yüksekliğinin yalnızca %76,8'ini kaplıyor; geri kalanı şeffaf boşluk. Apple'ınki ise kenarlarına kadar kırpılmış. İkisine aynı kutu yüksekliğini verirseniz Apple'ınki üçte bir daha büyük görünüyor.
+
+Biri (daha doğrusu `adjust store badge proportions` adlı bir commit'te ben) bunu Google rozetine daha uzun bir kap vererek telafi etmişti: Apple'ın `h-10 sm:h-12` sınıflarına karşılık `h-[4.8rem] sm:h-[5.5rem]`. Bu 1,92 katlık bir oran; boşluk ise yalnızca 1,30 gerektiriyordu. Tek bir breakpoint'te kabul edilebilir görünene kadar ayarlanmış bir sayıydı ve kimsenin fark etmediği ikinci bir hatanın üzerine binmişti: Bu yükseklik sınıfları varsayılan olarak inline olan `<a>` ve `<button>` öğelerindeydi, dolayısıyla `height` hiçbir işe yaramıyordu ve görseller kendi doğal boyutlarına düşüyordu.
+
+Asıl çözüm, telafi etmeyi bırakıp sebebi ortadan kaldırmaktı: şeffaf boşluğu görselin içinden kırpmak, yükseklik sınıfları işlesin diye iki kabı da `inline-flex` yapmak ve iki görseli de `h-full w-auto` olarak bırakmak. İki rozet de artık tek bir ortak sınıfla 40 px yüksekliğinde görünüyor (151 × 40 ve 135 × 40). Google'ın yönergelerinin istediği boşluk hâlâ yerinde; yalnızca görselin içine gömülmek yerine yerleşimdeki aralık olarak ifade ediliyor.
+
+**Yirmi beş dil dosyası, yirmi üç seçenek.** `i18n.tsx` 25 yerel ayar kaydediyor; profil ekranı ise 23 tanesini listeliyor. Seçicide olmayan ikisi genel Portekizce ve genel Çince; bilerek dışarıda bırakıldılar. Cihaz yerel ayarları için her durumu karşılayan yedekler (fallback) olarak kayıtlı kalıyorlar, kullanıcıya ise onların yerine daha belirli olan `pt-BR` ve `zh-Hans`/`zh-Hant` sunuluyor. Küçük bir ayrıntı, ama sebebi hemen yanına yazılmazsa altı ay sonra hata gibi okunan türden bir boşluk.

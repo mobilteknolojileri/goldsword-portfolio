@@ -1,0 +1,27 @@
+---
+// Inlined so the labels use the page font and .cs-diagram can theme them
+const SVGS = import.meta.glob<string>("/src/assets/case-studies/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const svg = SVGS[`/src/assets/case-studies/${id}.svg`];
+if (!svg) throw new Error(`Unknown case-study diagram: ${id}`);
+---
+
+<figure class="not-prose my-10">
+  <div class="cs-diagram overflow-x-auto rounded-2xl border border-gray-200 bg-slate-50 px-4 py-8 sm:px-8 dark:border-dark-700 dark:bg-dark-900/60">
+    <Fragment set:html={svg} />
+  </div>
+  {Astro.slots.has("default") && (
+    <figcaption class="text-muted mt-3 text-sm leading-relaxed [&_a]:link [&_p]:m-0">
+      <slot />
+    </figcaption>
+  )}
+</figure>

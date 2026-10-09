@@ -1,0 +1,139 @@
+---
+title: Get Yo
+seoTitle: "Get Yo: üç uygulamanın paylaştığı tek menü ve puan bakiyesi"
+description: "New Jersey'deki bir frozen yogurt dükkânı için yazdığım uygulama, yönetim paneli ve site tek menüyü paylaşıyor; işletme el değiştirince devri de ben yaptım."
+summary: "New Jersey'deki bir frozen yogurt dükkânı için mobil uygulama, yönetim paneli ve web sitesi; üçü de aynı menüyü ve aynı sadakat puanı bakiyesini paylaşıyor."
+lead: "New Jersey, Marlboro'daki bir frozen yogurt dükkânı, yazdığım üç uygulamayla çalışıyor: iOS ve Android uygulaması, personelin kullandığı yönetim paneli ve herkese açık web sitesi; üçü de aynı menüyü, aynı puan bakiyesini ve aynı çalışma saatlerini paylaşıyor."
+project: getyo-mobile
+order: 2
+date: 2026-10-08
+role: "Üç uygulamanın da tek geliştiricisi"
+timeline: "Ağustos 2025 – Mayıs 2026"
+status: "App Store ve Google Play'de yayında; işletme Nisan 2026'da el değiştirdi ve teknik devri ben tamamladım"
+links:
+  - label: App Store
+    href: https://apps.apple.com/us/app/get-yo/id6753984684
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.getyocafe.app
+  - label: frozenyogurtcafe.com
+    href: https://www.frozenyogurtcafe.com/
+stack: [Expo, Next.js, Astro, Supabase]
+outcome: "İki mağazada da yayına çıktı, ardından işletmeyle birlikte devredildi"
+cover:
+  src: /assets/projects/getyo-mobile/showcase.webp
+  alt: "Get Yo: günün tatları, ödül bakiyesi ve müşteri profili"
+  caption: "Soldan sağa: dükkânda o an bulunan tatlar, diyet işaretleri ve stok durumlarıyla; müşterinin puan bakiyesi ve bir sonraki ödüle ne kadar kaldığı; tat listesinden kaydedilen favorileriyle müşteri profili."
+  width: 1199
+  height: 842
+original: https://github.com/mobilteknolojileri/case-studies/blob/main/getyo.md
+---
+
+## Sorun
+
+Bir frozen yogurt dükkânının, restoranlardaki anlamıyla bir menüsü yoktur. Vitrindeki tatlar dönüşümlü olarak değişir: Bazıları sütsüzdür, bazılarına şeker eklenmemiştir, birkaçı da koşer sertifikalıdır. Toppingler gelip gider ve bunların herhangi biri bir cumartesinin tam ortasında tükenebilir. Basılı bir menü panosu da statik bir web sayfası da dükkânı, en son düzenlendikleri andaki hâliyle anlatır.
+
+Dükkânın ayrıca RewardUp üzerinde yürüyen bir sadakat programı vardı. RewardUp, kendi üye portalı olan üçüncü taraf bir hizmet. Puanlar, damgalar ve ödül kullanımları orada duruyordu; dükkânın kendisi hakkında yayımladığı her şeyden ayrıydı ve yalnızca tarayıcıdan erişilebiliyordu.
+
+Kısacası ortada üç ayrı yüzey vardı: dükkânın dışarıya anlattıkları, personelin değiştirebildikleri ve tekrar gelen bir müşterinin puanlarının ne ettiği. Bunların birbiriyle örtüştüğü tek bir yer de yoktu.
+
+## Ne yaptım
+
+**Üç uygulama, menü için tek kaynak.** `getyocafe-mobile`, Expo Router ve NativeWind kullanan bir Expo projesi. `getyocafe-admin` bir Next.js projesi ve yönetim panelini barındırıyor: tatlar, toppingler, kategoriler, çalışma saatleri, yorumlar, geri bildirimler, oylama, kullanıcılar ve bildirimler. `getyocafe-web` ise herkese açık siteyi sunan Astro projesi. Personel bir tadı bir kez düzenliyor, uygulama da web sitesi de değişiyor.
+
+**Web sitesi statik kalıyor ama yine de canlı veri gösteriyor.** Astro ile yeniden yazılan site ilk etapta sunucu modunda çalışıyordu; site için tuttuğum denetim listesinde statik çıktıya geçiş, düzeltmelerden biri olarak kayıtlı. Statik çıktı, menünün artık istek anında oluşturulamayacağı anlamına geliyor. Bu yüzden menü tarayıcıya taşındı: Sayfa veriyi `/api/public/menu` adresinden çekiyor, `vercel.json` dosyasındaki rewrite kuralı da `/api/*` isteklerini edge'de yönetim uygulamasına aktarıyor. Yönetim uygulaması da mobil uygulamanın okuduğu veri tabanının aynısını okuyor. Site, kendisi sunucuya dönüşmeden güncel stoğu ve günün çalışma saatlerini gösteriyor; herkese açık menü de uygulamadakinden ayrışamıyor, çünkü ortada tek bir menü var.
+
+<Diagram id="getyo-architecture">
+  Bütün püf noktası bu rewrite kuralında: Tarayıcı statik siteye soruyor, statik sitenin barındırma
+  katmanı yönetim uygulamasına soruyor; yönetim uygulaması da telefon da aynı tat ve topping
+  tablolarını okuyor. Bir tat tükendiğinde hiçbir build adımının çalışması gerekmiyor.
+</Diagram>
+
+**Sadakat API'si telefona hiç ulaşmıyor.** RewardUp kimlik doğrulamayı bir bearer token ile yapıyor. Mobil uygulamanın paketine gömülen bir token'ı herkes çıkarabilir; üstelik bu token, müşterilerin puan bakiyelerini hem okuyabiliyor hem değiştirebiliyor. Bu nedenle token uygulamada yok. Mobil projedeki on üç edge function'ın on ikisi tek işlevli birer proxy: `rewardup-get-member`, `rewardup-add-points`, `rewardup-redeem-reward`, `rewardup-get-stamps` ve diğerleri. Her biri oturum açmış bir kullanıcıdan gelen çağrıyı kabul ediyor, token'ı sunucu tarafında ekliyor ve yalnızca o kullanıcının görmesine izin verilen veriyi döndürüyor. Token, Supabase'in fonksiyon ortamından başka hiçbir yerde bulunmuyor.
+
+<Diagram id="getyo-rewards">
+  Her isteği olduğu gibi geçiren tek bir genel fonksiyon yerine on iki ayrı fonksiyon kullanmak
+  bilinçli bir tercih: İstemcinin istediği herhangi bir yolu ileten bir proxy, token'ı uygulamanın
+  içinde dağıtmakla aynı güvenlik açığıdır; tek fark araya bir katman daha girmesidir. Sadakat
+  dışındaki her şeyi (menü, oylar, geri bildirim) uygulama doğrudan Supabase'ten okuyor.
+</Diagram>
+
+**Bildirim izni uygulamanın tamamı için değil, kategori kategori veriliyor.** Her müşterinin profilinde yeni tatlar, favorilerin yeniden stoğa girmesi, kampanyalar ve oylama sonuçları için ayrı tercihler tutuluyor. Personel bir tadı bildirim düğmesi açıkken kaydettiğinde yönetim API'si yalnızca sahipleri o kategoriyi istemiş push token'larını seçiyor ve bunları Expo Push API ile konuşan bir edge function'a teslim ediyor. Favori tadının dönüşünü haber almak isteyen bir müşteri, istemediği kampanya mesajlarını almıyor.
+
+<Diagram id="getyo-push">
+  Filtre cihazda değil, gönderimden önce çalışıyor. Kampanya bildirimi hiç istememiş bir telefon
+  listeye hiçbir zaman girmiyor.
+</Diagram>
+
+**Neyin yapılacağına müşteriler oy veriyor.** Tat oylaması bir geri bildirim kutusu değil, uygulamanın asıl özelliklerinden biri: Müşteriler vitrinde görmek istedikleri tatlara oy veriyor, oy verdikleri için puan kazanıyor, personel de sonuçları yönetim panelinde görüyor. Aynı panel, yapılandırılmış bir geri bildirim formuyla gelen şikâyet ve önerileri de topluyor; doğum günü ödüllerini ise zamanlanmış bir fonksiyon gönderiyor.
+
+**Siteye makyaj yapılmadı, site baştan yazıldı.** 11 ile 25 Mart 2026 arasında siteyi eski altyapısından çıkarıp Astro ve Tailwind'e taşıdım; stil dosyalarını sayfaya gömdüm (inline) ve istemci tarafındaki JavaScript'i neredeyse sıfıra indirdim. Öncesini ve sonrasını projenin kendi kaydı tutuyor: Lighthouse'ta performans 18, erişilebilirlik 82, en iyi uygulamalar 73. Besin değerleri, alerjen filtreleri ve koşer ile glütensiz sertifikaları, birinin yeniden dışa aktarması gereken bir görsel değil; menü bileşeninin bir parçası.
+
+<Figure
+  src="/assets/projects/frozen-yogurt-website/site.webp"
+  alt="Herkese açık site: ilk ekran, ödül programı daveti ve günün çalışma saatleri"
+  width={1200}
+  height={816}
+>
+  Günün çalışma saatleri, yönetim panelinin yazdığı veri tabanından okunuyor; dolayısıyla tatil günü
+  kapanışı bir deploy değil, panelde tek bir düzenleme demek.
+</Figure>
+
+**İşin bir kısmı kod değildi.** Dükkânda kullanılan baskı tasarımlarını ben hazırladım, bir dönem sosyal medya hesaplarını yönettim, dükkânın videosunu da çekip kurguladım. Menünün nerede duracağına karar veren kişi, dükkânın dışarıya dönük yüzünü tutarlı tutan kişiyle aynıydı; menünün sonunda tek bir yerde toplanmasının bir nedeni de buydu.
+
+## Teknolojiler
+
+| Katman                   | Tercih                                         | Neden                                                                                             |
+| :----------------------- | :--------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| Mobil                    | Expo · React Native · Expo Router · NativeWind | iOS ve Android için tek kod tabanı; mağaza incelemesini beklemeden OTA (over-the-air) düzeltmeler |
+| Yönetim paneli           | Next.js · React 19                             | Route handler'lar sayesinde herkese açık menü API'si ve yönetim paneli tek bir deploy'da          |
+| Web                      | Astro                                          | Adaptör yok, istemci tarafı framework yok: Site dosyalardan ibaret ve yapısı gereği hızlı kalıyor |
+| Statik sitede canlı veri | Vercel `rewrites`                              | `/api/*` istekleri, siteyi sunucuya çevirmeden yönetim uygulamasına ulaşıyor                      |
+| Veri                     | Supabase · PostgreSQL · Auth · Storage         | Menü, oylar, geri bildirimler, profiller ve tat görselleri tek bir yönetilen Postgres'te          |
+| Sunucusuz                | Supabase Edge Functions                        | Üçüncü taraf token'ları ve anlık bildirim gönderimi istemcinin dışında kalıyor                    |
+| Sadakat                  | RewardUp, proxy üzerinden                      | Puan programı zaten vardı; uygulama onu kullanıyor, hiçbir zaman yeniden yazmıyor                 |
+| Anlık bildirim           | Expo Push API                                  | Tercihe göre süzme, gönderimden önce sunucu tarafında yapılıyor                                   |
+| E-posta                  | Resend                                         | Doğrulanmış alan adlarından giden hoş geldin, parola sıfırlama ve bildirim e-postaları            |
+| Barındırma               | Vercel                                         | Hem site hem yönetim uygulaması, artık işletme sahibinin elindeki hesapta                         |
+
+## Sonuç
+
+- **4 Kasım 2025'ten beri App Store'da yayında**; 2.0.0 sürümü devirden sonra, 19 Mayıs 2026'da çıktı
+- **Google Play'de yayında**, 26 Ağustos 2026 itibarıyla 10+ indirme. Tek şubeli bir dükkânın kendi uygulaması için gerçek rakam bu kadar; buradaki iddiaların hiçbirinin kurulum sayısına dayanmamasının nedeni de bu
+- **[PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https://www.frozenyogurtcafe.com/) mobilde 100 / 96 / 100 / 100**: performans, erişilebilirlik, en iyi uygulamalar ve SEO. Ölçüm 26 Ağustos 2026'da, kısıtlı 4G'de emüle edilen bir Moto G Power üzerinde yapıldı: LCP 0,9 sn, TBT 0 ms, CLS 0,002. Masaüstü de aynı dört puanı alıyor, LCP 0,7 sn
+- **Site baştan yazılmadan önce performans 18'di**, yarı yoldayken 51. İkisi de yerel Lighthouse çalıştırmalarından geliyor ve Mart 2026'da web projesinin kendi denetim kaydına yazıldı. Yukarıdaki 100 ise beş ay sonra canlı siteye karşı çalıştırılan PageSpeed Insights'ın sonucu. Araç da koşullar da farklı: Yön gerçek, ama bu iki sayı kontrollü bir kıyaslama değil
+- Mobil ve yönetim projelerinde toplam **18 edge function**
+- **İşletme 22 Nisan 2026'da el değiştirdi** ve sistemler de onunla birlikte gitti: alan adları, Supabase, Vercel, Resend, reCAPTCHA ve iki mağaza sayfası. Mağaza sayfaları Apple'ın ve Google'ın uygulama devri süreciyle aktarıldığı için yorumlar, puanlamalar ve indirme geçmişi korundu. Devir sırasında site hiç kapanmadı
+- Geliştirme devirden sonra da Mayıs 2026'daki son sürüme kadar sürdü
+
+<Figure
+  src="/assets/case-studies/getyo/pagespeed.webp"
+  alt="PageSpeed Insights: mobilde 100, 96, 100, 100"
+  width={1200}
+  height={477}
+>
+  100 olmayan tek puan erişilebilirlik; onu orada tutan da tek bir kontrast oranı. Bu, Mart
+  2026'daki denetim listemin kaydedip kapatmadığı açık maddenin ta kendisi, nedeni de aynı. [Bu
+  raporu
+  açın](https://pagespeed.web.dev/analysis/https-www-frozenyogurtcafe-com/qesl3xxwnj?form_factor=mobile)
+  · [yeniden ölçün](https://pagespeed.web.dev/analysis?url=https://www.frozenyogurtcafe.com/)
+</Figure>
+
+## Ne bozuldu, neyi değiştirdim
+
+**Artık var olmayan ikinci şube.** Sistem iki dükkân için kurulmuştu: Marlboro ve New Providence. İşletme sahibi Mayıs 2026'da bana, işletmenin ikinci dükkânla artık bir bağı olmadığını söyledi. Akla ilk gelen, şube kavramını sistemden tamamen sökmekti. Bunu yapmadım. Onun yerine her şeyi Marlboro'ya sabitledim. İki uygulamada toplam on beş yer vardı ve hepsini 26 Mart 2026'da yazdığım bir denetim belgesinde tek tek listeledim: tat ve topping hook'larında koda gömülü şube adları, geri bildirimlerde sabit bir `location_id`, paneldeki her formda seçicisi gizlenmiş ve otomatik seçilen bir şube, bildirim route'unda da yedek değer olarak 1 numaralı şube kimliği.
+
+Yönetim panelini kapsayan ikinci bir denetim, asıl önemli olan nedeni ortaya çıkardı. `app/api/public/menu` bir `?location=` parametresi alıyor ve `locations`, `availableLocations` ile `stockInfo` döndürüyor; `app/api/public/hours` ise `?store=` alıyor. Güncellemeyi yüklememiş telefonlar bu uç noktaları hâlâ bu parametrelerle çağırıyordu. Şube alanlarını yanıtlardan çıkarmak bir temizlik olmazdı: Telefonlarda zaten kurulu olan her uygulama kopyasını bozardı ve kimseye bir uygulama güncellemesi zorla yükletilemez.
+
+Dolayısıyla temizlik belli bir çizgide durdu: Müşterinin görebildiği her şey tek bir dükkâna sabitlendi, API'nin döndürdüğü her şeye ise dokunulmadı. O denetim belgesi, “dokunmayın” diyen bir başlığın altında yedi dosyayı, her birinin yanına nedenini yazarak listeliyor. Geriye kalanları da (mobil uygulamanın store'undaki bir `locations` dizisi, bir `setLocations` action'ı ve hiçbir yerden çağrılmayan bir `useLocations` hook'u) iş bitti demek yerine ölü kod olarak kayda geçiriyor. Nedeni yazılmış, bilinen bir ölü kod parçası ile bir sürpriz aynı şey değildir.
+
+**Yanlış olduğunu bildiğim bir gönderici adresiyle yayına çıkmak.** Devirden sonra hoş geldin ve parola sıfırlama e-postaları ile geri bildirim onayları, işletme `frozenyogurtcafe.com` adıyla çalışırken eski markanın alan adı olan `mail.getyocafe.com` üzerinden gitmeye devam etti. Nedeni sıradandı: Resend'de bir gönderim alan adını doğrulamak için alan adı kayıt firmasında DNS kayıtları eklemek gerekiyor. Kayıt firmasındaki hesap da kısa süre önce yeni sahibine geçmişti ve kendisine o sırada ulaşılamıyordu. Doğrulanmış alan adı eskisiydi.
+
+Seçim, yanlış görünen e-postayla hiç ulaşmayan e-posta arasındaydı. Parola sıfırlama da kayıt onayı da bu göndericiden geçiyor; doğrulanmamış bir alan adı her yeni müşteri için hesap açmayı bozardı. Bu yüzden kod, eski ve doğrulanmış alan adını bilerek kullanmaya devam etti. Asıl düzeltme ise devir belgesine akılda tutulacak bir not olarak değil, tam dosya listesiyle birlikte adı konmuş bir görev olarak girdi: Önce yeni alan adı doğrulanacak, ardından dört edge function'daki ve yönetim uygulamasının `lib/resend.ts` dosyasındaki gönderici değiştirilecek. Bir şeyin bile bile yanlış bırakıldığını yazıya dökmek, onu bir hata olmaktan çıkarıp bir karara dönüştürüyor.
+
+**Sahiplik bağları, kimsenin bakmadığı yerlerde birikmişti.** Devri hazırlarken bunlardan ikisi ortaya çıktı. Yönetim uygulamasının reposundaki `origin` hâlâ projenin daha önceki bir döneminden kalma, eski ve kişisel bir GitHub organizasyonunu gösteriyordu; onu temizleyip remote'u yeniden kurdum. Ardından 4 Mayıs 2026'da Supabase projesinin entegrasyonlar sayfasında aynı eski repoya bağlı bir GitHub bağlantısı göründü: Sekiz ay önce başka biri kurmuş ve çoktan unutulmuştu. Bağlantıyı kesmek veri tabanına, kimlik doğrulamaya ya da edge function'lara dokunmadı, yalnızca otomatik branch migration'larını sona erdirdi. Ne var ki bu, artık projeye ait olmayan bir repodan canlı altyapıya verilmiş bir yazma yetkisiydi.
+
+Genel durum için çözüm, “Bu nereye push ediliyor?” sorusunu akılda tutulacak bir şey olarak görmeyi bırakmaktı. Üç reponun her birinde tek bir remote'a iki push URL'si eklendi: biri benim, biri alıcının. Böylece tek bir `git push` kodu iki hesaba birden gönderiyor ve hiçbiri sessizce geride kalamıyor. Benim asıl çıkardığım ders daha dar: Entegrasyonlar sayfası, insanın uğradığı bir yer değil. Bir şeyin orada sekiz ay durabilmesinin nedeni de tam olarak bu.
+
+**Taşınmayı atlatamayan bir alan adı.** Ağustos 2026'da bu vaka çalışmasını yazarken canlı sistemleri yeniden kontrol ettim. `frozenyogurtcafe.com` düzgün çalışıyor. Yönetim paneline bağlı olan `getyocafe.com` ise Vercel'in deployment-not-found hatasını döndürüyor: Projeler yeni sahibin hesabına taşındıktan sonra özel alan adı yeniden ayağa kalkmadı, bu yüzden panele artık yalnızca barındırma servisinin ürettiği adresten ulaşılabiliyor. Aynı alan adı reCAPTCHA konsolunda hâlâ kayıtlı, yukarıda anlattığım e-posta göndericisi de hâlâ bu alan adına dayanıyor.
+
+Kendi devir kaydımdaki proje etiketlerinden ikisi de, barındırma hesabının gerçekte sunduğuyla karşılaştırıldığında yer değiştirmiş durumda. Devir sırasında yazılan bir belge tam da böyle eskiyor: Belge niyeti kaydetmişti, niyet ise sonradan değiştirildi. Bu sistemleri artık ben yönetmediğim için elimdeki şey bir düzeltme değil, bir tespit; ama bu bölümün en işe yarar kısmı da bu. Bir devir, bütün kutucuklar işaretlendiğinde bitmiş olmaz. Biri aylar sonra kontrol listesini çalışan sisteme karşı yeniden okuduğunda biter; ben de bunu yalnızca bu yazıyı yazmaya oturduğum için yaptım.

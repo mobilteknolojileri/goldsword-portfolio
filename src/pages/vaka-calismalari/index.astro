@@ -1,0 +1,135 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import { KIND_BADGE, KIND_LABELS } from "@/config/portfolio";
+import { SITE_CONFIG } from "@/config/site";
+import { PROJECTS } from "@/lib/constants";
+import { smallImageSrcset } from "@/lib/images";
+import { generateMetadata } from "@/lib/seo/metadata";
+import { getBreadcrumbSchema } from "@/lib/seo/schema";
+
+const ORIGINALS = "https://github.com/mobilteknolojileri/case-studies";
+
+const studies = (await getCollection("caseStudies"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((entry) => ({ entry, project: PROJECTS.find((item) => item.slug === entry.data.project) }));
+
+const metadata = generateMetadata({
+  title: "Vaka çalışmaları: sorun, çözüm ve sonuç",
+  description:
+    "Kaynak kodları kapalı bazı işlerimin hikâyesi: Sorun neydi, ne yaptım, hangi teknolojiyi neden seçtim, sonuç ne oldu ve yolda neler bozuldu.",
+  path: "/vaka-calismalari",
+  keywords: ["vaka çalışması", "mobil uygulama vaka çalışması", "React Native", "Supabase"],
+});
+
+const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+const extraSchemas = [
+  getBreadcrumbSchema([
+    { name: "Ana sayfa", url: baseUrl },
+    { name: "Vaka çalışmaları", url: `${baseUrl}/vaka-calismalari` },
+  ]),
+];
+---
+
+<BaseLayout {...metadata} extraSchemas={extraSchemas}>
+  <section class="relative isolate overflow-hidden pt-28 pb-10 sm:pt-36 sm:pb-14">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="bg-grid absolute inset-0"></div>
+      <div class="absolute -top-40 right-[-8%] h-[30rem] w-[30rem] rounded-full bg-primary-500/15 glow"></div>
+    </div>
+    <div class="section-container section-padding">
+      <SectionHeader
+        as="h1"
+        eyebrow="Vaka çalışmaları"
+        title="Kaynak kodları kapalı bazı işlerin hikâyesi"
+      >
+        <p slot="lead" class="section-lead">
+          Kaynak kodunu gösteremediğim işleri baştan sona anlatıyorum: Sorun neydi, ne yaptım, hangi
+          teknolojiyi neden seçtim, sonuç ne oldu ve yolda neler bozuldu. Her rakam, kaynağıyla
+          birlikte metnin içinde. İngilizce asılları{" "}
+          <a href={ORIGINALS} target="_blank" rel="noopener noreferrer" class="link">
+            GitHub'da
+          </a>{" "}
+          yer alıyor.
+        </p>
+      </SectionHeader>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-28">
+    <div class="section-container section-padding space-y-8 lg:space-y-10">
+      {studies.map(({ entry, project }, index) => (
+        <article
+          class="card-interactive group grid overflow-hidden lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+          data-reveal={index === 0 ? undefined : ""}
+        >
+          <a
+            href={`/vaka-calismalari/${entry.id}`}
+            tabindex="-1"
+            aria-hidden="true"
+            class:list={[
+              "relative flex items-center overflow-hidden bg-linear-to-br from-primary-50 via-white to-gold-50 p-3 sm:p-5 dark:from-primary-500/15 dark:via-dark-800 dark:to-gold-500/10",
+              index % 2 === 1 && "lg:order-2",
+            ]}
+          >
+            <img
+              src={entry.data.cover.src}
+              srcset={smallImageSrcset(entry.data.cover.src, entry.data.cover.width)}
+              sizes="(min-width: 1024px) 600px, 100vw"
+              alt=""
+              width={entry.data.cover.width}
+              height={entry.data.cover.height}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : undefined}
+              decoding="async"
+              class="h-auto w-full rounded-xl shadow-[0_24px_50px_-28px_rgb(15_17_21/0.5)] transition duration-700 ease-out group-hover:scale-[1.02]"
+            />
+          </a>
+          <div class="flex flex-col p-7 sm:p-9">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-muted font-mono text-xs">
+                {String(entry.data.order).padStart(2, "0")}
+              </span>
+              {project?.kind && (
+                <span class={KIND_BADGE[project.kind]}>{KIND_LABELS[project.kind]}</span>
+              )}
+            </div>
+            <h2 class="text-heading mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
+              <a
+                href={`/vaka-calismalari/${entry.id}`}
+                class="hover:text-primary-700 dark:hover:text-primary-300"
+              >
+                {entry.data.title}
+              </a>
+            </h2>
+            <p class="text-body mt-3 text-lg leading-relaxed">{entry.data.summary}</p>
+            <p class="text-heading mt-5 flex items-start gap-2.5 text-[0.95rem] leading-relaxed font-medium">
+              <svg
+                class="mt-0.5 h-5 w-5 flex-none text-emerald-600 dark:text-emerald-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                aria-hidden="true"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+              {entry.data.outcome}
+            </p>
+            <ul class="mt-6 flex flex-wrap gap-2" aria-label="Teknolojiler">
+              {entry.data.stack.map((tech) => (
+                <li class="badge-neutral">{tech}</li>
+              ))}
+            </ul>
+            <p class="mt-auto pt-8">
+              <a href={`/vaka-calismalari/${entry.id}`} class="link inline-flex items-center gap-2">
+                Vaka çalışmasını okuyun <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

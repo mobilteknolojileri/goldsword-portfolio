@@ -1,0 +1,330 @@
+---
+import { getCollection, render } from "astro:content";
+import { FaBriefcase, FaGithub } from "react-icons/fa";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Diagram from "@/components/case-study/Diagram.astro";
+import Figure from "@/components/case-study/Figure.astro";
+import Table from "@/components/case-study/Table.astro";
+import LinkTile from "@/components/ui/LinkTile.astro";
+import { KIND_BADGE, KIND_LABELS } from "@/config/portfolio";
+import { SITE_CONFIG } from "@/config/site";
+import { buildToc } from "@/lib/blog";
+import { PROJECTS } from "@/lib/constants";
+import { smallImageSrcset } from "@/lib/images";
+import { ARTICLE_PROSE } from "@/lib/prose";
+import { generateMetadata } from "@/lib/seo/metadata";
+import { getBreadcrumbSchema, getCaseStudySchema } from "@/lib/seo/schema";
+
+export async function getStaticPaths() {
+  const studies = await getCollection("caseStudies");
+  return studies.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const study = entry.data;
+const project = PROJECTS.find((item) => item.slug === study.project);
+if (!project) throw new Error(`Case study ${entry.id}: no project "${study.project}"`);
+
+const toc = buildToc(headings).filter((item) => item.depth === 2);
+const others = (await getCollection("caseStudies"))
+  .filter((item) => item.id !== entry.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+const path = `/vaka-calismalari/${entry.id}`;
+
+const metadata = generateMetadata({
+  title: study.seoTitle,
+  description: study.description,
+  path,
+  type: "article",
+  image: study.cover.src,
+  keywords: [...study.stack, "vaka çalışması"],
+});
+
+const extraSchemas = [
+  getCaseStudySchema({
+    title: study.seoTitle,
+    description: study.description,
+    url: `${baseUrl}${path}`,
+    image: study.cover.src,
+    date: study.date,
+    keywords: study.stack,
+    original: study.original,
+  }),
+  getBreadcrumbSchema([
+    { name: "Ana sayfa", url: baseUrl },
+    { name: "Vaka çalışmaları", url: `${baseUrl}/vaka-calismalari` },
+    { name: study.title, url: `${baseUrl}${path}` },
+  ]),
+];
+
+const FACTS = [
+  { label: "Rol", value: study.role },
+  { label: "Süre", value: study.timeline },
+  { label: "Durum", value: study.status },
+];
+
+const factLabel = "text-muted text-xs font-semibold tracking-wider uppercase";
+---
+
+<BaseLayout {...metadata} extraSchemas={extraSchemas}>
+  <div
+    data-reading-progress
+    aria-hidden="true"
+    class="pointer-events-none fixed inset-x-0 top-16 z-40 h-[3px] origin-left bg-linear-to-r from-primary-500 via-sky-500 to-gold-400 print:hidden"
+    style="transform: scaleX(0)"
+  ></div>
+
+  <section class="relative isolate overflow-hidden pt-28 pb-12 sm:pt-36">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="bg-grid absolute inset-0"></div>
+      <div class="absolute -top-40 right-[-10%] h-[30rem] w-[30rem] rounded-full bg-primary-500/15 glow"></div>
+      <div class="absolute top-72 -left-40 h-[22rem] w-[22rem] rounded-full bg-gold-400/15 glow dark:bg-gold-400/10"></div>
+    </div>
+
+    <div class="section-container section-padding">
+      <a href="/vaka-calismalari" class="link inline-flex items-center gap-2 py-1.5 text-sm">
+        <span aria-hidden="true">←</span> Vaka çalışmaları
+      </a>
+
+      <div class="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-14">
+        <div>
+          <div class="flex flex-wrap gap-2">
+            {project.kind && (
+              <span class={KIND_BADGE[project.kind]}>{KIND_LABELS[project.kind]}</span>
+            )}
+            <span class="badge-neutral">Vaka çalışması</span>
+          </div>
+          <h1 class="page-title mt-5">{study.title}</h1>
+          <p
+            class="text-heading mt-5 max-w-3xl text-xl leading-relaxed font-medium sm:text-[1.375rem]"
+            style="text-wrap: pretty"
+          >
+            {study.lead}
+          </p>
+
+          <p class="mt-7 inline-flex max-w-2xl items-start gap-3 rounded-2xl bg-emerald-50 px-4 py-3 text-[0.95rem] leading-relaxed text-emerald-900 ring-1 ring-emerald-200 dark:bg-emerald-400/10 dark:text-emerald-100 dark:ring-emerald-400/25">
+            <svg
+              class="mt-0.5 h-5 w-5 flex-none text-emerald-600 dark:text-emerald-300"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+            <span>
+              <span class="font-semibold">Sonuç:</span> {study.outcome}
+            </span>
+          </p>
+        </div>
+
+        <aside class="card self-start p-6" aria-label="Proje künyesi">
+          <dl class="space-y-5 text-sm">
+            {FACTS.map((fact) => (
+              <div>
+                <dt class={factLabel}>{fact.label}</dt>
+                <dd class="text-heading mt-1.5 leading-relaxed">{fact.value}</dd>
+              </div>
+            ))}
+            <div>
+              <dt class={factLabel}>Teknolojiler</dt>
+              <dd class="mt-2 flex flex-wrap gap-1.5">
+                {study.stack.map((tech) => (
+                  <span class="badge-neutral">{tech}</span>
+                ))}
+              </dd>
+            </div>
+            <div>
+              <dt class={factLabel}>Bağlantılar</dt>
+              <dd class="mt-2 flex flex-wrap gap-2">
+                {study.links.map((link) => (
+                  <LinkTile href={link.href} label={link.label} />
+                ))}
+              </dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+
+      <figure class="mt-12">
+        <div class="rounded-3xl bg-linear-to-br from-primary-100 via-white to-gold-100 p-2 shadow-[0_40px_80px_-40px_rgb(15_17_21/0.45)] sm:p-3 dark:from-primary-500/25 dark:via-dark-800 dark:to-gold-500/15">
+          <img
+            src={study.cover.src}
+            srcset={smallImageSrcset(study.cover.src, study.cover.width)}
+            sizes="(min-width: 1280px) 1200px, 100vw"
+            alt={study.cover.alt}
+            width={study.cover.width}
+            height={study.cover.height}
+            class="h-auto w-full rounded-2xl"
+            fetchpriority="high"
+          />
+        </div>
+        <figcaption class="text-muted mt-3 text-sm leading-relaxed">
+          {study.cover.caption}
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="section-container section-padding pb-20">
+    <!-- Section chips on phones and tablets, sidebar on desktop -->
+    <nav
+      data-toc
+      aria-label="Bu vakada"
+      class="sticky top-16 z-30 -mx-5 border-y border-gray-200/80 bg-white/90 backdrop-blur-md sm:-mx-6 lg:hidden dark:border-dark-800 dark:bg-dark-900/90 print:hidden"
+    >
+      <ol data-toc-scroll class="no-scrollbar flex gap-2 overflow-x-auto px-5 py-2.5 sm:px-6">
+        {toc.map((item) => (
+          <li class="flex-none">
+            <a
+              href={`#${item.id}`}
+              class="inline-flex min-h-9 items-center rounded-full px-3.5 text-sm font-medium text-gray-700 ring-1 ring-gray-200 transition-colors data-[active=true]:bg-gold-300 data-[active=true]:text-gray-950 data-[active=true]:ring-gold-400 dark:text-gray-300 dark:ring-dark-700 dark:data-[active=true]:bg-gold-400 dark:data-[active=true]:text-gray-950 dark:data-[active=true]:ring-gold-400"
+            >
+              {item.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="mt-10 lg:mt-14 lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-14 xl:gap-20">
+      <article data-article class:list={[ARTICLE_PROSE, "max-lg:prose-headings:scroll-mt-36"]}>
+        <Content components={{ Figure, Diagram, table: Table }} />
+      </article>
+
+      <aside class="hidden lg:block print:hidden">
+        <div class="sticky top-28 space-y-8">
+          <nav data-toc aria-labelledby="case-toc-heading">
+            <p
+              id="case-toc-heading"
+              class="text-muted text-xs font-semibold tracking-wider uppercase"
+            >
+              Bu vakada
+            </p>
+            <ol class="mt-3 border-l border-copper-200 dark:border-copper-700/60">
+              {toc.map((item) => (
+                <li>
+                  <a href={`#${item.id}`} class="toc-link">
+                    {item.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <div class="rounded-2xl border border-gray-200 p-5 text-sm dark:border-dark-700">
+            <p class="text-heading font-semibold">İngilizce aslı</p>
+            <p class="text-muted mt-1 leading-relaxed">
+              Bu metin GitHub'daki vaka çalışmasının Türkçesi.
+            </p>
+            <LinkTile href={study.original} label="Aslını okuyun" class="mt-3" />
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="mt-16 grid gap-4 sm:grid-cols-2">
+      <a
+        href={`/portfolio/${project.slug}`}
+        class="card-interactive group flex items-center gap-4 p-5"
+      >
+        <span class="tile tile-indigo">
+          <FaBriefcase size={18} aria-hidden="true" />
+        </span>
+        <span class="min-w-0">
+          <span class="text-muted block text-xs font-semibold tracking-wider uppercase">
+            Proje sayfası
+          </span>
+          <span class="text-heading block font-semibold group-hover:text-primary-700 dark:group-hover:text-primary-300">
+            {project.title}
+          </span>
+        </span>
+      </a>
+      <a
+        href={study.original}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="card-interactive group flex items-center gap-4 p-5"
+      >
+        <span class="tile tile-slate">
+          <FaGithub size={20} aria-hidden="true" />
+        </span>
+        <span class="min-w-0">
+          <span class="text-muted block text-xs font-semibold tracking-wider uppercase">
+            İngilizce aslı
+          </span>
+          <span class="text-heading block font-semibold group-hover:text-primary-700 dark:group-hover:text-primary-300">
+            GitHub'da okuyun <span aria-hidden="true">↗</span>
+          </span>
+        </span>
+      </a>
+    </div>
+
+    {others.length > 0 && (
+      <section aria-labelledby="other-cases-heading" class="mt-16">
+        <h2
+          id="other-cases-heading"
+          class="text-heading text-2xl font-extrabold tracking-tight sm:text-3xl"
+        >
+          Diğer vaka çalışmaları
+        </h2>
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          {others.map((item) => (
+            <a
+              href={`/vaka-calismalari/${item.id}`}
+              class="card-interactive group flex flex-col overflow-hidden"
+              data-reveal
+            >
+              <span class="block aspect-[10/7] overflow-hidden border-b border-gray-100 bg-slate-100 dark:border-dark-700 dark:bg-dark-900">
+                <img
+                  src={item.data.cover.src}
+                  alt=""
+                  width={item.data.cover.width}
+                  height={item.data.cover.height}
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover object-top transition duration-700 ease-out group-hover:scale-[1.03]"
+                />
+              </span>
+              <span class="flex flex-1 flex-col p-5">
+                <span class="text-heading text-lg font-bold">{item.data.title}</span>
+                <span class="text-body mt-1.5 text-sm leading-relaxed">{item.data.summary}</span>
+                <span class="link mt-auto pt-4 text-sm">
+                  Okuyun <span aria-hidden="true">→</span>
+                </span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <div class="relative isolate mt-16 overflow-hidden rounded-3xl bg-dark-900 p-8 text-white shadow-[0_40px_80px_-40px_rgb(15_17_21/0.6)] ring-1 ring-white/10 sm:p-10">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+        <div class="absolute -top-24 -left-16 h-64 w-64 rounded-full bg-primary-600/40 glow"></div>
+        <div class="absolute -right-10 -bottom-24 h-64 w-64 rounded-full bg-gold-500/20 glow"></div>
+      </div>
+      <h2 class="text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+        Benzer bir iş mi planlıyorsunuz?
+      </h2>
+      <p class="mt-4 max-w-xl text-lg leading-relaxed text-gray-300">
+        Ne yapmak istediğinizi kısaca yazın. İlk yanıtım fiyat teklifi olmaz, işi netleştirecek
+        birkaç soru olur.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a
+          href="/#contact"
+          class="btn btn-lg bg-white text-gray-900 hover:-translate-y-px hover:bg-gray-100"
+        >
+          Projenizi anlatın <span aria-hidden="true">→</span>
+        </a>
+        <a href="/portfolio" class="btn btn-lg text-white ring-1 ring-white/25 hover:bg-white/10">
+          Diğer işlerime bakın
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

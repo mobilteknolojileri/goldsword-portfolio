@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 467" width="460" height="467" role="img" style="--w:460px">
+<title>Öğretmen başına bir kez kaydedilen profil, sınıf ve tarih bilgileri ile değişkenlerini kendisi bildiren şablon, bilinen değerleri dolu gelen bir form üretiyor; form document_jobs kuyruğuna bir oluşturma işi bırakıyor, edge function değişkenleri çözümleyip belgeyi oluşturuyor ve sonuç Word'de düzenlenebilir bir DOCX oluyor.</title>
+<g class="cs-edges">
+<path class="cs-edge" d="M138.5 65V77Q138.5 85 146.5 85H249.5Q257.5 85 257.5 93V98"/>
+<path class="cs-arrow" d="M252.5 98L262.5 98L257.5 105Z"/>
+<path class="cs-edge" d="M376.5 65V77Q376.5 85 368.5 85H265.5Q257.5 85 257.5 93V98"/>
+<path class="cs-arrow" d="M252.5 98L262.5 98L257.5 105Z"/>
+<path class="cs-edge" d="M257.5 164V197"/>
+<path class="cs-arrow" d="M252.5 197L262.5 197L257.5 204Z"/>
+<path class="cs-edge" d="M257.5 263V296"/>
+<path class="cs-arrow" d="M252.5 296L262.5 296L257.5 303Z"/>
+<path class="cs-edge" d="M257.5 362V395"/>
+<path class="cs-arrow" d="M252.5 395L262.5 395L257.5 402Z"/>
+</g>
+<g class="cs-nodes">
+<rect class="cs-box cs-box-start" x="6" y="6" width="265" height="59" rx="10"/>
+<text class="cs-title" x="138.5" y="27" text-anchor="middle" dominant-baseline="central">Öğretmen başına bir kez kaydedilir</text>
+<text class="cs-sub" x="138.5" y="45.5" text-anchor="middle" dominant-baseline="central">profil · sınıf · tarih</text>
+<rect class="cs-box cs-box-start" x="299" y="6" width="155" height="59" rx="10"/>
+<text class="cs-title" x="376.5" y="27" text-anchor="middle" dominant-baseline="central">Şablon</text>
+<text class="cs-sub" x="376.5" y="45.5" text-anchor="middle" dominant-baseline="central">değişkenlerini bildirir</text>
+<rect class="cs-box cs-box-plain" x="167" y="105" width="181" height="59" rx="10"/>
+<text class="cs-title" x="257.5" y="126" text-anchor="middle" dominant-baseline="central">Üretilen form</text>
+<text class="cs-sub" x="257.5" y="144.5" text-anchor="middle" dominant-baseline="central">bilinen değerler dolu gelir</text>
+<rect class="cs-box cs-box-plain" x="170.5" y="204" width="174" height="59" rx="10"/>
+<text class="cs-title cs-code" x="257.5" y="225" text-anchor="middle" dominant-baseline="central">document_jobs</text>
+<text class="cs-sub" x="257.5" y="243.5" text-anchor="middle" dominant-baseline="central">oluşturma kuyruğa alınır</text>
+<rect class="cs-box cs-box-plain" x="173.5" y="303" width="168" height="59" rx="10"/>
+<text class="cs-title" x="257.5" y="324" text-anchor="middle" dominant-baseline="central">Edge function</text>
+<text class="cs-sub" x="257.5" y="342.5" text-anchor="middle" dominant-baseline="central">çözümleme · oluşturma</text>
+<rect class="cs-box cs-box-plain" x="174.5" y="402" width="166" height="59" rx="10"/>
+<text class="cs-title" x="257.5" y="423" text-anchor="middle" dominant-baseline="central">DOCX</text>
+<text class="cs-sub" x="257.5" y="441.5" text-anchor="middle" dominant-baseline="central">Word'de düzenlenebilir</text>
+</g>
+</svg>

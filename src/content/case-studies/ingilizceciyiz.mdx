@@ -1,0 +1,136 @@
+---
+title: İngilizceciyiz
+seoTitle: "İngilizceciyiz: resmî evrakı bir kez girilen bilgiyle üretmek"
+description: "Öğretmen evrakını bir kez girilen bilgilerle hazırlayan İngilizceciyiz'i sıfırdan yeniden yazdım. 9 Ekim 2026'ya kadar 3.416 öğretmen 28.963 belge üretti."
+summary: "Türkiye'deki öğretmenlerin her dönem teslim ettiği resmî evrakı, bir kez girilen bilgilerle kişiye özel olarak hazırlar."
+lead: "Türkiye'deki İngilizce öğretmenleri için bir dijital asistan: Kişiye özel okul evrakını (yıllık ve günlük planlar, BEP ve DYK planları, seçmeli ders planları, kulüp dosyaları, zümre ve ŞÖK toplantı tutanakları) otomatik olarak hazırlıyor; sınıf planlarını, ders programını ve ders notlarını da hem mobilde hem webde el altında tutuyor."
+project: ingilizceciyiz
+order: 1
+date: 2026-10-08
+role: "Mevcut platformun tek geliştiricisi"
+timeline: "Ağustos 2025'ten bu yana · uygulama Eylül 2023'ten beri mağazalarda"
+status: "App Store ve Google Play'de yayında"
+links:
+  - label: App Store
+    href: https://apps.apple.com/tr/app/ingilizceciyiz/id6459478322
+  - label: Google Play
+    href: https://play.google.com/store/apps/details?id=com.ingilizceciyiz.ingilizceciyiz
+  - label: ingilizceciyizmobil.com
+    href: https://ingilizceciyizmobil.com
+stack: [Expo, Astro, Supabase, Turborepo]
+outcome: "3.416 öğretmenin ürettiği 28.963 belge"
+cover:
+  src: /assets/projects/ingilizceciyiz/showcase.webp
+  alt: "İngilizceciyiz: ana ekran, evrak formu ve üretilen belge"
+  caption: "Soldan sağa: öğretmenin ana ekranı · profil alanları hesaptan, tarih alanları akademik takvimden dolu gelen yıllık plan formu · Word'de açılmaya hazır belge."
+  width: 1200
+  height: 843
+original: https://github.com/mobilteknolojileri/case-studies/blob/main/ingilizceciyiz.md
+---
+
+## Sorun
+
+Türkiye'de öğretmenler her dönem bir yığın resmî evrak teslim etmek zorunda. Tek bir İngilizce öğretmeni yıllık planlar, günlük ders planları, bireyselleştirilmiş eğitim programı uygulanan öğrenciler için BEP planları, destekleme ve yetiştirme kursları için DYK planları, seçmeli ders planları, kulüp dosyaları ve zümre toplantı tutanakları hazırlıyor. Her birinin kendine ait resmî bir biçimi var ve hepsinin teslimi aşağı yukarı aynı haftalara denk geliyor.
+
+Bu işin maliyetini iki şey yükseltiyor. Birincisi, her evrak için doğru ve güncel şablonu bulmak. İkincisi, bu şablonların her birinin aynı bilgileri yeniden istemesi: öğretmenin adı, okul, okul müdürü, zümre, sınıf ve akademik takvimdeki tarihler. Dolayısıyla asıl iş yazmak değil; bir dosyayı bulmak, Word'de açmak ve son evraktan bu yana değişmemiş bilgileri yeniden yazmak. Hem de her evrak için ayrı, her sınıf için ayrı, her dönem yeniden.
+
+## Ne yaptım
+
+**Sıfırdan yeniden yazdım.** Ağustos 2025'te devraldığımda uygulama 2023'ten beri mağazalardaydı. Aşağıda anlattığım her şey, onun yerine yazdığım platforma ait; yeni platform Nisan 2026'da yayına çıktı ve o günden beri yayındaki ürün bu.
+
+**Bir kez girilir, her yerde kullanılır.** Veri modelinin merkezinde bir `variables` tablosu var ve bu tablodaki her kayıt dört ad alanından birine ait: `profile`, `class`, `date` ya da `custom`. Profil değişkenleri öğretmenin hesabından, sınıf değişkenleri seçtiği sınıftan, tarih değişkenleri de akademik takvimden geliyor; elle yalnızca gerçekten bir kerelik olan değerler giriliyor. Buna eşlik eden ikinci bir tablo her belge şablonunu ihtiyaç duyduğu değişkenlere bağlıyor, hangilerinin zorunlu olduğunu ve hangi sırayla geleceğini de işaretliyor. Böylece öğretmenin gördüğü form şablonun kendisinden üretiliyor ve sistemin bildiği her bilgiyle dolu geliyor.
+
+Çıktı bir DOCX dosyası. Öğretmenler bu belgeleri yine de Word'le çalışan bir okul idaresine teslim etmek zorunda; bu yüzden PDF üretmek yanlış sorunu çözmek olurdu. Dosyanın üretildikten sonra da düzenlenebilir kalması gerekiyor.
+
+**Tek monorepo, iki uygulama, tek şema.** `apps/mobile`, Expo Router ve NativeWind kullanan bir Expo uygulaması. `apps/web` ise Astro ile yazıldı; herkese açık siteyi ve `/admin` altındaki yönetim panelini tek bir uygulamadan sunuyor. İki uygulama da tasarım token'larını, hata tiplerini, analitik kodunu ve doğrulama şemalarını `packages/shared` paketinden alıyor; böylece bir değişiklik her birine ayrı ayrı kopyalanmak yerine ikisine birden yansıyor.
+
+**Şema, tek doğru kaynak.** `packages/db/schema.sql` dosyası tabloları ve onların Row Level Security (RLS) politikalarını yan yana tutuyor; TypeScript tipleri de bu dosyadan üretiliyor. Migration dosyaları hâlâ duruyor, ancak açıkça geçmişe dönük bir başvuru kaynağı konumuna indirildi. Bu karar yazısız bir kural olarak bırakılmadı, ADR-0012 olarak kayda geçti. Şema, erişim kuralları ve tipler birbirinden ayrı düşemez, çünkü üçünden ikisi birincisinden türetiliyor.
+
+<Diagram id="ingilizceciyiz-schema">
+  Düzenlenecek tek bir dosya var. Tipler bu dosyadan yeniden üretiliyor, erişim kuralları da
+  koruduğu tabloların hemen yanında duruyor; bu yüzden üçünden hiçbiri sessizce ötekilerle uyumunu
+  yitiremez.
+</Diagram>
+
+**Belgeler istemcide değil, sunucu tarafında üretiliyor.** Supabase Edge Functions her plan türünü ayrıştırıyor, şablon değişkenlerini çözümlüyor, DOCX dosyasını oluşturuyor ve imzalı bir URL döndürüyor. Üretim bir iş (job) olarak takip ediliyor; bu yüzden yavaş hazırlanan bir belge uygulamayı hiçbir zaman kilitlemiyor.
+
+<Diagram id="ingilizceciyiz-documents">
+  Üst sıra bir kez kaydediliyor ve bütün şablonlar onu yeniden kullanıyor. Formun altındaki her şey
+  türetiliyor; bir sonraki belge için bilgileri neredeyse hiç yeniden girmek gerekmemesi de bundan.
+</Diagram>
+
+**Aksi hâlde kod incelemesine kalacak kontrolleri CI zorunlu kılıyor.** GitHub Actions lint, tip kontrolü ve build adımlarını yürütüyor, edge function'ları deploy ediyor, bağımlılık denetiminin yanı sıra gizli bilgi taraması için de `gitleaks` çalıştırıyor. Husky ile tanımlanmış bir pre-push hook aynı kuralları Turborepo üzerinden yerelde de uyguluyor; böylece hatalar push'tan sonra değil, önce ortaya çıkıyor.
+
+**Yedekleme, operasyon kılavuzundaki bir adım değil; bir özellik.** Bu işe ayrılmış bir edge function önce çağıranın yönetici olduğunu doğruluyor, ardından izin listesindeki tabloların dökümünü alıyor (kullanıcıların ürettiği belgeler bilerek dışarıda bırakıldı) ve bir denetim kaydı yazıyor. Bu kayıt service role'e değil, yedeği alan kişiye atfediliyor. Sonuç, yönetim panelinden tek tıkla indiriliyor. Barındırma platformunun varsayılan olarak sunduğu her şey bir alt sınırdır, plan değil.
+
+**Yayın süreci bilerek sıkıcı.** Web tarafı, `main` branch'ine yapılan her push'ta Cloudflare Pages'e deploy ediliyor. Mobil build'ler EAS üzerinden alınıyor; yalnızca JavaScript'e dokunan düzeltmeler ise mağaza incelemesini beklemeden over-the-air (OTA) güncelleme olarak cihazlara ulaşıyor. Ders sırasında bir hataya takılan öğretmen için bu önemli bir fark.
+
+**Performans bir umut değil, bir bütçe.** Ana sayfa Lighthouse performansında bir hafta 94, ertesi hafta 72 puan aldı ve bunun fark edilmesi altı gün sürdü. Sebep bir hero animasyonu, React ile yazılmış bir tema adası (island) ve gereğinden erken yüklenen analitik koduydu. Bunun üzerine bir ölçüm komutu yazdım: Lighthouse'u mobil ön ayarla ve yavaşlatılmış 4G'de çalıştırıyor, bir kaynak ve süre bütçesi uyguluyor, birkaç çalıştırmanın ortancasını alıyor ve herhangi bir kategori eşiğinin altına düşerse sıfırdan farklı bir çıkış koduyla sonlanıyor. Komutu bilerek CI sürecinin dışında tutuyorum ve o gerilemeye yol açan üç dosyadan birine her dokunulduğunda çalıştırıyorum; böylece bu kontrol otomatik bir geçit değil, bir karar olarak kalıyor. Ölçülen son çalıştırmada, 26 Ağustos 2026'da, yayındaki site mobilde PageSpeed Insights'ın dört kategorisinin hepsinde 100 aldı.
+
+<Figure
+  src="/assets/case-studies/ingilizceciyiz/web.webp"
+  alt="Herkese açık site: hero bölümü ve belge kataloğu"
+  width={1200}
+  height={763}
+>
+  Sitenin kendi vaadi, baştan beri aynı: Adınızı, okulunuzu, müdürünüzü ve zümre öğretmenlerinizi
+  bir kez girin, ardından ihtiyacınız olan her belgeyi indirin.
+</Figure>
+
+**Ürün yalnızca evraktan ibaret değil.** Yıllık plan 42 haftadan oluşuyor ve her haftanın kendi ünitesi, kazanımları, görevleri ve değerlendirmesi var. Öğretmenler bunları ders sırasında okuyor ve üzerlerine kendi notlarını ekliyor; ders programı ekranı da her ders saatini ait olduğu haftaya bağlıyor.
+
+<Figure
+  src="/assets/projects/ingilizceciyiz/plans.webp"
+  alt="Haftalara bölünmüş yıllık plan, kazanımlarıyla bir haftanın ayrıntısı ve öğretmenin ders programı"
+  width={1200}
+  height={843}
+>
+  Soldan sağa: yıllık planın 42 haftası · ünitesi, kazanımları, görevleri ve değerlendirmesiyle tek
+  bir hafta · öğretmenin kendi ders programı.
+</Figure>
+
+## Teknolojiler
+
+| Katman    | Tercih                                         | Neden                                                                                                  |
+| :-------- | :--------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
+| Mobil     | Expo · React Native · Expo Router · NativeWind | iOS ve Android için tek kod tabanı; mağaza incelemesini beklemeyen OTA yamaları                        |
+| Web       | Astro                                          | Herkese açık site ve yönetim paneli tek uygulamada; ziyaretçiye neredeyse hiç JavaScript gönderilmiyor |
+| Ortak     | pnpm workspaces · Turborepo                    | Tasarım token'ları, şemalar ve hata tipleri tek yerde tanımlı                                          |
+| Veri      | Supabase · PostgreSQL                          | Row Level Security, koruduğu tabloların hemen yanında yazılı                                           |
+| Tipler    | `schema.sql` dosyasından üretiliyor            | Şema ile TypeScript birbirinden ayrı düşemez                                                           |
+| Sunucusuz | Supabase Edge Functions                        | Şablon ayrıştırma ve DOCX oluşturma istemcide değil, sunucu tarafında                                  |
+| Ödeme     | RevenueCat                                     | İki mağazanın abonelikleri ve webhook'ları tek yerden yönetiliyor                                      |
+| CI        | GitHub Actions · Husky · gitleaks              | Lint, tip kontrolü, build, gizli bilgi taraması, bağımlılık denetimi                                   |
+| Yayın     | Cloudflare Pages · EAS · EAS Update            | Webde push ile deploy, mobilde over-the-air yamalar                                                    |
+
+## Sonuç
+
+- **28.963 belge**, 9 Ekim 2026 itibarıyla **3.416 öğretmen** tarafından üretildi; öğretmen başına ortalama sekiz buçuk belge
+- Aynı tarihte **6.679 öğretmen hesabı**
+- Sekiz kategoride hazırlanmış **1.069 belge şablonu**
+- **23.000+ indirme**: App Store'da 13.594, Google Play'de 10.000+
+- **Eylül 2023'ten beri mağazalarda**, yani üç okul açılışını gördü; yeniden yazılan platform Nisan 2026'da yayına çıktı
+- **Mobilde [PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https://ingilizceciyizmobil.com/) 100 / 100 / 100 / 100**: performans, erişilebilirlik, en iyi uygulamalar ve SEO. 26 Ağustos 2026'da, yavaşlatılmış 4G'de emüle edilen bir Moto G Power üzerinde ölçüldü; LCP 1,4 sn, TBT 0 ms, CLS 0
+- 1.100'ü aşkın commit; proje hâlâ aktif olarak geliştiriliyor
+
+<Figure
+  src="/assets/case-studies/ingilizceciyiz/pagespeed.webp"
+  alt="PageSpeed Insights: performans, erişilebilirlik, en iyi uygulamalar ve SEO'da 100"
+  width={1200}
+  height={586}
+>
+  Ölçüm koşulları en az puan kadar önemli: yavaşlatılmış 4G'de emüle edilen bir Moto G Power,
+  sayfanın ilk yüklenişi, ısınmamış önbellek. [Bu raporu
+  açın](https://pagespeed.web.dev/analysis/https-ingilizceciyizmobil-com/jns9abevrm?form_factor=mobile)
+  · [yeniden ölçün](https://pagespeed.web.dev/analysis?url=https://ingilizceciyizmobil.com/)
+</Figure>
+
+Talep takvim yılını değil, eğitim öğretim yılını izliyor. Zirve her yıl eylül ayında geliyor: Eylül 2023'te 2.041, 2024'te 1.632, 2025'te 1.940 indirme. Temmuz ve ağustos aylarında ise indirmeler bunun küçük bir kesrine iniyor, çünkü bu belgelerin yerini aldığı evrak işinin büyük bölümü dönem başında yoğunlaşıyor. Sürüm planlaması da buna göre kurulu: Riskli değişiklikler baharda yayına çıkıyor, eylül öncesindeki haftalar ise kararlılık çalışmalarına ayrılıyor, çünkü yeni öğretmenlerin en kalabalık grubu uygulamayı ilk kez o haftalarda açıyor.
+
+## Ne bozuldu, neyi değiştirdim
+
+**Hata vermeden kesen bir satır sınırı.** Yönetim panelindeki şablon listesi, tabloda 1.002 şablon varken 1.000 şablon gösteriyordu. Yıllık planlardan ikisi (üçüncü ve dördüncü sınıfınkiler) yedekten geri yüklendiği için eski zaman damgaları taşıyordu; bu yüzden `created_at desc` sıralamasında 1.001 ve 1.002 numaralı satırlara düşüyor ve ekrana hiç gelmiyordu. Bir kategorinin sayacı, gerçek sayı 11 iken 9 gösteriyordu. Mobil taraf etkilenmedi: Oradaki sorgu `is_active` alanına ve kategoriye göre filtreleme yaptığı için tavanın altında kalıyordu. Hatanın bir süre fark edilmemesinin sebebi de buydu. Sorunun kaynağı, Supabase'te varsayılan olarak 1.000'e ayarlı gelen PostgREST `db_max_rows` değeriydi: Sınır sunucu tarafında uygulandığı için `.range(0, 9999)` istemek hiçbir şeyi değiştirmiyor. Üstelik hata da döndürmüyor. Satırlar sadece ortada yok.
+
+Tavanı önce 2.000'e, sonra 9.000'e yükselttim ve bu yanlış bir çözümdü. Daha yüksek bir tavan tuzağı ortadan kaldırmıyor, yalnızca erteliyor; sorunun biçimi de aynı kalıyor: Yanıt başarılı döner ama veri sessizce kırpılmıştır. Asıl değişiklik daha sonra, cihaz ve belge sayfaları gruplama, filtreleme, arama ve sayfalamayı veri tabanında yapan RPC'lere taşındığında geldi. Bunu tetikleyen tavan değil, sayfalamanın olmamasıydı: Bin yüz cihaz tek bir ekranda gösteriliyordu. Aynı turda, son 24 saatteki bütün `downloads_log` satırlarını çeken bir sorgunun açığı da kapandı; bu sorgu, cihaz engelleme kararının dayandığı sütunu besliyor. Orada satırların hata vermeden kaybolması, bu hatanın en kötü hâli olurdu.
+
+**Aynı gün geri aldığım bir karar.** Şema yönetimi için Drizzle ORM'i seçtim, ADR'sini yazdım ve birkaç saat sonra bu kararı ikinci bir ADR ile değiştirdim. Tip güvenli sorgu oluşturucunun gerçek bir değeri vardı; ama beraberinde `drizzle-kit`'i, bir `DATABASE_URL` değişkenini, `schema.ts` ile `schema.sql` dosyalarını birbirine uyumlu tutan bir hook'u ve bakımı gereken dört veri tabanı betiğini getiriyordu. Bu ek parçaların sağladıklarının çoğu (migration sıralaması, şema kaymasının tespiti, ekip içi senkronizasyon), tek bir projede çalışan tek bir geliştiricinin yaşamadığı sorunlara karşı koruma sağlıyor. Oysa `supabase gen types` zaten tamamen tiplenmiş bir istemci üretiyordu. İki ADR de hâlâ depoda duruyor ve geçersiz kılınanın başında bunu belirten bir not var; çünkü gerekçe varılan sonuçtan daha değerli.
