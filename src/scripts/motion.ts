@@ -1,5 +1,5 @@
-// Scroll effects: reveal, counters, reading progress, back to top, navbar state, scroll-spy and
-// the touch-screen stand-ins for hover.
+// Scroll effects: reveal, counters, reading progress, back to top, navbar state, scroll-spy,
+// swipe rows, the phone contact bar and the touch-screen stand-ins for hover.
 // Everything still works without this file, just without the motion.
 
 declare global {
@@ -218,11 +218,118 @@ function setupTouch() {
       },
       { rootMargin: "-45% 0px -45% 0px" },
     );
-    document.querySelectorAll(".card-interactive").forEach((card) => centerObserver.observe(card));
+    // Cards in a swipe row are lit by setupCarousels instead
+    document.querySelectorAll(".card-interactive").forEach((card) => {
+      if (!card.closest('[data-carousel][data-scrollable="true"]')) centerObserver.observe(card);
+    });
   }
 
   stepLists = Array.from(document.querySelectorAll<HTMLElement>(".steps"));
   updateSteps();
+}
+
+// Swipe rows (SwipeRow.astro) on phones: the thumb shows how far along the row is and the
+// counter which card leads. On touch screens the leading card lights up while the row crosses
+// the middle of the screen, as cards in a column do. A row nudges once when it first comes into
+// view, so it reads as swipeable.
+function setupCarousels() {
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+    const track = root.querySelector<HTMLElement>("[data-carousel-track]");
+    // Not wider than the screen: the grid layout is showing
+    if (!track || track.scrollWidth - track.clientWidth <= 1) return;
+    root.dataset.scrollable = "true";
+    const thumb = root.querySelector<HTMLElement>("[data-carousel-thumb]");
+    const count = root.querySelector<HTMLElement>("[data-carousel-count]");
+    const items = Array.from(track.children) as HTMLElement[];
+
+    // Cards past the right edge never cross the viewport, so the scroll reveal would keep them
+    // hidden until they are swiped in
+    items.forEach((item) => {
+      if (item.offsetLeft - track.scrollLeft >= track.clientWidth)
+        item.classList.add("is-revealed");
+    });
+
+    let lead = -1;
+    let inMiddle = false;
+    let ticking = false;
+
+    const light = () => {
+      items.forEach((item, index) => {
+        item
+          .querySelector(".card-interactive")
+          ?.classList.toggle("is-centered", inMiddle && index === lead);
+      });
+    };
+
+    const update = () => {
+      ticking = false;
+      const max = track.scrollWidth - track.clientWidth;
+      if (max <= 1) return;
+      const ratio = track.clientWidth / track.scrollWidth;
+      const progress = Math.min(1, Math.max(0, track.scrollLeft / max));
+      if (thumb) {
+        thumb.style.width = `${ratio * 100}%`;
+        thumb.style.transform = `translateX(${progress * (1 / ratio - 1) * 100}%)`;
+      }
+      // Cards snap to their start, so the scroll position counts them; the last one can't reach
+      // the start and counts once the row is at its end
+      const step = items.length > 1 ? items[1].offsetLeft - items[0].offsetLeft : max;
+      const next =
+        track.scrollLeft >= max - 2 ? items.length - 1 : Math.round(track.scrollLeft / step);
+      if (next === lead) return;
+      lead = next;
+      if (count) count.textContent = `${lead + 1} / ${items.length}`;
+      if (touch) light();
+    };
+
+    const schedule = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    track.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    requestAnimationFrame(update);
+
+    if (!("IntersectionObserver" in window)) return;
+
+    if (touch) {
+      new IntersectionObserver(
+        ([entry]) => {
+          inMiddle = entry.isIntersecting;
+          light();
+        },
+        { rootMargin: "-45% 0px -45% 0px" },
+      ).observe(track);
+    }
+
+    if (prefersReducedMotion()) return;
+    let touched = false;
+    track.addEventListener(
+      "pointerdown",
+      () => {
+        touched = true;
+        track.classList.remove("carousel-nudge");
+      },
+      { once: true, passive: true },
+    );
+    const nudgeObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        nudgeObserver.disconnect();
+        // After the cards have faded in
+        setTimeout(() => {
+          if (touched || track.scrollLeft > 2) return;
+          track.classList.add("carousel-nudge");
+          track.addEventListener("animationend", () => track.classList.remove("carousel-nudge"), {
+            once: true,
+          });
+        }, 700);
+      },
+      { threshold: 0.6 },
+    );
+    nudgeObserver.observe(track);
+  });
 }
 
 function updateSteps() {
@@ -280,12 +387,64 @@ function setupScrollState() {
   article = document.querySelector<HTMLElement>("[data-article]");
   backToTop = document.querySelector<HTMLButtonElement>("[data-back-to-top]");
 
-  backToTop?.addEventListener("click", () => {
+  const toTop = () => {
     window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
     document.getElementById("main-content")?.focus({ preventScroll: true });
-  });
+  };
+  backToTop?.addEventListener("click", toTop);
+  document.querySelector("[data-scroll-top]")?.addEventListener("click", toTop);
 
   onScroll();
+}
+
+// Phones: the contact bar slides in once the hero's call to action has scrolled off and steps
+// aside near the contact form, the page's closing call to action and the footer, and while the
+// on-screen keyboard is up (it would ride up on top of it)
+function setupContactBar() {
+  const bar = document.querySelector<HTMLElement>("[data-contact-bar]");
+  if (!bar || !("IntersectionObserver" in window)) return;
+  const heroCta = document.querySelector<HTMLElement>("[data-hero-cta]");
+  let pastHero = !heroCta;
+  let typing = false;
+  const zonesInView = new Set<Element>();
+
+  const apply = () => {
+    const visible = pastHero && zonesInView.size === 0 && !typing;
+    if (bar.dataset.visible === String(visible)) return;
+    bar.dataset.visible = String(visible);
+    bar.inert = !visible;
+    document.documentElement.toggleAttribute("data-contact-bar-shown", visible);
+  };
+
+  if (heroCta) {
+    new IntersectionObserver(([entry]) => {
+      pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+      apply();
+    }).observe(heroCta);
+  }
+
+  const zoneObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) zonesInView.add(entry.target);
+      else zonesInView.delete(entry.target);
+    }
+    apply();
+  });
+  document
+    .querySelectorAll("#contact, [data-cta-zone], footer")
+    .forEach((zone) => zoneObserver.observe(zone));
+
+  // Checked a frame later so moving between two fields doesn't flash the bar
+  const onFocusChange = () =>
+    requestAnimationFrame(() => {
+      typing =
+        document.activeElement?.matches(
+          "input:not([type='radio'], [type='checkbox']), textarea, select",
+        ) ?? false;
+      apply();
+    });
+  document.addEventListener("focusin", onFocusChange);
+  document.addEventListener("focusout", onFocusChange);
 }
 
 window.addEventListener("scroll", onScroll, { passive: true });
@@ -314,10 +473,13 @@ else window.addEventListener("load", loadMonoFont, { once: true });
 // this script and hold back the first paint
 requestAnimationFrame(() =>
   setTimeout(() => {
+    // Before the reveal and the touch setup: it marks rows that scroll and cards to show at once
+    setupCarousels();
     setupReveal();
     setupCounters();
     setupTouch();
     setupScrollState();
+    setupContactBar();
     setupSpy();
   }),
 );

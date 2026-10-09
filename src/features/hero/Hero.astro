@@ -60,7 +60,10 @@ const valueClass = "text-heading text-right text-lg font-bold tabular-nums";
         bakıyorum. Sizinle konuşan da işi yapan da benim.
       </p>
 
-      <div class="mt-9 flex animate-fade-up flex-col gap-3 [animation-delay:200ms] sm:flex-row">
+      <div
+        class="mt-9 flex animate-fade-up flex-col gap-3 [animation-delay:200ms] sm:flex-row"
+        data-hero-cta
+      >
         <a href="/#contact" class="btn-primary btn-lg">
           Projenizi anlatın
           <svg
@@ -83,7 +86,7 @@ const valueClass = "text-heading text-right text-lg font-bold tabular-nums";
         <Stars label={`Ortalama puan ${averageRating}`} class="text-[0.95rem]" />
         <a
           href="/#testimonials"
-          class="text-muted underline-offset-4 hover:text-gray-900 hover:underline dark:hover:text-white"
+          class="text-muted py-2 underline-offset-4 hover:text-gray-900 hover:underline dark:hover:text-white"
         >
           Bionluk'ta {TESTIMONIAL_COUNT} yorum
         </a>
@@ -192,7 +195,7 @@ const valueClass = "text-heading text-right text-lg font-bold tabular-nums";
                             href={app.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="group/app flex h-full flex-col items-center gap-1.5 rounded-xl p-1.5 text-center transition hover:bg-white hover:shadow-sm active:scale-95 dark:hover:bg-dark-800"
+                            class="group/app flex h-full flex-col items-center gap-1.5 rounded-xl px-0.5 py-1.5 text-center transition sm:px-1.5 hover:bg-white hover:shadow-sm active:scale-95 dark:hover:bg-dark-800"
                           >
                             <img
                               src={`/assets/apps/${app.icon}.webp`}
@@ -201,7 +204,7 @@ const valueClass = "text-heading text-right text-lg font-bold tabular-nums";
                               height="96"
                               class="size-10 rounded-[0.7rem] shadow-sm ring-1 ring-black/5 transition duration-300 group-hover/app:-translate-y-0.5 group-hover/app:ring-gold-400 dark:ring-white/10"
                             />
-                            <span class="text-heading text-[0.6875rem] leading-tight font-semibold">
+                            <span class="text-heading text-[0.625rem] leading-tight font-semibold tracking-tight sm:text-[0.6875rem] sm:tracking-normal">
                               {app.name}
                               <span class="sr-only">, {store.name}</span>
                             </span>

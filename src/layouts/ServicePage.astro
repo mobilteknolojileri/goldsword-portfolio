@@ -49,7 +49,7 @@ const projects = projectSlugs
   .filter((project) => project !== undefined);
 ---
 
-<BaseLayout {...metadata} extraSchemas={extraSchemas}>
+<BaseLayout {...metadata} extraSchemas={extraSchemas} contactBar={cta}>
   <section class="relative isolate overflow-hidden pt-28 pb-16 sm:pt-36 md:pb-24">
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
       <div class="bg-grid absolute inset-0"></div>
@@ -63,7 +63,10 @@ const projects = projectSlugs
         <p class="text-body mt-6 max-w-xl animate-fade-up text-lg leading-relaxed [animation-delay:120ms] sm:text-xl sm:leading-relaxed">
           {lead}
         </p>
-        <div class="mt-9 flex animate-fade-up flex-col gap-3 [animation-delay:200ms] sm:flex-row">
+        <div
+          class="mt-9 flex animate-fade-up flex-col gap-3 [animation-delay:200ms] sm:flex-row"
+          data-hero-cta
+        >
           <a href={cta.href} class="btn-primary btn-lg">
             {cta.label}
             <span aria-hidden="true">→</span>
@@ -114,10 +117,10 @@ const projects = projectSlugs
 
   {faqs.length > 0 && <Faq items={faqs} />}
 
-  <section class="section-padding pb-24">
+  <section class="section-padding pb-24" data-cta-zone>
     <div class="section-container">
       <div
-        class="relative isolate overflow-hidden rounded-3xl bg-dark-900 px-8 py-14 text-white shadow-[0_40px_80px_-40px_rgb(15_17_21/0.6)] ring-1 ring-white/10 sm:px-14"
+        class="relative isolate overflow-hidden rounded-3xl bg-dark-900 px-6 py-14 text-white shadow-[0_40px_80px_-40px_rgb(15_17_21/0.6)] ring-1 ring-white/10 sm:px-14"
         data-reveal
       >
         <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">

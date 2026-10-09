@@ -11,6 +11,7 @@ import Counter from "@/components/ui/Counter.astro";
 import LinkTile from "@/components/ui/LinkTile.astro";
 import SectionHeader from "@/components/ui/SectionHeader.astro";
 import Stars from "@/components/ui/Stars.astro";
+import SwipeRow from "@/components/ui/SwipeRow.astro";
 
 const averageRating = (
   TESTIMONIALS.reduce((sum, item) => sum + item.rating, 0) / TESTIMONIAL_COUNT
@@ -56,9 +57,17 @@ const STATS = [
       {TESTIMONIAL_REPEAT_PEOPLE} kişiden.
     </p>
 
-    <ul class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <SwipeRow
+      label="Seçili yorumlar"
+      count={HOME_TESTIMONIALS.length}
+      until="md"
+      class="mt-8 md:mx-0 md:mt-10 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pt-0 md:pb-0 lg:grid-cols-3"
+    >
       {HOME_TESTIMONIALS.map((item) => (
-        <li class="card relative flex flex-col p-6 sm:p-7" data-reveal>
+        <li
+          class="card relative flex w-[86%] flex-none snap-start flex-col p-6 sm:p-7 md:w-auto"
+          data-reveal
+        >
           <svg
             class="absolute top-6 right-6 h-8 w-8 text-primary-100 dark:text-dark-700"
             viewBox="0 0 24 24"
@@ -79,7 +88,7 @@ const STATS = [
           </a>
         </li>
       ))}
-    </ul>
+    </SwipeRow>
 
     <details class="group mt-8">
       <summary class="btn-secondary flex w-fit cursor-pointer list-none [&::-webkit-details-marker]:hidden">

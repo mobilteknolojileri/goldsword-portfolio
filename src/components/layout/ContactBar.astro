@@ -1,0 +1,50 @@
+---
+// Phones only. Once the hero's call to action has scrolled away this bar keeps it at hand, with
+// the back-to-top button beside it. motion.ts slides it in and out (data-visible) and keeps it
+// away from the contact form, the closing call to action, the footer and the on-screen keyboard.
+interface Props {
+  label: string;
+  href: string;
+}
+
+const { label, href } = Astro.props;
+---
+
+<div
+  data-contact-bar
+  data-visible="false"
+  inert
+  class="contact-bar fixed inset-x-0 bottom-0 z-30 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden print:hidden"
+>
+  <!-- The surface sits on a child: iOS Safari tints its toolbar from the background of fixed
+       elements near the bottom edge -->
+  <div class="relative isolate mx-auto flex max-w-md items-center gap-1.5 p-1.5">
+    <span
+      aria-hidden="true"
+      class="absolute inset-0 -z-10 rounded-2xl border border-gray-200/80 bg-white/85 shadow-[0_18px_40px_-16px_rgb(15_17_21/0.4)] backdrop-blur-xl dark:border-dark-700 dark:bg-dark-800/85 dark:shadow-[0_18px_40px_-16px_rgb(0_0_0/0.9)]"
+    ></span>
+    <a href={href} class="btn-primary flex-1 text-[0.9375rem]">
+      {label}
+      <span aria-hidden="true">→</span>
+    </a>
+    <button
+      type="button"
+      data-scroll-top
+      aria-label="Sayfanın başına dön"
+      class="inline-flex size-11 flex-none items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-700 transition active:scale-95 dark:border-dark-600 dark:bg-dark-900 dark:text-gray-200"
+    >
+      <svg
+        class="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 19V5M5 12l7-7 7 7"></path>
+      </svg>
+    </button>
+  </div>
+</div>
