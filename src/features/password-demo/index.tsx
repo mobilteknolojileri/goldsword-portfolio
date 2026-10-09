@@ -81,7 +81,8 @@ const PasswordDemo = ({ children }: { children?: ReactNode }) => {
 
   const tryExample = (value: string) => {
     setPassword(value);
-    inputRef.current?.focus();
+    // On touch screens focusing the field opens the keyboard over the result
+    if (window.matchMedia("(hover: hover)").matches) inputRef.current?.focus();
   };
 
   return (
@@ -158,11 +159,13 @@ const PasswordDemo = ({ children }: { children?: ReactNode }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="örneğin mehmet1907"
-                className="w-full rounded-xl border-2 border-white/10 bg-dark-950/70 px-4 py-3.5 pr-12 font-mono text-lg text-white outline-hidden transition placeholder:text-gray-500 focus:border-primary-400 focus:ring-4 focus:ring-primary-400/25"
+                className="w-full rounded-xl border-2 border-white/10 bg-dark-950/70 px-4 py-3.5 pr-14 font-mono text-lg text-white outline-hidden transition placeholder:text-gray-500 focus:border-primary-400 focus:ring-4 focus:ring-primary-400/25"
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
                 spellCheck={false}
+                enterKeyHint="done"
+                onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
                 aria-describedby="password-feedback"
                 // Password managers modify this input before hydration
                 suppressHydrationWarning
@@ -170,7 +173,7 @@ const PasswordDemo = ({ children }: { children?: ReactNode }) => {
               <button
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
-                className="absolute top-1/2 right-3 -translate-y-1/2 rounded-md p-2 text-gray-400 transition-colors hover:text-white"
+                className="absolute top-1/2 right-1.5 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition-colors hover:text-white"
                 aria-label="Parolayı göster"
                 aria-pressed={showPassword}
               >
