@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, type ReactNode } from "react";
+import { useState, useMemo, useRef } from "react";
 import { analyzePassword } from "password-intelligence";
 import { FaEye, FaEyeSlash, FaCheck, FaTimes } from "react-icons/fa";
 import { SiNpm } from "react-icons/si";
@@ -58,8 +58,7 @@ const formatMatch = (match: { pattern: string; token?: string; dictionaryName?: 
   return match.pattern;
 };
 
-// children: static Astro markup shown under the demo (the open source block)
-const PasswordDemo = ({ children }: { children?: ReactNode }) => {
+const PasswordDemo = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -284,8 +283,6 @@ const PasswordDemo = ({ children }: { children?: ReactNode }) => {
           </div>
         </div>
       </div>
-
-      {children && <div className="section-container section-padding">{children}</div>}
     </section>
   );
 };

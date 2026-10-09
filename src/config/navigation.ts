@@ -22,7 +22,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: "Portfolyo",
     href: "/portfolio",
-    sections: ["work", "password-demo"],
+    sections: ["work", "open-source"],
     match: ["/kafadar", "/qusafe", "/legends-of-aestera"],
   },
   { label: "Vaka çalışmaları", href: "/vaka-calismalari" },

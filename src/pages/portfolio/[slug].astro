@@ -5,6 +5,7 @@ import LinkTile from "@/components/ui/LinkTile.astro";
 import Counter from "@/components/ui/Counter.astro";
 import SectionHeader from "@/components/ui/SectionHeader.astro";
 import SwipeRow from "@/components/ui/SwipeRow.astro";
+import PasswordDemo from "@/features/password-demo";
 import { PROJECTS } from "@/lib/constants";
 import { smallImageSrcset, webpSize } from "@/lib/images";
 import { CATEGORY_LABELS, KIND_BADGE, KIND_LABELS, STATUS_LABELS } from "@/config/portfolio";
@@ -308,6 +309,9 @@ const related = (
       </div>
     </div>
   </article>
+
+  {/* The library's own page runs it live; the home page links here */}
+  {project.slug === "react-native-password-intelligence" && <PasswordDemo client:visible />}
 
   {related.length > 0 && (
     <section class="section section-tint">

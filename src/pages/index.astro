@@ -6,7 +6,6 @@ import Services from "@/features/services/Services.astro";
 import FeaturedWork from "@/features/featured-work/FeaturedWork.astro";
 import Testimonials from "@/features/testimonials/Testimonials.astro";
 import OpenSource from "@/features/open-source/OpenSource.astro";
-import PasswordDemo from "@/features/password-demo";
 import Background from "@/features/background/Background.astro";
 import Process from "@/features/process/Process.astro";
 import Faq from "@/components/ui/Faq.astro";
@@ -33,9 +32,7 @@ const emailjsConfig = {
   <FeaturedWork />
   <Testimonials />
 
-  <PasswordDemo client:visible>
-    <OpenSource />
-  </PasswordDemo>
+  <OpenSource />
   <Background />
   <Process />
   <Faq items={FAQ_DATA} />
