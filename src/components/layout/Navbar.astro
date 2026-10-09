@@ -203,25 +203,44 @@ const themeButtonClass =
       return;
     }
 
-    // Keyboard clicks report 0,0, so start from the button centre instead
+    // On phones the transition is drawn over an area that also covers the browser bar, so tap
+    // coordinates land too high. The button gets its own snapshot and the reveal starts from
+    // where that snapshot sits; the tap point is only the fallback.
     const rect = button.getBoundingClientRect();
-    const x = event.clientX || rect.left + rect.width / 2;
-    const y = event.clientY || rect.top + rect.height / 2;
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y),
-    );
+    const tapX = event.clientX || rect.left + rect.width / 2;
+    const tapY = event.clientY || rect.top + rect.height / 2;
+    button.style.viewTransitionName = "theme-toggle";
     const transition = document.startViewTransition(() => applyTheme(nextTheme));
     transition.ready
       .then(() => {
+        const origin = snapshotBox("theme-toggle");
+        const area = snapshotBox("root");
+        const x = origin ? origin.x + origin.width / 2 : tapX;
+        const y = origin ? origin.y + origin.height / 2 : tapY;
+        const width = area?.width ?? window.innerWidth;
+        const height = area?.height ?? window.innerHeight;
+        const radius = Math.hypot(Math.max(x, width - x), Math.max(y, height - y));
         root.animate(
-          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] },
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
           { duration: 500, easing: "ease-in-out", pseudoElement: "::view-transition-new(root)" },
         );
       })
       // A second click before the first reveal ends skips it, which rejects ready
       .catch(() => {});
-    transition.finished.finally(done);
+    transition.finished.finally(() => {
+      button.style.viewTransitionName = "";
+      done();
+    });
+  };
+
+  // Position and size of a view transition snapshot, in the coordinates the transition is drawn in
+  const snapshotBox = (name: string) => {
+    const style = getComputedStyle(document.documentElement, `::view-transition-group(${name})`);
+    const width = parseFloat(style.width);
+    const height = parseFloat(style.height);
+    if (!width || !height) return null;
+    const matrix = new DOMMatrixReadOnly(style.transform === "none" ? undefined : style.transform);
+    return { x: matrix.m41, y: matrix.m42, width, height };
   };
 
   let closeMenu: (restoreFocus?: boolean) => void = () => {};
