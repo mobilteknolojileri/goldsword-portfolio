@@ -169,6 +169,7 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
     setIsSubmitting(true);
 
     try {
+      // The recipient is fixed in the EmailJS template
       await emailjs.send(
         emailjsConfig.serviceId,
         emailjsConfig.templateId,
@@ -176,7 +177,6 @@ const Contact = ({ emailjsConfig }: ContactProps) => {
           from_name: trimmedName,
           from_email: trimmedEmail,
           message,
-          to_email: CONTACT_EMAIL,
         },
         emailjsConfig.publicKey,
       );
