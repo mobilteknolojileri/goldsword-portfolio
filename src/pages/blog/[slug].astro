@@ -1,42 +1,62 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Navbar from "@/components/layout/Navbar";
-import { getCollection } from "astro:content";
-import ThemeToggle from "@/components/layout/ThemeToggle";
+import { getCollection, render } from "astro:content";
 import { generateMetadata } from "@/lib/seo/metadata";
 import { getBlogFAQSchema, getBlogPostingSchema } from "@/lib/seo/schema";
-import { getLocalizedCategory, formatDate, calculateReadingTime, buildToc } from "@/lib/blog";
+import {
+  getCategoryBadge,
+  getLocalizedCategory,
+  formatDate,
+  calculateReadingTime,
+  buildToc,
+} from "@/lib/blog";
 import { SITE_CONFIG } from "@/config/site";
 import { COPY_TOKENS } from "@/config/seo";
 import { Image } from "astro:assets";
+import { ARTICLE_PROSE } from "@/lib/prose";
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection("blog");
+  const blogEntries = await getCollection("blog", ({ data }) => !data.draft);
   return blogEntries.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await entry.render();
+const { Content, headings } = await render(entry);
 
 const allPosts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const relatedPosts = allPosts
-  .filter((post) => post.slug !== entry.slug)
+  .filter((post) => post.id !== entry.id)
   .filter((post) => post.data.tags.some((tag) => entry.data.tags.includes(tag)))
   .slice(0, 3);
 
-const readingTime = calculateReadingTime(entry.body);
+const readingTime = calculateReadingTime(entry.body ?? "");
 const toc = buildToc(headings);
+const faq = entry.data.faq ?? [];
+
+// Android posts get their own call to action
+const cta =
+  entry.data.category === "android"
+    ? {
+        title: "Sorun devam ediyor mu?",
+        body: "Yazı sizin durumunuzu çözmediyse ne olduğunu yazın. Neler denediğinizi de eklerseniz ilk yanıtta daha ileri gideriz.",
+        primary: "Sorununuzu anlatın",
+      }
+    : {
+        title: COPY_TOKENS.blogContactCta,
+        body: "Ne yapmak istediğinizi kısaca yazın; nereden başlayacağımızı birlikte netleştirelim.",
+        primary: "Formu doldurun",
+      };
 
 const metadata = generateMetadata({
   title: entry.data.title,
   description: entry.data.description,
-  path: `/blog/${entry.slug}`,
+  path: `/blog/${entry.id}`,
   locale: "tr",
   type: "article",
   keywords: entry.data.tags,
@@ -47,193 +67,226 @@ const blogSchema = getBlogPostingSchema({
   title: entry.data.title,
   description: entry.data.description,
   date: entry.data.date,
-  url: `${SITE_CONFIG.url}/blog/${entry.slug}`,
+  updated: entry.data.updated,
+  url: `${SITE_CONFIG.url}/blog/${entry.id}`,
   image: entry.data.heroImage,
-  intent: entry.data.intent,
   deviceBrand: entry.data.deviceBrand,
   deviceModel: entry.data.deviceModel,
 });
 
-const faqSchema = entry.data.faq?.length ? getBlogFAQSchema(entry.data.faq) : undefined;
+// FAQ schema only for the questions shown on the page
+const faqSchema = faq.length ? getBlogFAQSchema(faq) : undefined;
 const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
 ---
 
 <BaseLayout {...metadata} extraSchemas={extraSchemas}>
-  <Navbar client:idle />
-  <ThemeToggle client:idle />
-
-  <main class="pb-20 pt-32">
-    <article class="section-container mx-auto max-w-4xl px-6">
-      <header class="mb-12">
-        <div class="mb-6 flex flex-wrap items-center gap-4">
-          <span
-            class="rounded-full bg-primary-600 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-white"
-          >
+  <div
+    data-reading-progress
+    aria-hidden="true"
+    class="pointer-events-none fixed inset-x-0 top-16 z-40 h-[3px] origin-left bg-linear-to-r from-primary-500 via-violet-500 to-gold-400 print:hidden"
+    style="transform: scaleX(0)"
+  ></div>
+  <div class="relative isolate pt-28 pb-20 sm:pt-36">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem]">
+      <div class="bg-grid absolute inset-0"></div>
+    </div>
+    <article class="section-container section-padding max-w-4xl">
+      <header>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
+          <span class={getCategoryBadge(entry.data.category)}>
             {getLocalizedCategory(entry.data.category)}
           </span>
-          <time class="text-sm font-bold text-gray-600 dark:text-gray-300">
-            {formatDate(entry.data.date)}
-          </time>
-          <span class="text-sm text-gray-600 dark:text-gray-300">•</span>
-          <span class="text-sm font-medium text-gray-600 dark:text-gray-300">
-            {readingTime} dk okuma
-          </span>
+          <span class="text-muted">{readingTime} dk. okuma</span>
         </div>
 
         <h1
-          class="text-heading mb-8 text-4xl font-black leading-tight tracking-tight sm:text-5xl md:text-6xl"
+          class="text-heading mt-6 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl"
+          style="text-wrap: balance"
         >
           {entry.data.title}
         </h1>
 
-        <p class="text-body mb-8 text-xl leading-relaxed">
-          {entry.data.description}
-        </p>
+        <p class="text-body mt-6 text-xl leading-relaxed">{entry.data.description}</p>
 
-        {
-          toc.length > 0 && (
-            <div class="mb-12 rounded-3xl border border-gray-100 bg-gray-50 p-8 dark:border-dark-700 dark:bg-dark-800">
-              <h2 class="mb-6 text-sm font-black uppercase tracking-widest text-primary-600 dark:text-primary-400">
-                İçindekiler
-              </h2>
-              <nav>
-                <ul class="space-y-3">
-                  {toc.map((item) => (
-                    <li style={`padding-left: ${(item.depth - 2) * 1.25}rem`}>
-                      <a
-                        href={`#${item.id}`}
-                        class="text-body group flex items-center gap-2 font-medium transition-colors duration-300 hover:text-primary-600 dark:hover:text-primary-400"
-                      >
-                        <div class="h-1.5 w-1.5 rounded-full bg-primary-600 transition-colors group-hover:bg-primary-600 dark:bg-primary-400" />
-                        {item.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-          )
-        }
-
-        {
-          entry.data.heroImage && (
-            <div class="mb-12 overflow-hidden rounded-3xl border border-gray-100 shadow-2xl dark:border-dark-700">
-              <Image
-                src={entry.data.heroImage}
-                alt={entry.data.title}
-                class="h-auto w-full object-cover"
-                width={1200}
-                height={675}
-                loading="eager"
-              />
-            </div>
-          )
-        }
-      </header>
-
-      <div
-        class="prose prose-lg prose-indigo max-w-none dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-h2:mb-8 prose-h2:mt-16 prose-h2:border-l-4 prose-h2:border-primary-600 prose-h2:pl-4 prose-h2:text-3xl prose-h3:mb-4 prose-h3:mt-10 prose-h3:text-2xl prose-p:leading-loose prose-a:font-bold prose-a:text-primary-700 prose-a:no-underline hover:prose-a:underline prose-blockquote:rounded-r-2xl prose-blockquote:border-l-4 prose-blockquote:border-primary-50 prose-blockquote:bg-primary-50/50 prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:not-italic prose-strong:font-black prose-code:rounded-md prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:font-medium prose-li:my-2 prose-img:my-12 prose-img:rounded-[2.5rem] prose-img:shadow-2xl dark:prose-a:text-primary-400 dark:prose-blockquote:bg-primary-900/10 dark:prose-code:bg-dark-700"
-      >
-        <Content />
-      </div>
-
-      {
-        relatedPosts.length > 0 && (
-          <section class="mt-16 border-t border-gray-100 pt-10 dark:border-dark-800">
-            <h2 class="text-heading mb-6 text-2xl font-black">İlgili Yazılar</h2>
-            <div class="grid gap-4 md:grid-cols-3">
-              {relatedPosts.map((post) => (
-                <a
-                  href={`/blog/${post.slug}`}
-                  class="rounded-2xl border border-gray-100 p-5 transition-colors hover:border-primary-300 dark:border-dark-700 dark:hover:border-primary-700"
-                >
-                  <p class="mb-2 text-xs font-bold uppercase tracking-wider text-primary-600">
-                    {getLocalizedCategory(post.data.category)}
-                  </p>
-                  <h3 class="text-heading text-base font-bold leading-tight">{post.data.title}</h3>
-                </a>
-              ))}
-            </div>
-            <div class="mt-8 flex justify-center">
-              <a
-                href="/blog"
-                class="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-bold text-gray-900 shadow-sm transition-all hover:border-primary-500 hover:text-primary-600 dark:border-dark-700 dark:bg-dark-800 dark:text-white dark:hover:border-primary-500 dark:hover:text-primary-400"
-              >
-                Tüm Blog Yazılarını Gör
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </a>
-            </div>
-          </section>
-        )
-      }
-
-      <footer class="mt-20 border-t border-gray-100 pt-10 dark:border-dark-800">
-        <div class="mb-10 flex flex-wrap gap-2">
-          {
-            entry.data.tags.map((tag) => (
-              <span class="text-heading rounded-xl bg-gray-100 px-4 py-2 text-xs font-bold dark:bg-dark-800">
-                #{tag}
-              </span>
-            ))
-          }
-        </div>
-
-        <div
-          class="rounded-[3rem] bg-primary-600 p-10 text-center text-white shadow-2xl shadow-primary-600/20"
-        >
-          <h3 class="mb-6 text-3xl font-black">{COPY_TOKENS.blogContactCta}</h3>
-          <p class="mx-auto mb-8 max-w-xl text-lg text-white/80">
-            İhtiyacınıza uygun teknik yol haritasını netleştirelim. Formu doldurun, en kısa sürede
-            dönelim.
-          </p>
-          <div class="flex justify-center gap-4">
-            <a
-              href="/#contact"
-              class="rounded-2xl bg-white px-8 py-4 font-black text-primary-600 transition-all hover:scale-105"
-              >Formu Doldur</a
-            >
-            <a
-              href="mailto:mobilteknolojileri@gmail.com"
-              class="rounded-2xl bg-primary-700 px-8 py-4 font-black text-white transition-all hover:scale-105"
-              >{COPY_TOKENS.blogContactSecondaryCta}</a
-            >
+        <div class="mt-8 flex items-center gap-3 border-y border-gray-100 py-4 dark:border-dark-800">
+          <img
+            src="/assets/images/profile.webp"
+            alt=""
+            width="128"
+            height="128"
+            class="h-10 w-10 rounded-full object-cover"
+          />
+          <div class="text-sm">
+            <p class="text-heading font-semibold">goldsword</p>
+            <p class="text-muted">
+              <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+              {entry.data.updated && (
+                <>
+                  {" · Güncellendi: "}
+                  <time datetime={entry.data.updated.toISOString()}>
+                    {formatDate(entry.data.updated)}
+                  </time>
+                </>
+              )}
+            </p>
           </div>
         </div>
 
-        <div class="mt-16 text-center">
-          <a
-            href="/blog"
-            class="text-body inline-flex items-center gap-2 font-bold transition-colors hover:text-primary-600"
+        {toc.length > 0 && (
+          <nav
+            aria-labelledby="toc-heading"
+            data-toc
+            class="mt-10 rounded-2xl border border-gray-200 bg-slate-50 p-6 dark:border-dark-700 dark:bg-dark-800/60"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            <h2 id="toc-heading" class="text-heading text-sm font-semibold">
+              İçindekiler
+            </h2>
+            <ol class="mt-3 space-y-2 text-[0.95rem]">
+              {toc.map((item) => (
+                <li class:list={[item.depth === 3 && "pl-4"]}>
+                  <a
+                    href={`#${item.id}`}
+                    class="text-body inline-block py-0.5 transition-colors hover:text-primary-700 data-[active=true]:font-semibold data-[active=true]:text-gold-700 dark:hover:text-primary-300 dark:data-[active=true]:text-gold-300"
+                  >
+                    {item.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+
+        {entry.data.heroImage && (
+          <div class="mt-10 overflow-hidden rounded-3xl border border-gray-100 shadow-xl dark:border-dark-700">
+            <Image
+              src={entry.data.heroImage}
+              alt={entry.data.title}
+              class="h-auto w-full object-cover"
+              width={1200}
+              height={675}
+              loading="eager"
+            />
+          </div>
+        )}
+      </header>
+
+      <div class="relative">
+        {toc.length > 1 && (
+          <div class="absolute inset-y-0 left-full ml-10 hidden w-56 min-[1400px]:block print:hidden">
+            <nav data-toc aria-labelledby="toc-side-heading" class="sticky top-28 mt-12">
+              <p
+                id="toc-side-heading"
+                class="text-muted text-xs font-semibold tracking-wider uppercase"
+              >
+                Bu yazıda
+              </p>
+              <ol class="mt-3 border-l border-copper-200 dark:border-copper-700/60">
+                {toc.map((item) => (
+                  <li class:list={[item.depth === 3 && "pl-3"]}>
+                    <a href={`#${item.id}`} class="toc-link">
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </div>
+        )}
+        <div data-article class:list={["mt-12", ARTICLE_PROSE]}>
+          <Content />
+        </div>
+      </div>
+
+      {faq.length > 0 && (
+        <section aria-labelledby="post-faq-heading" class="mt-16">
+          <h2
+            id="post-faq-heading"
+            class="text-heading text-2xl font-extrabold tracking-tight sm:text-3xl"
+          >
+            Sık sorulan sorular
+          </h2>
+          <div class="mt-6 divide-y divide-gray-200 border-y border-gray-200 dark:divide-dark-700 dark:border-dark-700">
+            {faq.map((item) => (
+              <details class="group [&_summary::-webkit-details-marker]:hidden">
+                <summary class="text-heading flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left text-lg font-semibold transition-colors hover:text-primary-700 dark:hover:text-primary-300">
+                  {item.question}
+                  <span class="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-primary-50 text-primary-600 ring-1 ring-primary-100 transition-transform duration-300 group-open:rotate-45 dark:bg-primary-400/10 dark:text-primary-300 dark:ring-primary-400/20">
+                    <svg
+                      class="h-3.5 w-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
+                  </span>
+                </summary>
+                <p class="text-body -mt-1 pr-12 pb-6 leading-relaxed">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <footer class="mt-16 border-t border-gray-100 pt-10 dark:border-dark-800">
+        <ul class="flex flex-wrap gap-2" aria-label="Etiketler">
+          {entry.data.tags.map((tag) => (
+            <li class="badge-neutral">#{tag}</li>
+          ))}
+        </ul>
+
+        <div class="relative isolate mt-10 overflow-hidden rounded-3xl bg-dark-900 p-8 text-white shadow-[0_40px_80px_-40px_rgb(15_17_21/0.6)] ring-1 ring-white/10 sm:p-10">
+          <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+            <div class="absolute -top-24 -left-16 h-64 w-64 rounded-full bg-primary-600/40 glow"></div>
+            <div class="absolute -right-10 -bottom-24 h-64 w-64 rounded-full bg-gold-500/20 glow"></div>
+          </div>
+          <h2 class="text-2xl font-bold tracking-tight text-balance sm:text-3xl">{cta.title}</h2>
+          <p class="mt-4 max-w-xl text-lg leading-relaxed text-gray-300">{cta.body}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a
+              href="/#contact"
+              class="btn btn-lg bg-white text-gray-900 hover:-translate-y-px hover:bg-gray-100"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M11 17l-5-5m0 0l5-5m-5 5h12"></path>
-            </svg>
-            Blog listesine dön
-          </a>
+              {cta.primary} <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href={`mailto:${SITE_CONFIG.links.email}`}
+              class="btn btn-lg text-white ring-1 ring-white/25 hover:bg-white/10"
+            >
+              {COPY_TOKENS.blogContactSecondaryCta}
+            </a>
+          </div>
         </div>
       </footer>
+
+      {relatedPosts.length > 0 && (
+        <section aria-labelledby="related-heading" class="mt-16">
+          <h2 id="related-heading" class="text-heading text-2xl font-extrabold tracking-tight">
+            İlgili yazılar
+          </h2>
+          <div class="mt-6 grid gap-4 md:grid-cols-3">
+            {relatedPosts.map((post) => (
+              <a href={`/blog/${post.id}`} class="card-interactive block p-5">
+                <p class="text-xs font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-300">
+                  {getLocalizedCategory(post.data.category)}
+                </p>
+                <h3 class="text-heading mt-2 text-base font-bold leading-snug">
+                  {post.data.title}
+                </h3>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <p class="mt-14 text-center">
+        <a href="/blog" class="link inline-flex items-center gap-2">
+          <span aria-hidden="true">←</span> Bütün yazılar
+        </a>
+      </p>
     </article>
-  </main>
+  </div>
 </BaseLayout>
