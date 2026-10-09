@@ -418,9 +418,17 @@
   @apply py-20 sm:py-24 lg:py-28;
 }
 
-/* Alternate band between sections */
+/* Alternate band between sections. It draws a line on both edges, so the block after it drops
+   its own top line, and at the end of a page the footer's line is the one that stays. */
 @utility section-tint {
   @apply border-y border-gray-200/70 bg-slate-50 dark:border-dark-800 dark:bg-dark-950;
+  & + :is(section, div) {
+    border-top-width: 0;
+  }
+  main > &:last-child,
+  main > :last-child > &:only-child {
+    border-bottom-width: 0;
+  }
 }
 
 /* ---------- Type scale ---------- */
