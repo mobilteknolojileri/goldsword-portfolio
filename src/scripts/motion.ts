@@ -147,17 +147,42 @@ function updateSectionSpy() {
   if (changed) placeIndicator();
 }
 
+// A heading counts as reached once it is where a contents link would put it: the page's
+// scroll-padding plus the heading's own scroll-margin (the chips bar on phones adds one)
+let tocLine = 140;
+let tocScroller: HTMLElement | null = null;
+
 function updateToc() {
   if (tocHeadings.length === 0) return;
   let id = "";
   for (const heading of tocHeadings) {
-    if (heading.getBoundingClientRect().top > 140) break;
+    if (heading.getBoundingClientRect().top > tocLine) break;
     id = heading.id;
   }
   for (const link of tocLinks) {
     const next = String(link.dataset.target === id);
-    if (link.dataset.active !== next) link.dataset.active = next;
+    if (link.dataset.active === next) continue;
+    link.dataset.active = next;
+    if (next === "true" && tocScroller?.contains(link)) keepChipInView(link);
   }
+}
+
+function measureTocLine() {
+  if (!tocHeadings[0]) return;
+  const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const margin = parseFloat(getComputedStyle(tocHeadings[0]).scrollMarginTop) || 0;
+  tocLine = padding + margin + 12;
+}
+
+// The chip row scrolls sideways, so the chip for the current heading is brought to the middle
+function keepChipInView(chip: HTMLElement) {
+  if (!tocScroller) return;
+  const row = tocScroller.getBoundingClientRect();
+  const box = chip.getBoundingClientRect();
+  tocScroller.scrollBy({
+    left: box.left - row.left - (row.width - box.width) / 2,
+    behavior: prefersReducedMotion() ? "auto" : "smooth",
+  });
 }
 
 function setupSpy() {
@@ -185,6 +210,8 @@ function setupSpy() {
   tocHeadings = Array.from(document.querySelectorAll<HTMLElement>("[data-article] [id]")).filter(
     (el) => ids.has(el.id),
   );
+  tocScroller = document.querySelector<HTMLElement>("[data-toc-scroll]");
+  measureTocLine();
 
   if (navSpy) navSpy.dataset.navSpy = "ready";
   refreshSpy();
@@ -450,6 +477,8 @@ function setupContactBar() {
 window.addEventListener("scroll", onScroll, { passive: true });
 window.addEventListener("resize", onScroll, { passive: true });
 window.addEventListener("resize", () => placeIndicator(true), { passive: true });
+// The chips bar's extra scroll margin only applies below lg
+window.addEventListener("resize", measureTocLine, { passive: true });
 // An early jump right after load can slip past the scroll handler
 window.addEventListener("scrollend", refreshSpy, { passive: true });
 window.addEventListener("load", refreshSpy);

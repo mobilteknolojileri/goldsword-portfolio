@@ -133,27 +133,50 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
         </div>
 
         {toc.length > 0 && (
-          <nav
-            aria-labelledby="toc-heading"
-            data-toc
-            class="mt-10 rounded-2xl border border-gray-200 bg-slate-50 p-6 dark:border-dark-700 dark:bg-dark-800/60"
-          >
-            <h2 id="toc-heading" class="text-heading text-sm font-semibold">
-              İçindekiler
-            </h2>
-            <ol class="mt-3 space-y-2 text-[0.95rem]">
-              {toc.map((item) => (
-                <li class:list={[item.depth === 3 && "pl-4"]}>
-                  <a
-                    href={`#${item.id}`}
-                    class="text-body inline-block py-0.5 transition-colors hover:text-primary-700 data-[active=true]:font-semibold data-[active=true]:text-gold-700 dark:hover:text-primary-300 dark:data-[active=true]:text-gold-300"
-                  >
-                    {item.text}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
+          <>
+            <details
+              open
+              class="group/toc mt-10 rounded-2xl border border-gray-200 bg-slate-50 dark:border-dark-700 dark:bg-dark-800/60"
+            >
+              <summary class="text-heading flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-6 py-3 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+                <span>
+                  İçindekiler <span class="text-muted font-normal">({toc.length})</span>
+                </span>
+                <svg
+                  class="h-4 w-4 flex-none transition-transform duration-300 group-open/toc:rotate-180"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <nav data-toc aria-label="İçindekiler" class="px-6 pb-5">
+                <ol class="space-y-1 text-[0.95rem]">
+                  {toc.map((item) => (
+                    <li class:list={[item.depth === 3 && "pl-4"]}>
+                      <a
+                        href={`#${item.id}`}
+                        class="text-body inline-block py-1 transition-colors hover:text-primary-700 data-[active=true]:font-semibold data-[active=true]:text-gold-700 dark:hover:text-primary-300 dark:data-[active=true]:text-gold-300"
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </details>
+            <script is:inline>
+              // Phones start with the list folded, so the article doesn't begin a screen down
+              if (matchMedia("(max-width: 639px)").matches) {
+                document.currentScript.previousElementSibling.open = false;
+              }
+            </script>
+          </>
         )}
 
         {entry.data.heroImage && (
@@ -164,6 +187,8 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
               class="h-auto w-full object-cover"
               width={1200}
               height={675}
+              widths={[640, 960, 1200]}
+              sizes="(min-width: 768px) 768px, 100vw"
               loading="eager"
             />
           </div>
@@ -192,7 +217,15 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
             </nav>
           </div>
         )}
-        <div data-article class:list={["mt-12", ARTICLE_PROSE]}>
+        <!-- Phones: a table wider than the column scrolls sideways instead of being cut off -->
+        <div
+          data-article
+          class:list={[
+            "mt-12",
+            ARTICLE_PROSE,
+            "max-sm:[&_table]:scroll-shadow-x max-sm:[&_table]:block max-sm:[&_table]:overflow-x-auto",
+          ]}
+        >
           <Content />
         </div>
       </div>
@@ -224,7 +257,7 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
                     </svg>
                   </span>
                 </summary>
-                <p class="text-body -mt-1 pr-12 pb-6 leading-relaxed">{item.answer}</p>
+                <p class="text-body -mt-1 pb-6 leading-relaxed sm:pr-12">{item.answer}</p>
               </details>
             ))}
           </div>
@@ -283,7 +316,7 @@ const extraSchemas = faqSchema ? [blogSchema, faqSchema] : [blogSchema];
       )}
 
       <p class="mt-14 text-center">
-        <a href="/blog" class="link inline-flex items-center gap-2">
+        <a href="/blog" class="link inline-flex items-center gap-2 py-2.5">
           <span aria-hidden="true">←</span> Bütün yazılar
         </a>
       </p>

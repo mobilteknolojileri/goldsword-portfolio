@@ -1,9 +1,10 @@
 ---
-// Lets wide tables scroll on phones
+// Wide tables scroll on phones: a minimum width keeps the columns readable, and the edge
+// shadows show there is more to the side
 ---
 
-<div class="-mx-1 overflow-x-auto px-1">
-  <table>
+<div class="scroll-shadow-x -mx-1 overflow-x-auto px-1">
+  <table class="min-w-[34rem]">
     <slot />
   </table>
 </div>

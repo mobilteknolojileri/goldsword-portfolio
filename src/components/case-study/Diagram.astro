@@ -16,7 +16,7 @@ if (!svg) throw new Error(`Unknown case-study diagram: ${id}`);
 ---
 
 <figure class="not-prose my-10">
-  <div class="cs-diagram overflow-x-auto rounded-2xl border border-gray-200 bg-slate-50 px-4 py-8 sm:px-8 dark:border-dark-700 dark:bg-dark-900/60">
+  <div class="cs-diagram scroll-shadow-x overflow-x-auto rounded-2xl border border-gray-200 bg-slate-50 px-2 py-6 [--scroll-bg:var(--color-slate-50)] sm:px-8 sm:py-8 dark:border-dark-700 dark:bg-dark-900/60">
     <Fragment set:html={svg} />
   </div>
   {Astro.slots.has("default") && (
