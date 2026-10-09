@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
-import { PROJECTS } from "@/lib/constants";
+import { CATEGORY_LABELS } from "@/config/portfolio";
+import { PROJECTS, type Project } from "@/lib/constants";
 
 export async function GET() {
   const BASE_URL = import.meta.env.PUBLIC_SITE_URL || "https://goldsword.dev";
@@ -11,92 +12,120 @@ export async function GET() {
   const blogList = posts
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
     .map(
-      (post) => `- [${post.data.title}](${BASE_URL}/blog/${post.slug})
+      (post) => `- [${post.data.title}](${BASE_URL}/blog/${post.id})
   - ${post.data.description}
   - Tarih: ${post.data.date.toLocaleDateString("tr-TR")}`,
     )
     .join("\n\n");
 
+  const caseStudies = (await getCollection("caseStudies"))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(
+      (
+        study,
+      ) => `- [${study.data.title}](${BASE_URL}/vaka-calismalari/${study.id}): ${study.data.summary}
+  - Sonuç: ${study.data.outcome}
+  - Teknolojiler: ${study.data.stack.join(", ")}`,
+    )
+    .join("\n");
+
   const projects = PROJECTS.filter((p) => p.slug !== "fabric-detection");
 
-  const formatProject = (project: (typeof PROJECTS)[0]) => {
+  const formatProject = (project: Project) => {
     let impact = "";
     let techDecision = "";
 
     if (project.slug === "ingilizceciyiz") {
-      impact = "**→ 16.000+ aktif kullanıcıya hizmet veren sistem modernizasyonu.**";
+      impact =
+        "**23K+ indirme (App Store 13.594, Google Play 10.000+); 9 Ekim 2026 itibarıyla 6.679 öğretmen hesabı, 3.416 öğretmenin ürettiği 28.963 belge.**";
       techDecision =
-        "Monolith yapı yerine modüler backend mimarisi kurarak ölçeklenebilirliği ve bakım hızını artırdım.";
+        "Platformu sıfırdan yazdım. Expo uygulamasını ve Astro'daki site ile yönetim panelini tek bir Turborepo deposunda topladım; hepsi aynı SQL şemasını kullanıyor. Word belgelerini telefonda değil, sunucuda Supabase Edge Functions hazırlıyor.";
     }
     if (project.slug === "getyo-mobile") {
-      impact = "**→ App Store ve Google Play'de aktif olarak yayında.**";
+      impact =
+        "**App Store ve Google Play'de yayında; işletme Nisan 2026'da el değiştirdi ve teknik devri ben yaptım.**";
       techDecision =
-        "Supabase kullanarak real-time veri senkronizasyonu ve auth süreçlerini tek sistemde çözerek geliştirme süresini %40 azalttım.";
+        "Sadakat sağlayıcısının API anahtarını uygulamaya koymak yerine 12 tek işlevli sunucu fonksiyonu yazdım; anahtar telefona hiç inmiyor.";
     }
     if (project.slug === "kafadar-mobile") {
-      impact = "**→ Yüksek etkileşimli sosyal quiz platformu.**";
+      impact = "**8 Mart 2026'dan beri Google Play'de.**";
       techDecision =
-        "Deep linking ve dinamik tema yönetimi ile kullanıcı deneyimi (UX) kişiselleştirmesini tek başıma kurguladım.";
+        "Paylaşım bağlantısını, uygulama kuruluysa Android App Links ile doğrudan uygulamaya, kurulu değilse veri tabanına bağlanmayan statik bir Astro sitesine yönlendirdim.";
     }
     if (project.slug === "frozen-yogurt-website") {
       techDecision =
-        "Readdy bağımlılığını kaldırıp Next.js + Supabase mimarisine geçerek güvenlik ve tam kontrol sağladım.";
+        "Siteyi Readdy'den çıkarıp önce Next.js'e, Mart 2026'da statik Astro'ya taşıdım; menü yönetim panelinin açık API'sinden canlı geliyor. PageSpeed Insights mobil puanları: performans 100, erişilebilirlik 96, en iyi uygulamalar 100, SEO 100.";
     }
     if (project.slug === "qusafe-mobile") {
+      impact = "**Google Play'de 1.4.0 sürümünde; 42 şifreli kasa hâlâ eşitleniyor.**";
       techDecision =
-        "Zero-knowledge mimari kurarak kullanıcı verisinin server tarafında okunamaz olmasını sağladım.";
+        "Anahtar ana paroladan cihazda Argon2id ile türetiliyor ve cihazdan çıkmıyor; sunucu yalnızca okuyamadığı AES-256-GCM şifreli veriyi saklıyor.";
+    }
+    if (project.slug === "react-native-password-intelligence") {
+      impact = "**npm'de 0.4.1, provenance imzalı; React Native Directory'de listeleniyor.**";
+      techDecision =
+        "Tam İngilizce parola listesi yerine en sık 4.000 parolayı gömerek paketin gzip boyutunu 236 kB'tan yaklaşık 37 kB'a indirdim; çekirdeği React'siz ayrı bir pakete ayırdım.";
+    }
+    if (project.slug === "xiaomi-bootloader-unlocker") {
+      techDecision =
+        "Araç, sistem saatine güvenmeden Pekin saatini NTP'den alır ve kota sıfırlandığı anda 15 ms arayla 30 paralel istek gönderir.";
     }
 
-    return `### [${project.title} (${project.category})](${project.slug ? `${BASE_URL}/portfolio/${project.slug}` : BASE_URL})
+    return `### [${project.title} (${CATEGORY_LABELS[project.category]})](${project.slug ? `${BASE_URL}/portfolio/${project.slug}` : BASE_URL})
 ${impact ? impact + "\n" : ""}
 ${project.description}
 
-- **Katkım**: ${project.detailedDescription || project.description}
-${techDecision ? `- **Teknik Karar**: ${techDecision}\n` : ""}- **Tech Stack**: ${project.technologies.join(", ")}`;
+- **Ayrıntılar**: ${project.detailedDescription || project.description}
+${techDecision ? `- **Teknik karar**: ${techDecision}\n` : ""}${project.caseStudy ? `- **Vaka çalışması**: ${BASE_URL}${project.caseStudy}\n` : ""}- **Teknolojiler**: ${project.technologies.join(", ")}`;
   };
 
   const projectList = projects.map(formatProject).join("\n\n");
 
   const content = `# goldsword.dev
 
-## Geliştirici Hakkında
-**Mobil uygulama ve SaaS ürünleri geliştirmeye odaklanıyorum.** 30+ ticari projede aktif olarak geliştirme yapmış bir Full-stack geliştiriciyim. Projeleri fikir aşamasından yayına (production) kadar tek başıma geliştiriyor; performans, sürdürülebilirlik ve kullanıcı deneyimini birlikte düşünerek çalışıyorum.
+## Geliştirici hakkında
+**Ağırlıklı olarak mobil uygulama ve SaaS ürünleri geliştiriyorum.** Gaziantep'te yaşayan, full-stack çalışan freelance bir yazılım geliştiriciyim; 30'dan fazla ticari projede geliştirme yaptım. Projeyi fikir aşamasından yayına kadar tek başıma götürürüm.
 
-Öğrenci olmama rağmen gerçek kullanıcıya ulaşmış aktif kullanılan sistemler geliştirdim. Tek başıma çalışarak hızlı ve sürdürülebilir çözümleri üretiyorum.
+Ekip de taşeron da yok: Kapsamdan mağazaya çıkışa, sonrasına kadar muhatabınız tek kişi. Trakya Üniversitesi Mobil Teknolojileri programından 2025'te mezun oldum (3,79/4,00).
 
-## Neden Ben?
-- **Uçtan Uca Geliştirme:** Tasarım, frontend, backend ve deploy süreçlerini tek başıma yönetirim. Karşınızda sadece tek bir muhatap olur.
-- **Gerçek Proje Deneyimi:** Sadece demo projeler değil, gerçek müşteriler için üretim ortamında (production) çalışan sistemler kurdum.
-- **Hızlı İterasyon:** Tek kişi olduğum için hızlı karar alır, projeyi hızla hayata geçirir ve geri dönüşlere göre anında güncellerim.
-- **Modern Teknoloji:** En güncel araçları (Astro, React, Expo, Supabase) projelerimde aktif olarak kullanırım.
-- **Stratejik Mimari & Planlama:** Projenin ihtiyaçlarını analiz eder, derinlemesine teknik araştırmalar yapar ve ölçeklenebilir, sürdürülebilir mimariler kurarım. Sadece anlık çözüm üretmez, projenin büyüme aşamalarını da (scaling) düşünerek sağlam bir temel atarım.
-- **DevOps & Deployment:** Projeleri sadece geliştirmez, Vercel, Docker veya VPS (Hetzner vb.) üzerinde optimize şekilde yayına alırım. Kesintisiz güncellemeler için CI/CD süreçlerini kurgulayarak ürünün her zaman ayakta kalmasını sağlarım.
+## Çalışma biçimi
+- **Uçtan uca:** Tasarım, frontend, backend ve yayına alma (deploy) işini tek başıma yaparım; muhatabınız tek kişidir.
+- **Yayındaki işler:** Demo projelerle sınırlı kalmadım; müşteriler için yayında çalışan sistemler kurdum. Örnekleri aşağıdaki Projeler bölümünde.
+- **Kısa karar zinciri:** Tek kişi olduğum için araya onay zinciri girmez; dolayısıyla geri bildirimi doğrudan koda yansıtırım.
+- **Araçlar:** Bugün en çok Astro, React, Expo ve Supabase ile çalışıyorum.
+- **Mimari ve planlama:** Kod yazmadan önce ihtiyacı ve veri modelini çıkarır, gerekirse teknik araştırma yaparım. Yapıyı, ürünün ileride büyüyebileceğini hesaba katarak kurarım.
+- **Yayına alma:** Projeyi Vercel'de, Docker'la ya da Hetzner gibi bir VPS'te yayına alırım; güncellemeler için CI/CD kurarım.
 
-## Nasıl Çalışırım?
-1. **Hızlı Analiz:** İhtiyacı doğru anlar, kafa karıştırmadan en net çözümü sunarım.
-2. **Kompakt Çözüm:** Gereksiz karmaşıklıktan kaçınır, işi en sade ve performanslı şekilde çözerim.
-3. **Süreç Yönetimi:** MVP (ilk çalışan sürüm) → Geliştirme → Ölçekleme yolunu izlerim.
-4. **Kesintisiz İletişim:** Süreç boyunca iletişimi koparmadan, her adımda bilgilendirme yaparım.
+## Süreç
+1. **İhtiyaç:** Önce neyin gerektiğini birlikte netleştiririz.
+2. **Sade çözüm:** İşin gerektirmediği karmaşıklığı eklemem.
+3. **Aşamalar:** Önce çalışan ilk sürüm (MVP), sonra geliştirme, gerekirse ölçekleme.
+4. **İletişim:** Her aşamada ne yapıldığını ve sırada ne olduğunu size bildiririm.
 
 ## Hizmetler
-- **Mobil Uygulama Geliştirme** → Fikirden marketlere (App Store/Play Store) kadar çalışan uygulamalar.
-- **Web Geliştirme** → Hızlı, SEO uyumlu ve modern web siteleri.
-- **Teknik SEO** → Google'da hızlıca indekslenen ve performans odaklı teknik altyapı.
-- **AI Entegrasyonu** → İşleri otomatikleştiren yapay zeka ve otomasyon çözümleri.
+- **Mobil uygulama geliştirme:** Fikir aşamasından App Store ve Google Play'deki yayına kadar. Ayrıntılar: ${BASE_URL}/mobil-uygulama-gelistirme
+- **Web geliştirme:** Hızı ve teknik SEO'su baştan düşünülmüş web siteleri. Ayrıntılar: ${BASE_URL}/web-site-yapimi-gaziantep
+- **Teknik SEO:** Google'ın siteyi tarayıp dizine ekleyebilmesi için gereken teknik altyapı ve sayfa hızı.
+- **Android yazılım desteği:** Açılmayan, güncellemeden sonra bozulan ya da yavaşlayan Android cihazların yazılım tarafı: kurtarma, ROM ve veri. Ayrıntılar: ${BASE_URL}/android-destek
 
-## Projeler (Portfolio)
+## Projeler
 
 ${projectList}
 
-## Teknik Blog & Rehberler
+## Vaka çalışmaları
+Kaynak kodları kapalı bazı işlerin ayrıntılı anlatımı: sorun, yapılan iş, teknoloji seçimleri, sonuç ve yolda bozulanlar.
+
+${caseStudies}
+
+## Yazılar
 ${blogList}
 
-View all posts: ${BASE_URL}/blog
+Bütün yazılar: ${BASE_URL}/blog
 
-## Bir fikrin mi var?
-Yeni bir ürün geliştirmek, mevcut sistemini iyileştirmek veya sadece teknik bir konuda danışmak istersen benimle iletişime geçebilirsin.
+## İletişim
+Yeni bir ürün, var olan bir sistemin iyileştirilmesi ya da Android cihazınızdaki bir sorun için yazabilirsiniz.
 
-- **Email:** mobilteknolojileri@gmail.com
+- **E-posta:** mobilteknolojileri@gmail.com
 - **Web:** ${BASE_URL}
 - **GitHub:** https://github.com/mobilteknolojileri
 - **Bionluk:** https://bionluk.com/goldsword

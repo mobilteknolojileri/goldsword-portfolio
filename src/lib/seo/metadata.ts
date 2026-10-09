@@ -34,7 +34,7 @@ export function generateMetadata({
   type = "website",
   keywords = [],
 }: GenerateMetadataProps): Metadata {
-  const baseUrl = (import.meta as any).env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+  const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
   const url = resolveUrl(baseUrl, path);
   const fullTitle = `${title}${SEO_DEFAULTS.blogTitleSuffix}`;
   const allKeywords = [...getKeywords(locale), ...keywords];
@@ -81,9 +81,9 @@ export function generateMetadata({
       images: [imageUrl],
     },
     verification: {
-      google: (import.meta as any).env.PUBLIC_GOOGLE_VERIFICATION,
-      yandex: (import.meta as any).env.PUBLIC_YANDEX_VERIFICATION,
-      bing: (import.meta as any).env.PUBLIC_BING_VERIFICATION,
+      google: import.meta.env.PUBLIC_GOOGLE_VERIFICATION,
+      yandex: import.meta.env.PUBLIC_YANDEX_VERIFICATION,
+      bing: import.meta.env.PUBLIC_BING_VERIFICATION,
     },
     themeColor: "#4f46e5",
     alternates: {
@@ -103,36 +103,36 @@ export const defaultMetadata: Metadata = generateMetadata({
 });
 
 export const qusafeMetadata: Metadata = generateMetadata({
-  title: "QuSafe - Şifreli Kasa | Güvenli Parola ve Dosya Yönetimi",
+  title: "QuSafe: Şifreli Parola ve Not Kasası",
   description:
-    "Fotoğraf gizleme, şifre saklama ve güvenli not yönetimi. AES-256-GCM şifreleme ve biyometrik kilit açma ile veri güvenliği.",
+    "Parolalar ve notlar için şifreli kasa. Anahtar ana paroladan cihazda Argon2id ile türetilir, veri AES-256-GCM ile şifrelenir. Biyometrik kilitle de açılır.",
   path: "/qusafe",
   image: "/qusafe-icon.png",
   locale: "tr",
   keywords: [
     "şifreli kasa",
     "parola yöneticisi",
-    "dosya gizleme",
     "güvenli notlar",
     "aes-256",
+    "argon2id",
     "zero knowledge",
   ],
 });
 
 export const aesteraMetadata: Metadata = generateMetadata({
-  title: "Legends of Aestera | 2D Platform Aksiyon Oyunu",
+  title: "Legends of Aestera: 2D Platform Aksiyon Oyunu",
   description:
-    "Red ve Robinhood ile epik bir macera. El yapımı bölümler, dinamik düşmanlar ve boss savaşları içeren piksel platform oyunu.",
+    "Unity ile yaptığım 2D platform oyunu. Red kılıçla kombo yapar, Robinhood ok atar; elle tasarlanmış bölümlerde tuzaklar, düşmanlar ve boss savaşları var.",
   path: "/legends-of-aestera",
   image: "/assets/projects/legends-of-aestera/hero.webp",
   locale: "tr",
-  keywords: ["2d platform oyunu", "aksiyon oyunu", "pixel art", "indie game", "unity game"],
+  keywords: ["2d platform oyunu", "aksiyon oyunu", "indie game", "unity game"],
 });
 
 export const kafadarMetadata: Metadata = generateMetadata({
-  title: "Kafadar | Arkadaşlık Testi",
+  title: "Kafadar: Arkadaşlık Testi",
   description:
-    "Quiz oluştur, paylaş ve skor karşılaştır. Gen Z odaklı eğlenceli arkadaşlık testi uygulaması.",
+    "Kendiniz hakkında bir test hazırlayın, bağlantısını arkadaşlarınıza gönderin ve sizi kimin ne kadar tanıdığını görün. Android için arkadaşlık testi uygulaması.",
   path: "/kafadar",
   image: "/assets/projects/kafadar-mobile/icon.webp",
   locale: "tr",

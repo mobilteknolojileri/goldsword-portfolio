@@ -1,5 +1,5 @@
 import { SITE_CONFIG } from "@/config/site";
-import { normalizeBrand, normalizeDeviceModel, normalizeIntent } from "@/config/seo";
+import { normalizeBrand, normalizeDeviceModel } from "@/config/seo";
 
 const joinUrl = (base: string, path?: string) => {
   if (!path) return base;
@@ -8,20 +8,20 @@ const joinUrl = (base: string, path?: string) => {
 };
 
 export function getPersonSchema(locale: string = SITE_CONFIG.locale) {
-  const baseUrl = (import.meta as any).env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+  const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
 
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     name: SITE_CONFIG.name,
     url: baseUrl,
-    image: joinUrl(baseUrl, SITE_CONFIG.ogImage),
+    image: joinUrl(baseUrl, SITE_CONFIG.logo),
     sameAs: [SITE_CONFIG.links.github, SITE_CONFIG.links.bionluk],
     jobTitle: locale === "tr" ? "Full Stack Yazılım Geliştirici" : "Full Stack Software Developer",
     description:
       locale === "tr"
-        ? "Profesyonel freelance yazılımcı. Mobil uygulama, web geliştirme, yapay zeka ve oyun geliştirme. 20+ başarılı proje. Flutter, React Native, Next.js, Unity uzmanı."
-        : "Professional freelance developer. Mobile apps, web development, AI, and game development. 20+ successful projects. Expert in Flutter, React Native, Next.js, Unity.",
+        ? "Freelance yazılım geliştirici. Mobil uygulama ve web sitesi geliştirir, Android telefonlarda yazılım desteği verir. 30'dan fazla proje teslim etti; React Native, Flutter, Astro ve Next.js ile çalışır."
+        : "Freelance software developer building mobile apps and websites, and providing Android software support. 30+ delivered projects; works with React Native, Flutter, Astro and Next.js.",
     knowsAbout: [
       "Flutter Development",
       "React Native",
@@ -49,47 +49,24 @@ export function getPersonSchema(locale: string = SITE_CONFIG.locale) {
 }
 
 export function getOrganizationSchema(locale: string = SITE_CONFIG.locale) {
-  const baseUrl = (import.meta as any).env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+  const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
 
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: SITE_CONFIG.name,
     url: baseUrl,
-    logo: joinUrl(baseUrl, SITE_CONFIG.ogImage),
+    logo: joinUrl(baseUrl, SITE_CONFIG.logo),
     description:
       locale === "tr"
-        ? "Profesyonel yazılım geliştirme hizmetleri. Mobil uygulama, web sitesi, AI entegrasyonu ve oyun geliştirme."
-        : "Professional software development services. Mobile apps, websites, AI integration, and game development.",
+        ? "Tek kişilik yazılım işi: mobil uygulama, web sitesi ve Android yazılım desteği."
+        : "One-person software business: mobile apps, websites and Android software support.",
     contactPoint: {
       "@type": "ContactPoint",
       email: SITE_CONFIG.links.email,
       contactType: locale === "tr" ? "Müşteri Hizmetleri" : "Customer Service",
       availableLanguage: ["Turkish", "English"],
     },
-  };
-}
-
-export function getPortfolioSchema(projects: any[], locale: string = SITE_CONFIG.locale) {
-  const baseUrl = (import.meta as any).env.PUBLIC_SITE_URL || SITE_CONFIG.url;
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: locale === "tr" ? "Portfolyo Projeleri" : "Portfolio Projects",
-    description: locale === "tr" ? "Tamamlanmış yazılım projeleri" : "Completed software projects",
-    numberOfItems: projects.length,
-    itemListElement: projects.slice(0, 10).map((project, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
-        "@type": "CreativeWork",
-        name: project.title,
-        description: project.description,
-        url: project.slug ? `${baseUrl}/portfolio/${project.slug}` : baseUrl,
-        keywords: project.technologies.join(", "),
-      },
-    })),
   };
 }
 
@@ -106,85 +83,13 @@ export function getBreadcrumbSchema(items: { name: string; url: string }[]) {
   };
 }
 
-export function getServiceSchema(locale: string = SITE_CONFIG.locale) {
-  const services =
-    locale === "tr"
-      ? [
-          {
-            name: "Mobil Uygulama Geliştirme",
-            description: "Flutter ve React Native ile iOS ve Android uygulama geliştirme",
-          },
-          {
-            name: "Web Geliştirme",
-            description: "Next.js, React ile modern web siteleri ve uygulamalar",
-          },
-          {
-            name: "Yapay Zeka Entegrasyonu",
-            description:
-              "LLM (Phi-4, DeepSeek), AI Agent ve ML modelleri ile akıllı uygulama geliştirme",
-          },
-          {
-            name: "Oyun Geliştirme",
-            description: "Unity ile 2D/3D oyun geliştirme",
-          },
-        ]
-      : [
-          {
-            name: "Mobile App Development",
-            description: "iOS and Android app development with Flutter and React Native",
-          },
-          {
-            name: "Web Development",
-            description: "Modern websites and applications with Next.js, React",
-          },
-          {
-            name: "AI Integration",
-            description: "LLM (Phi-4, DeepSeek), AI Agent and intelligent application development",
-          },
-          {
-            name: "Cybersecurity & Secure Systems",
-            description: "Encrypted vaults and secure data management systems with AES-256",
-          },
-          {
-            name: "Game Development",
-            description: "2D/3D game development with Unity",
-          },
-        ];
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    provider: {
-      "@type": "Person",
-      name: SITE_CONFIG.name,
-    },
-    serviceType: locale === "tr" ? "Yazılım Geliştirme" : "Software Development",
-    areaServed: {
-      "@type": "Country",
-      name: "Worldwide",
-    },
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: locale === "tr" ? "Yazılım Hizmetleri" : "Software Services",
-      itemListElement: services.map((service) => ({
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: service.name,
-          description: service.description,
-        },
-      })),
-    },
-  };
-}
-
 export function getLocalBusinessSchema() {
-  const baseUrl = (import.meta as any).env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+  const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
 
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: `${SITE_CONFIG.name} - Gaziantep Freelancer Yazılım & Mobil Uygulama`,
+    name: `${SITE_CONFIG.name}: Gaziantep Freelancer Yazılım & Mobil Uygulama`,
     image: joinUrl(baseUrl, SITE_CONFIG.ogImage),
     "@id": `${baseUrl}/#localbusiness`,
     url: baseUrl,
@@ -223,21 +128,22 @@ export function getBlogPostingSchema(post: {
   title: string;
   description: string;
   date: Date;
+  updated?: Date;
   url: string;
   image?: string;
-  intent?: string;
   deviceBrand?: string;
   deviceModel?: string;
 }) {
-  const baseUrl = (import.meta as any).env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+  const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
 
-  const schema: any = {
+  const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.description,
     image: joinUrl(baseUrl, post.image || SITE_CONFIG.ogImage),
     datePublished: post.date.toISOString(),
+    dateModified: (post.updated ?? post.date).toISOString(),
     author: {
       "@type": "Person",
       name: SITE_CONFIG.author,
@@ -248,7 +154,7 @@ export function getBlogPostingSchema(post: {
       name: SITE_CONFIG.name,
       logo: {
         "@type": "ImageObject",
-        url: joinUrl(baseUrl, SITE_CONFIG.ogImage),
+        url: joinUrl(baseUrl, SITE_CONFIG.logo),
       },
     },
     mainEntityOfPage: {
@@ -257,19 +163,64 @@ export function getBlogPostingSchema(post: {
     },
   };
 
-  const intent = normalizeIntent(post.intent);
   const deviceBrand = normalizeBrand(post.deviceBrand);
   const deviceModel = normalizeDeviceModel(post.deviceModel);
-  if (intent || deviceBrand || deviceModel) {
-    schema.mentions = [];
-    if (intent) schema.mentions.push({ "@type": "Thing", name: intent });
-    if (deviceBrand) schema.mentions.push({ "@type": "Brand", name: deviceBrand });
-    if (deviceModel) schema.mentions.push({ "@type": "Thing", name: deviceModel });
-  }
+  const mentions = [
+    ...(deviceBrand ? [{ "@type": "Brand", name: deviceBrand }] : []),
+    ...(deviceModel ? [{ "@type": "Product", name: deviceModel }] : []),
+  ];
+  if (mentions.length > 0) schema.mentions = mentions;
 
   return schema;
 }
 
 export function getBlogFAQSchema(faqs: { question: string; answer: string }[]) {
   return getFAQSchema(faqs);
+}
+
+// Case study pages are Turkish translations of the GitHub originals
+export function getCaseStudySchema(study: {
+  title: string;
+  description: string;
+  url: string;
+  image: string;
+  date: Date;
+  keywords: string[];
+  original: string;
+}) {
+  const baseUrl = import.meta.env.PUBLIC_SITE_URL || SITE_CONFIG.url;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: study.title,
+    description: study.description,
+    image: joinUrl(baseUrl, study.image),
+    datePublished: study.date.toISOString(),
+    dateModified: study.date.toISOString(),
+    inLanguage: "tr-TR",
+    keywords: study.keywords.join(", "),
+    author: {
+      "@type": "Person",
+      name: SITE_CONFIG.author,
+      url: baseUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_CONFIG.name,
+      logo: {
+        "@type": "ImageObject",
+        url: joinUrl(baseUrl, SITE_CONFIG.logo),
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": study.url,
+    },
+    translationOfWork: {
+      "@type": "TechArticle",
+      url: study.original,
+      inLanguage: "en",
+    },
+  };
 }
