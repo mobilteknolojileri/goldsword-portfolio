@@ -7,6 +7,19 @@
 /* Set on <html> by the same script: controls that only work with JS show up without a shift */
 @custom-variant js (&:where(.js *));
 
+/* Inside a card: hover where there is a pointer, and on touch screens the card crossing the
+   middle of the screen (is-centered, set by motion.ts) */
+@custom-variant group-lit {
+  @media (hover: hover) {
+    &:is(:where(.group):hover *) {
+      @slot;
+    }
+  }
+  &:is(:where(.group).is-centered *) {
+    @slot;
+  }
+}
+
 @theme {
   --font-sans:
     "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
@@ -446,7 +459,12 @@
 }
 
 @utility card-interactive {
-  @apply card transition duration-300 ease-out hover:-translate-y-1 hover:border-gold-400 hover:shadow-[0_18px_40px_-18px_rgb(217_168_74/0.55)] active:scale-[0.985] dark:hover:border-gold-400/60 dark:hover:shadow-[0_18px_44px_-18px_rgb(217_168_74/0.3)];
+  @apply card transition duration-300 ease-out hover:-translate-y-1 hover:border-gold-400 hover:shadow-[0_18px_40px_-18px_rgb(217_168_74/0.55)] dark:hover:border-gold-400/60 dark:hover:shadow-[0_18px_44px_-18px_rgb(217_168_74/0.3)];
+  /* Pressed look only when the whole card is a link: on a plain card a scroll that starts on it
+     would make it shrink */
+  &:is(a, button):active {
+    scale: 0.985;
+  }
   /* Touch screens have no hover: the card crossing the middle of the screen (motion.ts) gets
      the gold edge instead */
   @media (hover: none) {
@@ -1023,9 +1041,15 @@
     mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
   }
 
-  .marquee:hover .marquee-track,
   .marquee:focus-within .marquee-track {
     animation-play-state: paused;
+  }
+
+  /* On touch screens a tap leaves :hover stuck, which would freeze the strip */
+  @media (hover: hover) {
+    .marquee:hover .marquee-track {
+      animation-play-state: paused;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
